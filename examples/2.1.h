@@ -5,7 +5,7 @@ typedef int ElemType;
 typedef  struct _SqList{
     ElemType elem[LISTSIZE];
     int      length;          // 当前长度
-	int      listsize;
+    int      listsize;
 } SqList;
 
 #define OK 0
