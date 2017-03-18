@@ -6,6 +6,11 @@
 void scan(ElemType *p){
 	scanf_s("%d",p);
 }
+void print(const ElemType n){
+	printf("%2d ", n);
+}
+
+/*算法2.11	新建单链表*/
 void CreateList_L(LinkList L, int n, void(*func)(ElemType*)){
 	int i;
 	LNode* p;
@@ -19,19 +24,7 @@ void CreateList_L(LinkList L, int n, void(*func)(ElemType*)){
 		L->next = p;
 	}
 };//CraeteList_L
-//新建长度为n的单链表L，对其中每个数据使用func函数来创建
-void print(const ElemType n){
-	printf("%2d ",n);
-}
-void TraverseList_L(const LinkList L,void(*func)(ElemType)){
-	LNode *p = L->next;
-	while (p){
-		func(p->data);
-		p = p->next;
-	}
-}
-//遍历单链表L，对其中每个数据执行func函数
-
+/*算法2.12	归并两个单链表*/
 void MergeList_L(LinkList La, LinkList Lb, LinkList *Lc){
 	LNode *pa = La->next, *pb = Lb->next, *pc;
 	(*Lc) = pc = La;//用La的头节点作为Lc的头节点
@@ -48,4 +41,11 @@ void MergeList_L(LinkList La, LinkList Lb, LinkList *Lc){
 	pc->next = pa ? pa : pb;
 	free(Lb);
 }
-//归并两个单链表La,Lb到Lc中
+/*遍历单链表*/
+void TraverseList_L(const LinkList L, void(*func)(ElemType)){
+	LNode *p = L->next;
+	while (p){
+		func(p->data);
+		p = p->next;
+	}
+}
