@@ -1,17 +1,17 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 
 #include "2.12.h"
 
-void CreateList_L(LinkList L) {                  //逆序输入，否则输出为逆序
+void CreateList_L(LinkList L) {                  //构建长度为n的随机链表
 	int i, n;
 	LinkList p;
 	scanf("%d", &n);
-	printf("输入链表元素： ");
 	L->next = NULL;
 	for (i = n; i > 0; --i) {
 		p = (LinkList)malloc(sizeof(LNode));
-		scanf("%d", &p->data);
+		p->data = (int)rand() % 1024;
 		p->next = L->next;
 		L->next = p;
 	}
@@ -56,6 +56,8 @@ int main()
 	La = (LinkList)malloc(sizeof(LNode));
 	Lb = (LinkList)malloc(sizeof(LNode));
 	Lc = (LinkList)malloc(sizeof(LNode));
+
+	srand(time(NULL));
 
 	printf("输入链表1的大小： ");
 	CreateList_L(La);
