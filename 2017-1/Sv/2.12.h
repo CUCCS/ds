@@ -1,4 +1,5 @@
-#define LISTSIZE 100
+#include <stdio.h>
+#include <stdlib.h>
 typedef int ElemType;
 typedef struct LNode {
 	ElemType data;
@@ -6,3 +7,5 @@ typedef struct LNode {
 }LNode, *LinkList;
 
 void MergeList_L(LinkList, LinkList, LinkList);
+void CreateList_L(LinkList, int); 
+void PRINT(LinkList L);
