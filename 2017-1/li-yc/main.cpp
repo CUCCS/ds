@@ -1,8 +1,8 @@
-#include"List.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
 
-#include<stdio.h>
-#include<stdlib.h>
-#include<time.h>
+#include "List.h"
 
 #define length 5
 
@@ -30,6 +30,7 @@ int main(){
 	Traverse(Lb);
 	printf("\n\n");
 
+	printf("\n");
 	MergeList(La,Lb,Lc);
 	printf("合并后的数组Lc为:");
 	Traverse(Lc);
