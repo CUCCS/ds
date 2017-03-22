@@ -19,7 +19,7 @@ void CreateList_L(LinkList L) {                  //构建长度为n的随机链表
 		else
 		{
 			temp2 = (int)rand() % 1024;
-			while (temp2 < temp1) {
+			while (temp2 > temp1) {
 				temp2 = (int)rand() % 1024;
 			}
 			temp1 = temp2;
