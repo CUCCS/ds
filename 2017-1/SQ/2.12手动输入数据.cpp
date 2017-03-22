@@ -22,7 +22,7 @@ void MergeList_L(LinkList La, LinkList Lb, LinkList *Lc) {    //归并两个链表为新
 	LinkList pa, pb, pc;
 	pa = La->next;
 	pb = Lb->next;
-	*Lc = pc = La;
+	(*Lc) = pc = La;
 	while (pa && pb) {
 		if (pa->data <= pb->data) {
 			pc->next = pa;

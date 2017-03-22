@@ -5,13 +5,26 @@
 #include "2.12.h"
 
 void CreateList_L(LinkList L) {                  //构建长度为n的随机链表
-	int i, n;
+	int i, n, temp1, temp2;
 	LinkList p;
 	scanf("%d", &n);
 	L->next = NULL;
 	for (i = n; i > 0; --i) {
 		p = (LinkList)malloc(sizeof(LNode));
-		p->data = (int)rand() % 1024;
+
+		if (i == n){
+			p->data = (int)rand() % 1024;
+			temp1 = p->data;
+		}
+		else
+		{
+			temp2 = (int)rand() % 1024;
+			while (temp2 < temp1) {
+				temp2 = (int)rand() % 1024;
+			}
+			temp1 = temp2;
+			p->data = temp2;
+		}
 		p->next = L->next;
 		L->next = p;
 	}
