@@ -1,81 +1,103 @@
 #include<stdio.h>
-#include<malloc.h>
+#include<time.h>
+#include<stdlib.h>
 #define NULL 0
 #define LEN sizeof(struct LNode)
 
-//¶¨Òåµ¥Á´ÏßĞÔ±í
+//å®šä¹‰å•é“¾çº¿æ€§è¡¨
 typedef struct LNode
 {
 	int data;
    struct LNode *next;
 }LNode,*LinkList;
 
-//´´½¨µ¥Á´ÏßĞÔ±í
-void CreateList_L(LinkList &L, int n)//ÄæÎ»ĞòÊäÈën¸öÔªËØµÄÖµ£¬½¨Á¢´ø±íÍ·½áµãµÄµ¥Á´ÏßĞÔ±íL¡£
+//å®šä¹‰æšä¸¾ç±»å‹ è®¾ç½®è¿”å›å€¼
+typedef enum {
+	OK,
+	ERROR
+}Status;
+
+//åˆ›å»ºå•é“¾çº¿æ€§è¡¨
+Status CreateList_L(LinkList &L, int n)//é€†ä½åºè¾“å…¥nä¸ªå…ƒç´ çš„å€¼ï¼Œå»ºç«‹å¸¦è¡¨å¤´ç»“ç‚¹çš„å•é“¾çº¿æ€§è¡¨Lã€‚
 {
-	struct LNode *p;
-	L = (LinkList)malloc(LEN);
-	L->next = NULL;//ÏÈ½¨Á¢Ò»¸ö´øÍ·½áµãµÄµ¥Á´±í
-	for (int i = n; i > 0; --i)
+	int i;
+	srand((unsigned)time(NULL));//ç”¨æ—¶é—´åšç§
+
+	if (n < 0)//è‹¥ä¸ªæ•°ä¸åˆæ³•ï¼ŒæŠ¥é”™
 	{
-		p= (LinkList)malloc(LEN);//Éú³ÉĞÂ½áµã;
-		scanf_s("%d", p->data);//ÊäÈëÔªËØÖµ
-		p->next = L->next;
-		L->next = p;//²åÈëµ½±íÍ·
+		return ERROR;
 	}
+    LinkList p;
+	L = (LinkList)malloc(LEN);
+	L->next = NULL;//å…ˆå»ºç«‹ä¸€ä¸ªå¸¦å¤´ç»“ç‚¹çš„å•é“¾è¡¨
+	for ( i = n; i > 0; --i)
+	{
+		p= (LinkList)malloc(LEN);//ç”Ÿæˆæ–°ç»“ç‚¹;
+		p->data=(int)rand()%2000;//éšæœºç”Ÿæˆå…ƒç´ å€¼
+		p->next = L->next;
+		L->next = p;//æ’å…¥åˆ°è¡¨å¤´
+	}
+	
+	return OK;
 
 }//CreateList_L
 
-//ÒÑÖªµ¥Á´ÏßĞÔ±ílaºÍlbµÄÔªËØ°´Öµ·Çµİ¼õÅÅÁĞ¡£
-//¹é²¢laºÍlbµÃµ½ĞÂµÄµ¥Á´ÏßĞÔ±ílc£¬lcµÄÔªËØÒ²°´Öµ·Çµİ¼õÅÅÁĞ¡£
+//å·²çŸ¥å•é“¾çº¿æ€§è¡¨laå’Œlbçš„å…ƒç´ æŒ‰å€¼éé€’å‡æ’åˆ—ã€‚
+//å½’å¹¶laå’Œlbå¾—åˆ°æ–°çš„å•é“¾çº¿æ€§è¡¨lcï¼Œlcçš„å…ƒç´ ä¹ŸæŒ‰å€¼éé€’å‡æ’åˆ—ã€‚
 void MergeList_L(LinkList &La, LinkList &Lb, LinkList &Lc)
 {
 	struct LNode *pa, *pb, *pc;
 	pa = La->next;
 	pb = Lb->next;
-	pc = La; Lc = pc;//ÓÃlaµÄÍ·½áµã×÷ÎªlcµÄÍ·½áµã
+	pc = La; Lc = pc;//ç”¨laçš„å¤´ç»“ç‚¹ä½œä¸ºlcçš„å¤´ç»“ç‚¹
 	while (pa&&pb)
 	{
-		if (pa->data <= pb->data) //½«paËùÖ¸½áµãÁ´½Óµ½pcËùÖ¸½áµãÖ®ºó
+		if (pa->data <= pb->data) //å°†paæ‰€æŒ‡ç»“ç‚¹é“¾æ¥åˆ°pcæ‰€æŒ‡ç»“ç‚¹ä¹‹å
 		{
 			pc->next = pa;
 			pc = pa;
 			pa = pa->next;
 		}
-		else       //½«pbËùÖ¸½áµãÁ´½Óµ½pcËùÖ¸½áµãÖ®ºó
+		else       //å°†pbæ‰€æŒ‡ç»“ç‚¹é“¾æ¥åˆ°pcæ‰€æŒ‡ç»“ç‚¹ä¹‹å
 		{
 			pc->next = pb;
 			pc = pb;
 			pb = pb->next;
 		}
 	}
-	pc->next = pa ? pa : pb; //²åÈëÊ£Óà¶Î
-	free(Lb);               //ÊÍ·ÅlbµÄÍ·½áµã
+	pc->next = pa ? pa : pb; //æ’å…¥å‰©ä½™æ®µ
+	free(Lb);               //é‡Šæ”¾lbçš„å¤´ç»“ç‚¹
 }//MergeList_L
 
-//Êä³ö½áµã
+//è¾“å‡ºç»“ç‚¹
 void Print_L(struct LNode *head)
 {
 	struct LNode *p;
-	p = head;
-	if (head != NULL)        //Èç¹û²»ÊÇ¿ÕÁ´±í£¬¾ÍÊä³öÁ´±íÖĞËùÓĞ½Úµã  
+	p = head->next;
+	if (p != NULL)        //å¦‚æœä¸æ˜¯ç©ºé“¾è¡¨ï¼Œå°±è¾“å‡ºé“¾è¡¨ä¸­æ‰€æœ‰èŠ‚ç‚¹  
 	{
-		
 		do
 		{
-			printf("%d ",p->data);//Êä³öÊı¾İ
-			p = p->next;     //ÒÆµ½ÏÂÒ»¸ö½Úµã  
+			printf("%d ",p->data);//è¾“å‡ºæ•°æ®
+			p = p->next;     //ç§»åˆ°ä¸‹ä¸€ä¸ªèŠ‚ç‚¹  
 		} while (p != NULL);
 	}
+	printf("\n");
 }//Print_L
 
-int main()
+int main(int argc,char* argv[])
 {
-	LinkList La, Lb, Lc;
-	CreateList_L(La, 3);
-	CreateList_L(Lb, 3);
-	MergeList_L(La, Lb, Lc);
-	Print_L(La);
+	srand((unsigned)time(NULL));//ç”¨æ—¶é—´åšç§
+
+	int n ;
+	n=(int)rand() % 20;//éšæœºç”Ÿæˆä¸ªæ•°
+
+	LinkList La,Lb,Lc;//å®šä¹‰é“¾è¡¨
+	CreateList_L(La, n);//åˆ›å»º
+	CreateList_L(Lb, n);//åˆ›å»º
+	MergeList_L(La, Lb, Lc);//æ’å…¥
+	
+	Print_L(Lc);//æ‰“å°
 
 	return 0;
 }
