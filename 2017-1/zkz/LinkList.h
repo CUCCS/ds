@@ -18,8 +18,8 @@ typedef enum Status { OK, ERROR, OVERFLOW } Status;
 
 /*函数声明*/
 /*创建链表*/
-Status CreateList(LinkList , const int );
+Status CreateList(LinkList, const int);
 /*遍历输出链表*/
-Status TravelList(const LinkList );
+Status TravelList(const LinkList);
 /*算法2.12 归并链表*/
-Status MergeList(LinkList , LinkList , LinkList );
+Status MergeList(LinkList, LinkList, LinkList);

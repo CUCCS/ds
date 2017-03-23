@@ -40,7 +40,7 @@ int main(void) {
 	flag = MergeList(La, Lb, Lc);
 	SOLVEFLAG;
 	printf("La : ");
-	flag=TravelList(La);
+	flag = TravelList(La);
 	SOLVEFLAG;
 	printf("\nLb : ");
 	flag = TravelList(Lb);
