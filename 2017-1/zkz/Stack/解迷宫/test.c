@@ -1,178 +1,207 @@
 #include <stdio.h>
-#include <stdlib.h>
-#include <time.h>
-#include "Status.h"
 #include "Stack.h"
 
+/*快速进行循环*/
+#define times(i,size) for((i)=1;(i)<=(size);++(i))
+/*指定地图长宽*/
 #define SIZE 10
-#define Maze(x,y) Maze[x-1][y-1]
-#define RotateDir(a) ((a)-1)
-#define Marks(a) Marks[(a)] /*个人习惯*/
-#define DEBUG 1
+/*用宏实现以1为下标从迷宫中取点*/
+#define Maze(x,y) Maze[(x)-1][(y)-1]
+/*判断两个点是否相等*/
+#define equal(pa,pb) ((pa).x == (pb).x && (pa).y == (pb).y)
+
+#define DEBUG 0
+/*由于DEBUG && printf(...)大量使用，将其简化为DP(...)*/
+/*若希望当DEBUG为0时输出内容，使用!DP(...)即可*/
 #define DP DEBUG && printf
 
-char Marks[] = { ' ','>','v','<','^' ,'$','#','@'};
-typedef enum _Mark {FLOOR, RIGHT,DOWN,LEFT,UP,BAY,WALL,END} Mark;
+/*地形*/
+/*将寻路方向也定义为地形，可以简化后面的某些操作*/
+typedef enum _Terrain {FLOOR,RIGHT,DOWN,LEFT,UP,BAY,END,WALL} Terrain;
+/*打印迷宫时，打印其对应的符号*/
+char Marks[] = " >V<^$@#";
 
-int Maze[SIZE][SIZE] = { 0 };
-Point start = { 2, 2 };
-Point destination = { 9,9 };
-Point current;
-Point Next(Point p) {
-	int dir  = Maze(p.x, p.y);
-	if (dir == LEFT)
-		p.x -= 1;
-	else if (dir == DOWN)
-		p.y += 1;
-	else if (dir == RIGHT)
-		p.x += 1;
-	else if (dir == UP)
-		p.y -= 1;
-	return p;
+/*迷宫，地形的二维数组*/
+Terrain Maze[SIZE][SIZE] ;
+
+/*全局变量起点与终点*/
+Point start ;
+Point end ;
+
+/*设置某个点的地形*/
+void setTerrain(Point p, Terrain t){
+	Maze(p.x, p.y) = t;
 }
-inline Point TheLeft(Point p) {
-	p.x -= 1;
-	return p;
+void setTerrainXY(int x, int y, Terrain t) {
+	Maze(x, y) = t;
 }
-inline Point TheDown(Point p) {
-	p.y += 1;
-	return p;
+
+void InitMaze() {
+	int i,j;
+	times(j, SIZE)
+		times(i, SIZE)
+		setTerrainXY(i, j, FLOOR);
+	/*Set walls*/
+	times(i, SIZE) {
+		Maze(1, i) = Maze(SIZE, i) = Maze(i, 1) = Maze(i, SIZE) = WALL;
+	}
+	Point Walls[20] = { 
+		4,2,	8,2,	4,3,	8,3,	6,4,
+		7,4,	3,5,	4,5,	5,5,	9,5,
+		5,6,	9,6,	3,7,	7,7,	2,8,
+		3,8,	4,8,	5,8,	7,8,	8,8
+	};
+	times(i, 20) {
+		setTerrainXY(Walls[i - 1].x, Walls[i - 1].y, WALL);
+	}
+	/*Set start*/
+	setTerrain(start, RIGHT);
+	/*Set end*/
+	setTerrain(end, END);
 }
-inline Point TheEast(Point p) {
+int ShowMaze() {
+	/*set its return-value-type as int
+	so it's suitable for DEBUG && XX expression*/
+	int x, y;
+	printf("  ");
+	times(x, SIZE)
+		printf("%x ",x);
+	printf("\n");
+	times(y, SIZE) {
+		printf("%x ",y);
+		times(x, SIZE)
+			printf("%c ", Marks[Maze(x, y)]);
+		printf("\n");
+	}
+
+	return 0;
+}
+int isMovable(Point p) {
+	if (Maze(p.x, p.y) == FLOOR || Maze(p.x, p.y) == END)
+		return 1;
+	return 0;
+}
+/*以下5个函数用于获取某个点的右/下/左/上/前方的点*/
+Point TheRight(Point p) {
 	p.x += 1;
 	return p;
 }
-inline Point TheUp(Point p) {
+Point TheDown(Point p) {
+	p.y += 1;
+	return p;
+}
+Point TheLeft(Point p) {
+	p.x -= 1;
+	return p;
+}
+Point TheUp(Point p) {
 	p.y -= 1;
 	return p;
 }
-void SetCurrent(Point p , int needUpdate) {
-	DP("Set current as ( %d , %d ) \n",p.x,p.y);
-	current.x = p.x;
-	current.y = p.y;
-	if (needUpdate) {
-		char * ptr = &Maze(current.x, current.y);
-		if (*ptr <= UP)
-			*ptr += 1;
-	}
+Point TheNext(Point p) {
+	Terrain t = Maze(p.x, p.y);
+	if (t == RIGHT)
+		return TheRight(p);
+	if (t == DOWN)
+		return TheDown(p);
+	if (t == LEFT)
+		return TheLeft(p);
+	if (t == UP)
+		return TheUp(p);
+	return p;
 }
-void InitMaze() {
-	int i;
-	Point Walls[20] = {
-		2,8,	3,5,	3,7,	3,8,
-		4,2,	4,3,	4,5,	4,8,
-		5,5,	5,6,	5,8,	6,4,
-		7,4,	7,7,	7,8,	8,2,
-		8,3,	8,8,	9,5,	9,6
-	};
-	/*设定墙体*/
-	for (i = 1; i <= SIZE; ++i) {
-		Maze(i, 1) = Maze(i, SIZE) = Maze(1, i) = Maze(SIZE, i) = WALL;
-	}
-	for (i = 0; i < 20; ++i) {
-		Maze(Walls[i].x,Walls[i].y)=WALL;
-	}
-	/*设定起点*/
-	Maze(start.x, start.y) = RIGHT;
-	/*设定终点*/
-	Maze(destination.x, destination.y) = END;
-}
-void ShowMaze() {
-	int x, y;
-	printf("  ");
-	for (x = 1; x <= SIZE; ++x)
-		printf("%x ",x);
-	printf("\n");
-	for (y = 1; y <= SIZE; ++y) {
-		printf("%x ",y);
-		for (x = 1; x <= SIZE; ++x)
-			printf("%c ", Marks(Maze(x,y)));
-		printf("\n");
-	}
-}
-int isMovableFT(Point from, Point to) {
-	if (Maze(to.x, to.y) == FLOOR || Maze(to.x, to.y) == END)
-		return 1;
-	if (Maze(to.x, to.y) > UP)
-		return 0;
-	if (abs(Maze(from.x,from.y)-Maze(to.x,to.y)) == 2)
-		return 0;
-	else
-		return 1;
-}
+
+/*算法 迷宫求解*/
 void SolveMaze() {
 	Stack S;
+	Point current,data,top;
 	int isEmpty;
-	time_t t;
-	Elemtype data;
+	//current = TheRight(start);
+	//if(Maze(current.x,current.y)==FLOOR)
+	//	setTerrain(current, RIGHT);
 	InitStack(&S);
-	/*设定当前位置的初值为入口位置*/
 	Push(S, start);
-	SetCurrent(TheEast(start),1);\
 	do {
-		printf("\n");
-		ShowMaze();
-		DEBUG || system("cls");
+		DP("\n");
+		DEBUG && ShowMaze();
 		IsStackEmpty(S, &isEmpty);
-		GetTop(S, &data);
-		DP("Current is ( %d , %d ) , %c \n",
-			current.x, current.y,
-			Marks(Maze(current.x, current.y)));
-		DP("From ( %d , %d ) to ( %d , %d ) is %smovable \n", data.x,data.y,current.x,current.y,isMovableFT(data, current) ? "" : "not ");
-		/*若当前位置可通*/
-		if (isMovableFT(data, current)) {
-			if (Maze(current.x, current.y) == FLOOR)
-				Maze(current.x, current.y) += 1;
-			/*将当前位置插入栈顶*/
-			Push(S, current);
-			DP("Push current ( %d , %d ) \n",current.x,current.y);
-			/*若该位置是出口位置，则算法结束*/
-			if (current.x == destination.x && current.y == destination.y) {
-				DP("Current is at destination . End searching \n");
-				return;
-			}
-			/*否则切换当前位置的东邻方块为新的当前位置*/
-			SetCurrent(TheEast(current),1);
-			
+		if (isEmpty) {
+			DP("Stack is empty \n");
+			break;
 		}
-		/*否则若当前位置不可通*/
-		else{
-			/*	若栈不空*/
-			DP("Stack is %sempty\n",isEmpty ? "" : "not ");
-			if (!isEmpty) {
-				GetTop(S, &data);
-				DP("Data is top of stack ( %d , %d ) \n",data.x,data.y);
-				DP("Data's mark is %c , ",Marks(Maze(data.x,data.y)));
-				/*且栈顶位置尚有其他方向未被探索*/
-				if (Maze(data.x,data.y) < UP) {
-					DP("still new direction to search \n");
-					/*	则沿顺时针方向旋转栈顶位置*/
-					Maze(data.x, data.y) += 1;
-					/*	设置当前位置为栈顶位置的下一相邻块*/
-					SetCurrent(Next(data),0);
+		GetTop(S, &top);
+		DP("Top of stack : %d , %d \n",top.x,top.y);
+		current = TheNext(top);
+		DP("Set current as top's next : %d , %d \n",current.x,current.y);
+		/*If current is end*/
+		if (equal(current, end)) {
+			DP("Destination found \n");
+			break;
+		}
+		/*If current is not end*/
+		DP("Current's terrain is \'%c\' \n",Marks[Maze(current.x,current.y)]);
+		/*If current is movable*/
+		if (isMovable(current)) {
+			DP("Current is movable \n");
+			setTerrain(current,RIGHT);
+			DP("Push current \n");
+			Push(S, current);
+		}
+		/*Else if current is not movable*/
+		else {
+			DP("Current is not movable \n");
+			/*Top has new direction to search*/
+			DP("Top's terrain is \'%c\' \n",Marks[Maze(top.x,top.y)]);
+			if (Maze(top.x, top.y) <= UP) {
+				Maze(top.x, top.y) += 1;
+				DP("Top's terrain is changed to \'%c\' \n", Marks[Maze(top.x, top.y)]);
+			}
+			/*Top has no new direction to search*/
+			else {
+				Pop(S, &data);
+				DP("Pop Stack \n");
+				IsStackEmpty(S, &isEmpty);
+				if (!isEmpty) {
+					GetTop(S, &top);
+					DP("New top is %d , %d \n", top.x, top.y);
 				}
-				/*且栈顶位置的四周均不可通，则*/
-				else {
-					DP("all directions searched \n");
-					if (Maze(data.x, data.y) == UP)
-						Maze(data.x, data.y) += 1;
-					/*	删去栈顶位置*/
-					Pop(S, &data);
-					DP("Pop ( %d , %d ) \n",data.x,data.y);
-					/*	若栈不空，则重新测试新的栈顶位置*/
-					
+				if (Maze(top.x, top.y) <= UP) {
+					Maze(top.x, top.y) += 1;
+					DP("Top's terrain is changed to \'%c\' \n", Marks[Maze(top.x, top.y)]);
 				}
-			}/*end if !isEmpty*/
-		}/*end ifMovable*/
+			}
+		}
 		IsStackEmpty(S, &isEmpty);
+		if (isEmpty)
+			DP("Stack is empty \n");
 	} while (!isEmpty);
-	/*若栈空，则表明迷宫没有通路。*/
+	DP("End searching \n");
 }
 
 int main() {
+	start.x = 2;
+	start.y = 2;
+	end.x = 9;
+	end.y = 9;
 	InitMaze();
+	printf("Test 1 : start at %d , %d , end at %d , %d \n\n",start.x,start.y,end.x,end.y);
+	!DP("Before:\n");
+	DEBUG || ShowMaze();
 	SolveMaze();
-	if(!DEBUG)
-		ShowMaze();
-	return 0;
+	!DP("\nAfter:\n");
+	DEBUG || ShowMaze();
+	
+	start.x = 9;
+	start.y = 9;
+	end.x = 2;
+	end.y = 2;
+	InitMaze();
+	setTerrainXY(5, 7, WALL);
+	printf("\nTest 2 : start at %d , %d , end at %d , %d \n", start.x, start.y, end.x, end.y);
+	printf("And this time , block 5 , 7 is set as WALL\n\n");
+	!DP("Before:\n");
+	DEBUG || ShowMaze();
+	SolveMaze();
+	!DP("\nAfter:\n");
+	DEBUG || ShowMaze();
 }
