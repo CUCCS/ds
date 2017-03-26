@@ -5,7 +5,7 @@ void CreateList_L(LinkList *L,int n)
 {
     int i;
     LinkList p;
-	static int b = 20;
+	int b = 20;
   
      //Í·½ÚµãL
 	(*L)=(LinkList)malloc(sizeof(LNode));
