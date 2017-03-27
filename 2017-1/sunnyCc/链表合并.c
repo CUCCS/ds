@@ -10,7 +10,7 @@ int main()
 	LinkList La, Lb, Lc;
 
 	//使用随机函数生成链表测试数据
-    srand(time(0));
+	srand(time(0));
 
 	//生成随机链表LA,LB
 	La = (LinkList)malloc(sizeof(LNode));
