@@ -1,5 +1,3 @@
-//2.12
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
@@ -74,6 +72,8 @@ int main()
 {
 	LinkList La,Lb,Lc;
 	int a,b;
+	//La = (LinkList)malloc(sizeof(LNode));
+	//Lb = (LinkList)malloc(sizeof(LNode));
 	srand((unsigned int)time(NULL));
 	a=10+rand()%5;
 	printf("创建链表La的长度为%d\n",a);
