@@ -10,17 +10,19 @@
 /*判断两个点是否相等*/
 #define equal(pa,pb) ((pa).x == (pb).x && (pa).y == (pb).y)
 
-#define DEBUG 0
 /*由于DEBUG && printf(...)大量使用，将其简化为DP(...)*/
 /*若希望当DEBUG为0时输出内容，使用!DP(...)即可*/
 #define DP DEBUG && printf
+#define DEBUG 1
+
+
 
 /*地形*/
 /*将寻路方向也定义为地形，可以简化后面的某些操作*/
 typedef enum _Terrain {FLOOR,RIGHT,DOWN,LEFT,UP,BAY,END,WALL} Terrain;
 /*打印迷宫时，打印其对应的符号*/
 char Marks[] = " >V<^$@#";
-
+char Marks_2[] = "  →↓←↑";
 /*迷宫，地形的二维数组*/
 Terrain Maze[SIZE][SIZE] ;
 
@@ -59,6 +61,14 @@ void InitMaze() {
 	/*Set end*/
 	setTerrain(end, END);
 }
+int ShowTerrain(Terrain t) {
+	/*set its return-value-type as int
+	so it's suitable for DEBUG && XX expression*/
+	if (t >= 5)
+		printf("%c ", Marks[t]);
+	else
+		printf("%c%c", Marks_2[2 * t], Marks_2[2 * t + 1]);
+}
 int ShowMaze() {
 	/*set its return-value-type as int
 	so it's suitable for DEBUG && XX expression*/
@@ -70,7 +80,7 @@ int ShowMaze() {
 	times(y, SIZE) {
 		printf("%x ",y);
 		times(x, SIZE)
-			printf("%c ", Marks[Maze(x, y)]);
+			ShowTerrain(Maze(x,y));
 		printf("\n");
 	}
 
@@ -132,14 +142,19 @@ void SolveMaze() {
 		GetTop(S, &top);
 		DP("Top of stack : %d , %d \n",top.x,top.y);
 		current = TheNext(top);
-		DP("Set current as top's next : %d , %d \n",current.x,current.y);
+		DP("Set current as top ");
+		if(! equal(current,top))
+			DP("'s next : %d , %d ", current.x, current.y);
+		printf("\n");
 		/*If current is end*/
 		if (equal(current, end)) {
 			DP("Destination found \n");
 			break;
 		}
 		/*If current is not end*/
-		DP("Current's terrain is \'%c\' \n",Marks[Maze(current.x,current.y)]);
+		DP("Current's terrain is \'");
+		DEBUG && ShowTerrain(Maze(current.x, current.y));
+		DP("\' \n");
 		/*If current is movable*/
 		if (isMovable(current)) {
 			DP("Current is movable \n");
@@ -151,10 +166,14 @@ void SolveMaze() {
 		else {
 			DP("Current is not movable \n");
 			/*Top has new direction to search*/
-			DP("Top's terrain is \'%c\' \n",Marks[Maze(top.x,top.y)]);
+			DP("Top's terrain is \'");
+			DEBUG && ShowTerrain(Maze(top.x, top.y));
+			DP("\' \n");
 			if (Maze(top.x, top.y) <= UP) {
 				Maze(top.x, top.y) += 1;
-				DP("Top's terrain is changed to \'%c\' \n", Marks[Maze(top.x, top.y)]);
+				DP("Top's terrain is changed to \'");
+				DEBUG && ShowTerrain(Maze(top.x, top.y));
+				DP("\' \n");
 			}
 			/*Top has no new direction to search*/
 			else {
@@ -167,7 +186,9 @@ void SolveMaze() {
 				}
 				if (Maze(top.x, top.y) <= UP) {
 					Maze(top.x, top.y) += 1;
-					DP("Top's terrain is changed to \'%c\' \n", Marks[Maze(top.x, top.y)]);
+					DP("Top's terrain is changed to \'");
+					DEBUG && ShowTerrain(Maze(top.x, top.y));
+					DP("\' \n");
 				}
 			}
 		}
