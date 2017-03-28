@@ -37,16 +37,16 @@ void CreateList_L(LinkList L, int n, void(*func)(ElemType*))  //创建单链表代码参
 {
 
 
-			 int i;
+	int i;
 
-			 LNode* p;
+	LNode* p;
 
-			L->next = NULL;
+	L->next = NULL;
 
 
 
-	   for (i = 0; i < n; ++i) 
-	   {
+	for (i = 0; i < n; ++i)
+	{
 		p = (LinkList)malloc(sizeof(LNode));
 		func(&p->elem);
 		p->next = L->next;
@@ -59,9 +59,9 @@ void CreateList_L(LinkList L, int n, void(*func)(ElemType*))  //创建单链表代码参
 	printf("\n");
 }
 
-void MergeList(LinkList &La, LinkList &Lb, LinkList *Lc)    //合并链表代码参考课本2.12算法修改而来
+void MergeList(LinkList La, LinkList Lb, LinkList *Lc)    //合并链表代码参考课本2.12算法修改而来
 {
-	LNode *pa,*pb,*pc;
+	LNode *pa, *pb, *pc;
 	pa = La->next; pb = Lb->next;
 	(*Lc) = pc = La;
 	while (pa&&pb)
@@ -109,7 +109,7 @@ int test1_iter(int k) {
 
 }
 
-void test1(ElemType *p) 
+void test1(ElemType *p)
 {
 
 	*p = test1_iter(rand() % 5 + 1);     //随机产生测试数据
@@ -125,7 +125,7 @@ int test2_iter(int k)
 
 }
 
-void test2(ElemType *p) 
+void test2(ElemType *p)
 {
 
 	*p = test2_iter(rand() % 5 + 1);
