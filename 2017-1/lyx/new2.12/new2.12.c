@@ -11,31 +11,6 @@ typedef struct LNode
 	struct LNode *next;
 }LNode;
 
-//¶ÔÁ´±íÖĞÊı¾İ½øĞĞ·Çµİ¼õÅÅĞò
-LNode* SelectSort(LNode *L)
-{
-	LNode *p, *q, *small;
-	int temp;
-
-	for (p = L->next; p->next != NULL; p = p->next)    /*Ã¿´ÎÑ­»·¶¼ÕÒ³öÒ»¸ö×îĞ¡Öµ£¬½«×îĞ¡Öµ½»»»µ½µÚÒ»Î»£¬È»ºó½«Ö¸ÕëÏòºóÒÆ¶¯Ò»Î»*/
-	{
-		small = p;
-		for (q = p->next; q; q = q->next)    /*ÓÉÇ°Ïòºó±éÀú£¬ÕÒ³ö×îĞ¡µÄ½Úµã*/
-		{
-			if (q->data < small->data)
-				small = q;
-		}
-		if (small != p)
-		{
-			temp = p->data;
-			p->data = small->data;
-			small->data = temp;
-		}
-	}
-	return L;
-}
-	
-
 
 //´´½¨µ¥Á´ÏßĞÔ±í
 LNode* CreateList_L( int n)//ÄæÎ»ĞòÊäÈën¸öÔªËØµÄÖµ£¬½¨Á¢´ø±íÍ·½áµãµÄµ¥Á´ÏßĞÔ±íL¡£
@@ -64,33 +39,57 @@ LNode* CreateList_L( int n)//ÄæÎ»ĞòÊäÈën¸öÔªËØµÄÖµ£¬½¨Á¢´ø±íÍ·½áµãµÄµ¥Á´ÏßĞÔ±íL¡
 }//CreateList_L
 
 
+//¶ÔÁ´±íÖĞÊı¾İ½øĞĞ·Çµİ¼õÅÅĞò
+LNode* SelectSort(LNode *L)
+{
+	LNode *p, *q, *small;
+	int temp;
+
+	for (p = L->next; p->next != NULL; p = p->next)    /*Ã¿´ÎÑ­»·¶¼ÕÒ³öÒ»¸ö×îĞ¡Öµ£¬½«×îĞ¡Öµ½»»»µ½µÚÒ»Î»£¬È»ºó½«Ö¸ÕëÏòºóÒÆ¶¯Ò»Î»*/
+	{
+		small = p;
+		for (q = p->next; q; q = q->next)    /*ÓÉÇ°Ïòºó±éÀú£¬ÕÒ³ö×îĞ¡µÄ½Úµã*/
+		{
+			if (q->data < small->data)
+				small = q;
+		}
+		if (small != p)
+		{
+			temp = p->data;
+			p->data = small->data;
+			small->data = temp;
+		}
+	}
+	return L;
+}
+
  //ÒÑÖªµ¥Á´ÏßĞÔ±ílaºÍlbµÄÔªËØ°´Öµ·Çµİ¼õÅÅÁĞ¡£
  //¹é²¢laºÍlbµÃµ½ĞÂµÄµ¥Á´ÏßĞÔ±ílc£¬lcµÄÔªËØÒ²°´Öµ·Çµİ¼õÅÅÁĞ¡£
-LNode* MergeList_L(LNode * La, LNode * Lb, LNode * Lc)
+LNode* MergeList_L(LNode * La, LNode * Lb, LNode * L)
 {
-	struct LNode *pa, *pb, *pc;
+	struct LNode *pa, *pb, *p;
 	pa = La->next;
 	pb = Lb->next;
-	pc = La;
-	Lc = pc;//ÓÃlaµÄÍ·½áµã×÷ÎªlcµÄÍ·½áµã
+	p = La;
+	L = p;//ÓÃlaµÄÍ·½áµã×÷ÎªlcµÄÍ·½áµã
 	while (pa&&pb)//papbÁ´±í £¡=NULL£¬¼´La->next,Lb->next != null,lalbÁ´±íÃ»ÓĞ½áÊø
 	{
 		if (pa->data <= pb->data) //½«paËùÖ¸½áµãÁ´½Óµ½pcËùÖ¸½áµãÖ®ºó
 		{
-			pc->next = pa;
-			pc = pa;
+			p->next = pa;
+			p = pa;
 			pa = pa->next;
 		}
 		else       //½«pbËùÖ¸½áµãÁ´½Óµ½pcËùÖ¸½áµãÖ®ºó
 		{
-			pc->next = pb;
-			pc = pb;
+			p->next = pb;
+			p = pb;
 			pb = pb->next;
 		}
 	}
-  	pc->next = pa ? pa : pb; //²åÈëÊ£Óà¶Î
+  	p->next = pa ? pa : pb; //²åÈëÊ£Óà¶Î
 	free(Lb);     //ÊÍ·ÅlbµÄÍ·½áµã
-	return Lc;
+	return L;
 }//MergeList_L
 
  //Êä³ö½áµã
@@ -100,23 +99,22 @@ void Print_L(struct LNode *head)
 	p = head->next;
 	if (p != NULL)        //Èç¹û²»ÊÇ¿ÕÁ´±í£¬¾ÍÊä³öÁ´±íÖĞËùÓĞ½Úµã  
 	{
-		do
+		while (p != NULL);
 		{
 			printf("%d ", p->data);//Êä³öÊı¾İ
 			p = p->next;     //ÒÆµ½ÏÂÒ»¸ö½Úµã  
-		} while (p != NULL);
+		} 
 	}
 	printf("\n");
 }//Print_L
 
 int main(int argc, char* argv[])
 {
-	srand((unsigned)time(NULL));//ÓÃÊ±¼ä×öÖÖ
+	srand((unsigned)time(NULL));//Ëæ»úÉú³ÉÊı
+	
+	int n = (int)rand() % 20;//Ëæ»úÉú³É¸öÊı
 
-	int n;
-	n = (int)rand() % 20;//Ëæ»úÉú³É¸öÊı
-
-	LNode * La, *Lb, *Lc;//¶¨ÒåÁ´±í
+	LNode * La, *Lb, *L;//¶¨ÒåÁ´±í
 
 	La = CreateList_L(n);
 	printf("La:  ");
@@ -126,11 +124,11 @@ int main(int argc, char* argv[])
 	printf("Lb:  ");
 	Print_L(Lb);//´òÓ¡Lb
 
-	Lc = NULL;
+	L = NULL;
 
-	Lc=MergeList_L(La, Lb, Lc);//²åÈë
-	printf("Lc:  ");
-	Print_L(Lc);//´òÓ¡lc
+	L=MergeList_L(La, Lb, L);//²åÈë
+	printf("L:  ");
+	Print_L(L);//´òÓ¡lc
 
 	return 0;
 }
