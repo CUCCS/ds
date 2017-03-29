@@ -2,33 +2,42 @@
 #include<stdlib.h>
 #define length 10
 typedef  struct LNode{
-   int data;
-   LNode *next ;
+	int data;
+	LNode *next ;
 }LNode,*LinkList;
+
+typedef enum {
+	true,
+	false
+}bool;
+
 void travle(LinkList &L_){
 
+	int i;
 	printf("有序单链表:");
 	LinkList p = L_->next ;
-	for(int i = 0 ;i <length;i++){
+	for( i = 0 ;i <length;i++){
 		//printf("%d ",(L_+i)->data);
 		printf("%d ",p->data );
 		p = p->next ;
 	}
 	printf("\n");
 }
+
 void CreatList(LinkList &L,int n){
 	LNode *p;
+	int i;
 	L = (LinkList)malloc( sizeof(LNode) );
 	L->next = NULL;//建立单链表的头结点
 	if(L)
 		printf("头节点创建成功！\n");
-	for(int i = n; i > 0;--i){
-	p = (LinkList)malloc(sizeof(LNode));
-	if(p)
-		printf("成功分配一个节点空间，请输入一个整数：");
-    scanf("%d",& p->data );
-	p->next  = L->next ;//第一次连入时L->next，第一次插入的节点在整个链表的最后。？
-	L->next  = p;//两步把一个新生成的结点连上去了
+	for(i = n; i > 0;--i){
+		p = (LinkList)malloc(sizeof(LNode));
+		if(p)
+			printf("成功分配一个节点空间，请输入一个整数：");
+		scanf("%d",& p->data );
+		p->next  = L->next ;//第一次连入时L->next，第一次插入的节点在整个链表的最后。？
+		L->next  = p;//两步把一个新生成的结点连上去了
 	}
 	travle(L);
 	//printf("生成一个有序单链表");
@@ -38,7 +47,6 @@ void CreatList(LinkList &L,int n){
 
 }
 
-
 void MergeList(LinkList &La,LinkList &Lb,LinkList &Lc){
 	LinkList pa,pb,pc;
 	pa = La->next ;
@@ -46,14 +54,14 @@ void MergeList(LinkList &La,LinkList &Lb,LinkList &Lc){
 	Lc = pc = La;
 	while(pa && pb){
 		if( pa->data <= pb->data ){
-		pc->next = pa;
-		pc = pa;
-		pa = pa->next ;
+			pc->next = pa;
+			pc = pa;
+			pa = pa->next ;
 		}
 		else{
-		pc->next  = pb;
-		pc = pb;
-		pb = pc->next;
+			pc->next  = pb;
+			pc = pb;
+			pb = pc->next;
 		}
 	}
 	pc->next = pa ? pa : pb;  
@@ -62,12 +70,10 @@ void MergeList(LinkList &La,LinkList &Lb,LinkList &Lc){
 
 int main(){
 	LinkList list_a,list_b,list_c;
-	
+
 	CreatList(list_a,length);
 	CreatList(list_b,length);
 	MergeList(list_a,list_b,list_c);
-		travle(list_c);
+	travle(list_c);
 	return 0;
 }
-
-
