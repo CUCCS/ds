@@ -5,7 +5,7 @@ typedef struct list
 	int data;
 	struct list *next;
 }List;
-List *Creat(int n)//创造一条已知长度的有序链表
+List *Creat(int m[],int n)//创造一条已知长度的有序链表
 {
 	List *head, *next, *present;
 	int a;
@@ -15,7 +15,7 @@ List *Creat(int n)//创造一条已知长度的有序链表
 	next = NULL;
 	for (int i = 0;i < n;i++)
 	{
-		scanf("%d", &a);
+		a=m[i];
 		next = (List*)malloc(sizeof(List));
 		next->data = a;
 		present->next = next;
@@ -80,15 +80,14 @@ void Print(List *head)
 int main()
 {
 	List *head1, *head2, *head3;
-	int len1, len2;
-	printf("输入线性表LA长度：");
-	scanf("%d", &len1);
-	head1 = Creat(len1);
+	int a[4] = { 3,5,8,11 };
+	int b[7] = { 2,6,8,9,11,15,20 };
+	printf("线性表LA：");
+	head1 = Creat(a,4);
 	Print(head1);
 
-	printf("输入线性表LB长度：");
-	scanf("%d", &len2);
-	head2 = Creat(len2);
+	printf("线性表LB：");
+	head2 = Creat(b,7);
 	Print(head2);
 
 

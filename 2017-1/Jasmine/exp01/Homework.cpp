@@ -1,5 +1,6 @@
 #include<stdio.h>
 #include<stdlib.h>
+#include<time.h>
 typedef struct list
 {
 	int data;
@@ -15,7 +16,7 @@ List *Creat(int n)//´´ÔìÒ»ÌõÒÑÖª³¤¶ÈµÄÓĞĞòÁ´±í
 	next = NULL;
 	for (int i = 0;i < n;i++)
 	{
-		scanf("%d", &a);
+		a = rand() % 20;
 		next = (List*)malloc(sizeof(List));
 		next->data = a;
 		present->next = next;
@@ -24,11 +25,12 @@ List *Creat(int n)//´´ÔìÒ»ÌõÒÑÖª³¤¶ÈµÄÓĞĞòÁ´±í
 	present->next = NULL;
 	return head;
 }
-void MergeList(List *LA, List *LB, List* &LC)//²ÉÓÃÎ²²å·¨½¨±íµÄÁ´±í¹é²¢ Ëã·¨ (A£¬BÎªµİÔöÁ´±í£¬CÒªÇóÎªµ¥µ÷²»¼õÁ´±í)
+List* MergeList(List *LA, List *LB)//²ÉÓÃÎ²²å·¨½¨±íµÄÁ´±í¹é²¢ Ëã·¨ (A£¬BÎªµİÔöÁ´±í£¬CÒªÇóÎªµ¥µ÷²»¼õÁ´±í)
 {
 	List *pc = NULL;
 	List *pa = LA->next;
 	List *pb = LB->next;
+	List *LC;
 	LC = LA;
 	LC->next = NULL;
 	pc = LC;
@@ -63,7 +65,7 @@ void MergeList(List *LA, List *LB, List* &LC)//²ÉÓÃÎ²²å·¨½¨±íµÄÁ´±í¹é²¢ Ëã·¨ (A£
 	{
 		pc->next = pa;
 	}
-
+	return LC;
 }
 void Print(List *head)
 {
@@ -76,22 +78,27 @@ void Print(List *head)
 	}
 	printf("\n");
 }
+
 int main()
 {
+	srand((unsigned)time(NULL));
 	List *head1, *head2, *head3;
-	int len1, len2, len3;
-	printf("ÊäÈëÏßĞÔ±íLA³¤¶È£º");
-	scanf("%d", &len1);
+	int len1, len2;
+	printf("Ëæ»úÉú³ÉÏßĞÔ±íLAµÄ³¤¶È£º");
+	len1 = rand() % 5;
 	head1 = Creat(len1);
+
 	Print(head1);
 
-	printf("ÊäÈëÏßĞÔ±íLB³¤¶È£º");
-	scanf("%d", &len2);
+	printf("Ëæ»úÉú³ÉÏßĞÔ±íLBµÄ³¤¶È£º");
+	len2 = rand() % 10;
 	head2 = Creat(len2);
 	Print(head2);
 
 
-	MergeList(head1, head2, head3);
+
+
+	head3 = MergeList(head1, head2);
 	Print(head3);
 
 
