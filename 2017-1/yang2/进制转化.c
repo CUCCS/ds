@@ -13,6 +13,10 @@ typedef enum
 {
 	ok, error, overflow
 }Status;
+typedef enum
+{
+	false,true
+}bool;
 //创建一个空栈
 Status InitStack(Sqstack *S)
 {
@@ -57,7 +61,7 @@ bool StackEmpty(Sqstack S)
 //进行进制转换
 void conversion(Sqstack *S, int N, int d)
 {
-	SElemType *e = new SElemType;
+	SElemType *e =  (SElemType*)malloc(sizeof(SElemType));
 	while (N)
 	{
 		Push(S, N%d);
@@ -72,6 +76,8 @@ void conversion(Sqstack *S, int N, int d)
 }
 int main()
 {
+	printf("1348的十进制转化为八进制");
+	printf("\n");
 	Sqstack S;
 	InitStack(&S);
 	int N = 1348, d = 8;

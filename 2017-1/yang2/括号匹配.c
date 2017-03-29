@@ -50,60 +50,62 @@ Status Pop(Sqstack *S, SElemType*e)
 	*e = *--S->top;
 	return ok;
 }
-// 栈清空
-Status qingkong (Sqstack*S)
+//括号匹配，匹配函数写的并不好，只有可以匹配的括号连续出现才可以正确匹配
+Status cout(Sqstack *S, SElemType*str)
 {
-	SElemType*e=(SElemType*)malloc(sizeof(SElemType));
-	if (StackEmpty(S))
-		return ok;
-	else
+	int i = 0, flag = 0;
+	SElemType e;
+	while (str[i] != '\0')
 	{
-		while (*--S->top != ' ')
-			Pop(S, e);
-	}
-		
-}
-//销毁栈
-Status DestroyStack(Sqstack*S)
-{
-	free(S->base);
-	return ok;
-}
-void LineEdit(Sqstack *S)
-{
-	int i = 0;
-
-	SElemType  *c = (SElemType*)malloc(sizeof(SElemType));
-	SElemType ch;
-	char v[50];
-	ch = getchar();
-	while (ch!=EOF)
-	{
-		while (ch!= '\n')
+		switch (str[i])
 		{
-			switch (ch)
-			{
-			case '#': Pop(S, c); break;//退栈
-			case '@':qingkong(S); break;//清空栈
-			default:Push(S, ch);//有效字符进栈
-			}
-			ch = getchar();
-		}
-while (!StackEmpty(S))
-	{
-		Pop(S, c);
-		printf("%c", *c);
-	}
-qingkong(S);
-if (ch != EOF)
-ch = getchar();
+		case '(':
+			Push(S, str[i]);
+			break;
 
-	}	
-	DestroyStack(S);
+		case '{':
+			Push(S, str[i]);
+			break;
+		case '[':
+			Push(S, str[i]);
+			break;
+		case ')':
+		{
+			Pop(S, &e);
+			if (e != '(')
+				flag = 1;
+		}
+		break;
+		case ']':
+		{
+			Pop(S, &e);
+			if (e != '[')
+				flag = 1;
+		}
+		break;
+		case '}':
+		{
+			Pop(S, &e);
+			if (e != '{')
+				flag = 1;
+		}
+		break;
+		}
+		i++;
+	}
+	if (!flag&&StackEmpty(S))
+		printf("匹配成功！");
+	else
+		printf("匹配失败！");
+
+	return ok;
 }
 int main()
 {
+	printf("输入要匹配的括号：");
+	SElemType str[20];
 	Sqstack S;
 	Initstack(&S);
-	LineEdit(&S);
+	scanf("%s", str);
+	cout(&S, str);
 }
