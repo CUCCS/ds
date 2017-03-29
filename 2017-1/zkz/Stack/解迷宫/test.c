@@ -13,7 +13,7 @@
 /*由于DEBUG && printf(...)大量使用，将其简化为DP(...)*/
 /*若希望当DEBUG为0时输出内容，使用!DP(...)即可*/
 #define DP DEBUG && printf
-#define DEBUG 1
+#define DEBUG 0
 
 
 
@@ -145,7 +145,7 @@ void SolveMaze() {
 		DP("Set current as top ");
 		if(! equal(current,top))
 			DP("'s next : %d , %d ", current.x, current.y);
-		printf("\n");
+		DP("\n");
 		/*If current is end*/
 		if (equal(current, end)) {
 			DP("Destination found \n");
