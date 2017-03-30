@@ -14,6 +14,7 @@ int main(){
 	if(d>10){
 		printf("输入的数字不符合转换进制的要求\n");
 		printf("请重新输入要转换的数\n");
+		scanf_s("%d",&d);
 	}
 	printf("要转换的数据:%d\n",input);
 	printf("要转化的进制:%d\n",d);
