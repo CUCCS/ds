@@ -54,7 +54,7 @@ Status StackEmpty(SqStack S){
 void conversion(){
 	SqStack S;
 	InitStack(S);
-	int N,e;
+	int N=1348,e;
 	scanf("%d",&N);
 	while(N){
 		  push(S,N%8);

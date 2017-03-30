@@ -34,11 +34,6 @@ Status Pop(SqStack &S , SElemType &e){
 	return OK;
 }
 //≥ˆ’ª
-Status ClearStack(SqStack &S){
-	S.top = S.base; 
-	return OK;
-}
-//«Âø’’ª
 Status Push(SqStack &S , SElemType e){
 	if(S.top -S.base >=S.stacksize ){
 			S.base =(SElemType *)realloc(S.base , (S.stacksize + CREAT)*sizeof(SElemType));
@@ -56,34 +51,35 @@ Status StackEmpty(SqStack S){
 }
 //≈–∂œ
 void ParMat(){
+	SElemType e;
     SqStack S;
 	InitStack(S);//‘Ï’ª
-	int i=0,j=0;
-	char pa[100];
-	scanf("%s",pa);
-	//Push(S,pa[i]);
-	do{
+	int i=0;
+    char pa[100]="[([][])]";
+	printf("%s\n",pa);
+	//scanf("%s",pa);
+	Push(S,pa[i]);
+	e=pa[i];
+	while(pa[i+1]!='\0'){
 		i++;
-		if(pa[i-1]=='('){
-			if(pa[i]==')'&&S.base !=S.top ) Pop(S,pa[i-1]);
-			if(pa[i]=='{'||pa[i]=='('||pa[i]=='[') Push(S,pa[i]);
-			if(pa[i]=='}'||pa[i]==']') { j=j+1;  break; }
+		if(pa[i]==']'){
+			Pop(S,e);
+			if(e !='[') { printf("∆•≈‰ ß∞‹\n"); break; }
 		}
-		if(pa[i-1]=='{'){
-			if(pa[i]=='}'&&S.base !=S.top ) Pop(S,pa[i-1]);
-			if(pa[i]=='{'||pa[i]=='('||pa[i]=='[') Push(S,pa[i]);
-			if(pa[i]==')'||pa[i]==']') { j=j+1;  break; }
+		if(pa[i]=='}'){
+			Pop(S,e);
+			if(e!='{') { printf("∆•≈‰ ß∞‹\n"); break; }
 		}
-		if(pa[i-1]=='[' ){
-			if(pa[i]==']'&&S.base !=S.top) Pop(S,pa[i-1]);
-			if(pa[i]=='{'||pa[i]=='('||pa[i]=='[') Push(S,pa[i]);
-			if(pa[i]==')'||pa[i]=='}') { j=j+1;  break; }
+		if(pa[i]==')'){
+			Pop(S,e);
+			if(e!='(') { printf("∆•≈‰ ß∞‹\n"); break; }
 		}
-	}while(pa[i+1]!='\n');
-	if(j==0) printf("∆•≈‰≥…π¶\n");//&&S.base ==S.top
+		if(pa[i]=='['||pa[i]=='{'||pa[i]=='(') { Push(S,pa[i]);  }
+	}
+	if(StackEmpty(S) ) printf("∆•≈‰≥…π¶\n");
 	else printf("∆•≈‰ ß∞‹\n");
 }
 int main(){
-	ParMat();
+    ParMat();
 	return 0;
 }
