@@ -10,9 +10,9 @@ int main(){
 	char ch[6]={'(',')','{','}','[',']'};
 	srand(time(0));
 	for(int i=0;i<6;i++){
-		test[i]=ch[rand()%5];
+		test[i]=ch[rand()%6];
 	}
-	printf("ÊäÈëµÄ·ûºÅÎª:\n");
+	printf("the character string is :\n");
 	Traverse(test);
 	matching(test);
 	return 0;

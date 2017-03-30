@@ -10,7 +10,7 @@ Status InitStack(SqStack *s){
 		return OVERFLOW;
 	s->top = s->base;
 	s->stacksize = STACK_INIT_SIZE;
-	printf("初始化一个栈结束\n");
+	printf("初始化一个栈结束\n\n");
 }
 
 Status Push(SqStack *s,char e){
@@ -53,8 +53,10 @@ Status LineEdit(SqStack *s){
 		while(ch!=';'&&ch!='\n'){
 			switch(ch){
 			case '#':Pop(s,&c);
+				         printf("\n");
 				break;
 			case '@':ClearStack(s);
+				         printf("\n");
 				break;
 			default:
 				Push(s,ch);
