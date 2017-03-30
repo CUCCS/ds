@@ -26,6 +26,14 @@ typedef struct _SqStack{
 	int      stacksize;
 }SqStack;                          //Ë³ĞòÕ»µÄ¶¨Òå
 
+Status InitStack(SqStack *S,int size);
+Status Push(SqStack *S,SElemType e);
+Bool IsStackEmpty(SqStack *S);
+SElemType GetTop(SqStack *S,SElemType *e);
+Status Pop(SqStack *S,SElemType *e);
+void DestroyStack(SqStack *S);
+Status matching(SqStack S, char *exp);
+
 Status InitStack(SqStack *S,int size)       //¹¹ÔìË³ĞòÕ»
 {
 	S->base = (SElemType *)malloc(STACK_INIT_SIZE * sizeof(SElemType));
@@ -83,28 +91,6 @@ Status Pop(SqStack *S,SElemType *e)//ÈôÕ»²»Îª¿Õ£¬ÔòÉ¾³ısµÄÕ»¶¥ÔªËØ£¬ÓÃe·µ»ØÖµ£¬²
 
 	return OK;
 }
-
-/*Status conversion(SqStack *S,int input,int d)
-{
-	SElemType e;
-	if(d > 10)
-	{
-		return ERROR;
-	}
-	while(input)
-	{
-		Push(S,input % d);
-		input = input / d;
-	}
-	while(!IsStackEmpty(S))
-	{
-		Pop(S,&e);
-		printf("%d",e);
-
-	}
-	printf("\n");
-	return OK;
-}*/
 
 void DestroyStack(SqStack *S)//Ïú»ÙÕ»s£¬s²»´æÔÚ
 {

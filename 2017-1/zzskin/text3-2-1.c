@@ -95,12 +95,13 @@ Status conversion(SqStack *S,int input,int d)
 }
 
 int main()
-{
+{	
 	SqStack S;
-	srand(time(NULL));
-	int input = rand() % 1024;
-	int d = 8;
-
+	int input;
+	int d ;
+   srand(time(NULL));
+	input = rand() % 1024;
+	d = 8;
 	InitStack(&S);
 
 	printf("input  =  %d\n",input);
