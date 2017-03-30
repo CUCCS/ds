@@ -87,7 +87,7 @@ Status Marry(SqStack *s, char*test)
 			GetTop(s, &e);
 			if (e == '[')
 			{
-				if (StackEmpty == false)
+				if (StackEmpty(s) == false)
 				{
 					Pop(s, &m);
 					SElemType*l = s->base;
@@ -120,7 +120,7 @@ Status Marry(SqStack *s, char*test)
 			GetTop(s, &e);
 			if (e == '{')
 			{
-				if (StackEmpty == false)
+				if (StackEmpty(s) == false)
 				{
 					Pop(s, &m);
 					SElemType*l = s->base;
@@ -186,6 +186,10 @@ Status Marry(SqStack *s, char*test)
 	if (StackEmpty(s) == true)
 	{
 		return OK;
+	}
+	else
+	{
+		return ERROR;
 	}
 }
 

@@ -28,11 +28,11 @@ Status conversion(SqStack *s, SElemType input, int d)
 {
 	SElemType e;
 	SElemType a = 0;
-	if (d == 0)
-	{
-		return ERROR;
-	}
-	printf("转化结果\n");
+	//if (d == 0)
+	//{
+	//	return ERROR;
+	//}已将随机数设定在1~9范围内；
+	printf("转换结果\n");
 	while (input)
 	{
 		a = input % d;

@@ -4,9 +4,9 @@ int main()
 	SqStack S;
 	srand(time(0));
 	int d;
-	d = rand() % 10;
-	printf("随机生成进制数\n%d\n", d);
 	int input;
+	d = rand() % 9 + 1;
+	printf("随机生成进制数\n%d\n", d);
 	input = rand();
 	printf("参数随机数\n%d\n", input);
 	InitStack(&S);

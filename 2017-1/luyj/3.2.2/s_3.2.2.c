@@ -6,12 +6,12 @@ int main()
 	int x = 0;
 	int i;
 	srand(time(0));
-	x = rand() % 10;
+	x = rand() % 9+1;
 	char test[10];
 	char s_test[6] = { '(',')','{','}','[',']' };
 	for (i = 0; i < x; i++)
 	{
-		test[i] = s_test[rand() % 5];
+		test[i] = s_test[rand() % 6];
 	}
 	test[x] = '\0';
 	printf("Ëæ»ú²úÉú×Ö·û´®£º\n");
