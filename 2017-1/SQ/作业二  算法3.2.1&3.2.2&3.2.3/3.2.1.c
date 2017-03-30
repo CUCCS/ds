@@ -2,20 +2,22 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-#include "3.1.h"
+#include "3.2.1.h"
 
 Status InitStack(SqStack *S) { //构造空栈
 	S->base = (SElemType *)malloc(STACK_INIT_SIZE * sizeof(SElemType));
-	if (!(S->base))
+	if (!(S->base)) {
 		return OVERFLOW;
+	}
 	S->top = S->base;
 	S->stacksize = STACK_INIT_SIZE;
 	return OK;
 };
 Status DestoryStack(SqStack *S) { //销毁栈
 	SqStack *p;
-	if (StackEmpty(*S))
+	if (StackEmpty(*S)) {
 		return ERROR;
+	}
 	free(S);
 	S->base = NULL;
 	S->top = NULL;
@@ -23,15 +25,17 @@ Status DestoryStack(SqStack *S) { //销毁栈
 	return OK;
 };
 Status StackEmpty(SqStack S) { //判断是否为空栈
-	if (S.top == S.base)
+	if (S.top == S.base) {
 		return true;
+	}
 	return false;
 };
 Status Push(SqStack *S, SElemType e) { //压栈（插入元素e为新的栈顶元素）
 	if ((S->top) - (S->base) >= (S->stacksize)) {
 		S->base = (SElemType *)realloc(S->base, (S->stacksize + STACKINCREMENT) * sizeof(SElemType));
-		if (!(S->base))
+		if (!(S->base)) {
 			return OVERFLOW;
+		}
 		S->top = S->base + S->stacksize;
 		S->stacksize += STACKINCREMENT;
 	}
@@ -46,10 +50,17 @@ Status Pop(SqStack *S, SElemType *e) { //出栈（删除栈顶元素，并用e返回其值）
 	return OK;
 };
 
-void conversation(int d) {
+Status conversation(int d) {
 	SqStack S;
 	SElemType N, e;
-	while (InitStack(&S)); //构造空栈
+	if (d > 10) {
+		printf("ERROR! Please input a number (<=10)\n");
+		return ERROR;
+	}
+	if (InitStack(&S)) { //构造空栈
+		printf("Initialize stack failed.\n");
+		return ERROR;
+	};
 	N = (int)rand() % 1024; //产生随机数
 	printf("\n整数： %d\n", N);
 	while (N) {
