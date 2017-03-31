@@ -102,6 +102,9 @@ Status ParenthesisJudge(char f, char l){
 				  return ERROR;
 			  }
 			  break;
+
+	default:
+		break;
 	}
 
 

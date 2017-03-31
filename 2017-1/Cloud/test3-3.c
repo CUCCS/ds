@@ -128,12 +128,12 @@ void LineEdit(){
 		if(ch != EOF){
 			ch = getchar();
 		}//如何才能使ch == EOF?
-		DestroyStack(&_s);
 	}
+	DestroyStack(&_s);
 }
 
 int main(){
 		LineEdit();
 		return 0;
 
-	}
+}
