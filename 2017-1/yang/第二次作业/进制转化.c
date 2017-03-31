@@ -1,5 +1,6 @@
 #include<stdio.h>
 #include<stdlib.h>
+#include<time.h>
 #define STACK_INIT_SIZE 100
 #define STACKINCREMENT 10
 typedef int SElemType;
@@ -15,14 +16,16 @@ typedef enum
 }Status;
 typedef enum
 {
-	false,true
+	false, true
 }bool;
 //创建一个空栈
 Status InitStack(Sqstack *S)
 {
 	S->base = (SElemType *)malloc(STACK_INIT_SIZE * sizeof(SElemType));
 	if (!S->base)
+	{
 		return overflow;
+	}
 	S->top = S->base;
 	S->stacksize = STACK_INIT_SIZE;
 	return ok;
@@ -53,15 +56,19 @@ Status Pop(Sqstack *S, SElemType *e)
 bool StackEmpty(Sqstack S)
 {
 	if (S.top == S.base)
+	{
 		return true;
+	}
 	else
+	{
 		return false;
+	}
 }
 
 //进行进制转换
 void conversion(Sqstack *S, int N, int d)
 {
-	SElemType *e =  (SElemType*)malloc(sizeof(SElemType));
+	SElemType *e = (SElemType*)malloc(sizeof(SElemType));
 	while (N)
 	{
 		Push(S, N%d);
@@ -71,16 +78,19 @@ void conversion(Sqstack *S, int N, int d)
 	{
 		Pop(S, e);
 		printf("%d", *e);
-		//e = NULL;
+		
 	}
 }
 int main()
 {
-	printf("1348的十进制转化为八进制");
+	int N, d;
 	printf("\n");
 	Sqstack S;
 	InitStack(&S);
-	int N = 1348, d = 8;
+	srand((unsigned)(time)(NULL));
+	N = rand() % 1024;
+	d = rand() % 10;
+	printf("将十进制数%d转化为%d进制数为：\n", N, d);
 	conversion(&S, N, d);
 	return 0;
 }

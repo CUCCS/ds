@@ -18,7 +18,9 @@ Status Initstack(Sqstack*S)
 {
 	S->base = (SElemType*)malloc(STACK_INIT_SIZE * sizeof(SElemType));
 	if (!S->base)
+	{
 		return error;
+	}
 	S->top = S->base;
 	S->stacksize = STACK_INIT_SIZE;
 	return ok;
@@ -27,7 +29,9 @@ Status Initstack(Sqstack*S)
 Status StackEmpty(Sqstack *S)
 {
 	if (S->top == S->base)
+	{
 		return ok;
+	}
 	else return error;
 }
 //≤Â»Î’ª∂•‘™Àÿ
@@ -46,7 +50,9 @@ Status Push(Sqstack*S, SElemType e)
 Status Pop(Sqstack *S, SElemType*e)
 {
 	if (S->top == S->base)
+	{
 		return error;
+	}
 	*e = *--S->top;
 	return ok;
 }
@@ -73,30 +79,38 @@ Status cout(Sqstack *S, SElemType*str)
 		{
 			Pop(S, &e);
 			if (e != '(')
+			{
 				flag = 1;
+			}
 		}
 		break;
 		case ']':
 		{
 			Pop(S, &e);
 			if (e != '[')
+			{
 				flag = 1;
+			}
 		}
 		break;
 		case '}':
 		{
 			Pop(S, &e);
 			if (e != '{')
+			{
 				flag = 1;
+			}
 		}
 		break;
 		}
 		i++;
 	}
 	if (!flag&&StackEmpty(S))
-		printf("∆•≈‰≥…π¶£°");
+	{
+		printf("∆•≈‰≥…π¶£°\n");
+	}
 	else
-		printf("∆•≈‰ ß∞‹£°");
+		printf("∆•≈‰ ß∞‹£°\n");
 
 	return ok;
 }

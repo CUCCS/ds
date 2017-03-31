@@ -1,3 +1,4 @@
+
 #include<stdio.h>
 #include<stdlib.h>
 #define STACK_INIT_SIZE 100
@@ -18,7 +19,9 @@ Status Initstack(Sqstack*S)
 {
 	S->base = (SElemType*)malloc(STACK_INIT_SIZE * sizeof(SElemType));
 	if (!S->base)
+	{
 		return error;
+	}
 	S->top = S->base;
 	S->stacksize = STACK_INIT_SIZE;
 	return ok;
@@ -27,7 +30,9 @@ Status Initstack(Sqstack*S)
 Status StackEmpty(Sqstack *S)
 {
 	if (S->top == S->base)
+	{
 		return ok;
+	}
 	else return error;
 }
 //²åÈëÕ»¶¥ÔªËØ
@@ -46,26 +51,22 @@ Status Push(Sqstack*S, SElemType e)
 Status Pop(Sqstack *S, SElemType*e)
 {
 	if (S->top == S->base)
+	{
 		return error;
+	}
 	*e = *--S->top;
 	return ok;
 }
 // Õ»Çå¿Õ
-Status qingkong (Sqstack*S)
+Status ClearStack(Sqstack*S)
 {
-	SElemType*e=(SElemType*)malloc(sizeof(SElemType));
-	if (StackEmpty(S))
-		return ok;
-	else
-	{
-		while (*--S->top != ' ')
-			Pop(S, e);
-	}
-		
+	S->top = S->base;
+	return ok;
 }
 //Ïú»ÙÕ»
 Status DestroyStack(Sqstack*S)
 {
+	S->top = S->base;
 	free(S->base);
 	return ok;
 }
@@ -75,30 +76,33 @@ void LineEdit(Sqstack *S)
 
 	SElemType  *c = (SElemType*)malloc(sizeof(SElemType));
 	SElemType ch;
-	char v[50];
+	SElemType *p = (SElemType*)malloc(sizeof(SElemType));
 	ch = getchar();
-	while (ch!=EOF)
+	while (ch != EOF)
 	{
-		while (ch!= '\n')
+		while (ch != '\n')
 		{
 			switch (ch)
 			{
 			case '#': Pop(S, c); break;//ÍËÕ»
-			case '@':qingkong(S); break;//Çå¿ÕÕ»
+			case '@':ClearStack(S); break;//Çå¿ÕÕ»
 			default:Push(S, ch);//ÓÐÐ§×Ö·û½øÕ»
 			}
 			ch = getchar();
 		}
-while (!StackEmpty(S))
-	{
-		Pop(S, c);
-		printf("%c", *c);
-	}
-qingkong(S);
-if (ch != EOF)
-ch = getchar();
+		p = S->base;
+		while(p!=S->top)
+		{
+			printf("%c", *p);
+			p++;
+		}
+		ClearStack(S);
+		if (ch != EOF)
+		{
+			ch = getchar();
+		}
 
-	}	
+	}
 	DestroyStack(S);
 }
 int main()
