@@ -43,7 +43,8 @@ status Init(Linkqueue *q)
 	q->rear->next = NULL;
 	return 1;
 }
-status Destory(Linkqueue *q)//销毁队列q q不在存在
+//销毁队列q q不在存在
+status Destory(Linkqueue *q)
 {
 	while (q->front)
 	{
@@ -53,7 +54,8 @@ status Destory(Linkqueue *q)//销毁队列q q不在存在
 	}
 	return 1;
 }
-status Clearqueue(Linkqueue *q)//将队列清空
+//将队列清空
+status Clearqueue(Linkqueue *q)
 {
 	Queueptr  temp = q->front->next;
 	Queueptr th;
@@ -140,6 +142,7 @@ status Queuetraverse(Linkqueue q)
 	printf("\n");
 	return 1;
 }
+//对队列元素进行访问
 int visit(Queueptr p)
 {
 	if (NULL != p)
