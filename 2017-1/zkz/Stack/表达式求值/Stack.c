@@ -51,12 +51,12 @@ Status Traverse(const Stack S) {
 	}
 	/*如果除头节点外只剩一个节点*/
 	if (!S->next->next) {
-		printf("%c ",S->next->data);
+		printf("%c",S->next->data);
 		return OK;
 	}
 	else {
 		Traverse(S->next);
-		printf("%c ", S->next->data);
+		printf("%c", S->next->data);
 	}
 	/*如果除头节点外有多个节点*/
 	return OK;
