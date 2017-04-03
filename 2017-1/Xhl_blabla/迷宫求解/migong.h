@@ -3,7 +3,7 @@
 #include <time.h>
 #define STACK_INIT_SIZE 100
 #define STACKINCREMENT 10
-#define MazeScale 10
+#define MazeScale 6
 //点的位置坐标
 typedef struct position
 {
@@ -33,5 +33,12 @@ int isStackempty(Mystack*);
 int Pop(Mystack *, SElement*);
 position Nextposition(position, int);
 void Markprint(position p);
-int Maze[MazeScale][MazeScale] ;
+int Maze[MazeScale][MazeScale];
 void clear(Mystack*);
+void Initmingong();
+void Printmigong();
+void Print_result(int, Mystack);
+void Print_direct(SElement e,position);//打印将要走的方向
+void Print_direct_result(SElement e);//打印走的方向的结果
+void Print_curp(position);//打印走的步子
+void Print_uncurp(position);//打印走的步子的结果
