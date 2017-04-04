@@ -35,13 +35,6 @@ Status Pop(SqStack *pS , SElemType *pe){
 	return OK;
 }
 
-Status ClearStack(SqStack *pS){
-	if((*pS).base == (*pS).top ) return ERROR;
-	while((*pS).base != (*pS).top ){ *(*pS).top=*--(*pS).top ; }
-	return *(*pS).top ;
-	return OK;
-}
-
 Status Push(SqStack *pS , SElemType e){
 	if((*pS).top - (*pS).base >= (*pS).stacksize ){
 		(*pS).base =(SElemType *)realloc((*pS).base , ((*pS).stacksize + CREAT)*sizeof(SElemType));

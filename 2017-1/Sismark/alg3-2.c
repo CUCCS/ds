@@ -54,8 +54,8 @@ void ParMat(){
 	SElemType e;
     SqStack S;
 	InitStack(&S);//‘Ï’ª
-	int i=0;
-    char pa[100]="[([][])]";
+	int i=0,flag=0;
+    char pa[100]="{([][])]";
 	printf("%s\n",pa);
 	//scanf("%s",pa);
 	Push(&S,pa[i]);
@@ -64,19 +64,19 @@ void ParMat(){
 		i++;
 		if(pa[i]==']'){
 			Pop(&S,&e);
-			if(e !='[') { printf("∆•≈‰ ß∞‹\n"); break; }
+			if(e !='[') { flag++; break; }
 		}
 		if(pa[i]=='}'){
 			Pop(&S,&e);
-			if(e!='{') { printf("∆•≈‰ ß∞‹\n"); break; }
+			if(e!='{') { flag++; break; }
 		}
 		if(pa[i]==')'){
 			Pop(&S,&e);
-			if(e!='(') { printf("∆•≈‰ ß∞‹\n"); break; }
+			if(e!='(') { flag++; break; }
 		}
 		if(pa[i]=='['||pa[i]=='{'||pa[i]=='(') { Push(&S,pa[i]);  }
 	}
-	if(StackEmpty(&S) ) printf("∆•≈‰≥…π¶\n");
+	if(StackEmpty(&S)&& flag==0) printf("∆•≈‰≥…π¶\n");
 	else printf("∆•≈‰ ß∞‹\n");
 }
 int main(){

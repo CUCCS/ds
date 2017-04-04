@@ -71,9 +71,7 @@ void conversion(){
 }	
 
 int main() {
-	for (int i = 0; i < 3; i++) {
 	conversion();
 	printf("\n");
-}
 	return OK;
 }
