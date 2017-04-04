@@ -22,22 +22,33 @@ void main()
 	{
 		switch (*p)
 		{
+			{
 		case '{':
 		case '[':
-		case '(': push(&s, *p++); break;//s只要是左括号就入栈  
+		case '(':
+		{
+			push(&s, *p++);
+			break;
+		}//s只要是左括号就入栈  
+			}
+			{
 		case '}':
 		case ']':
-		case ')':pop(&s, &e);  //s只要是右括号就与栈中的左括号e配对
-			if ((e == '{' && *p == '}') || (e == '[' && *p == ']') || (e == '(' && *p == ')'))
-			{
-				p++;
+		case ')':
+		{
+			pop(&s, &e);
+		}//s只要是右括号就与栈中的左括号e配对
+		if ((e == '{' && *p == '}') || (e == '[' && *p == ']') || (e == '(' && *p == ')'))
+		{
+			p++;
+		}
+		else
+		{
+			printf("括号不匹配!\n");
+			return OVERFLOW;
+		}//返回OVERFLOW的值给主调进程
+		break;
 			}
-			else
-			{
-				printf("括号不匹配!\n");
-				return OVERFLOW;
-			}//返回OVERFLOW的值给主调进程
-			break;
 		default:p++;//其他字符就后移  
 		}
 	}

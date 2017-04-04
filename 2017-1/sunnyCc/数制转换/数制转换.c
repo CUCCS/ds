@@ -34,7 +34,7 @@ int main() {
 	printf("%d\n", n);
 
 	printf("要输出的数制:");
-	m = rand() % 9 + 1;
+	m = rand() % 9 + 2;
 	printf("%d\n", m);
 
 	printf("转换数制后的数:");
