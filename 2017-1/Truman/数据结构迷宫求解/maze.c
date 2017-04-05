@@ -1,6 +1,5 @@
 #include "maze.h"
 Status InitStack(SqStack *S){
-    //ππ‘Ï“ª∏ˆø’’ª
     S->base = (SElemType *) malloc (STACK_INIT_SIZE*sizeof(SElemType));
     if (!S->base) { exit(OVERFLOW); }
     S->top = S->base;
