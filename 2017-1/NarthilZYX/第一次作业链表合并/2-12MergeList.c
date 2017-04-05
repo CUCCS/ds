@@ -63,7 +63,9 @@ LinkList sort(LinkList l)
         small=p;
         for(q=p->next;q!=NULL;q=q->next){
              if(q->data<small->data)
+			 {
                 small=q;
+			 }
                 if(small!=p)
                 {
                    temp=p->data;
