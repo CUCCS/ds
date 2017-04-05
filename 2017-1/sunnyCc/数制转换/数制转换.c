@@ -1,4 +1,3 @@
-
 /* 数制转换：随机产生一个数和数值（1到9之间），输出进行数值转换后的数*/
 #include "conversion.h"
 #include <stdio.h> 
@@ -39,6 +38,7 @@ int main() {
 
 	printf("转换数制后的数:");
 	conversion(&S, n, m);
+	DestoryStack(&S);//将栈销毁
 	printf("\n");
 
 	return 0;

@@ -41,7 +41,15 @@ int Pop(SqStack *S, int *e) {
 	return 1;
 	//printf("%d",e);  
 };
-
+//销毁栈
+int DestoryStack(SqStack *S) {
+	S->top = S->base;
+	free(S->base);
+	S->top = NULL;
+	S->base = NULL;
+	printf("释放栈空间\n");
+	return 1;
+}
 //数制转换  
 void conversion(SqStack *S, int n, int m) {
 	//n表示待转换的数，m表示输出的数的进制   
@@ -55,5 +63,11 @@ void conversion(SqStack *S, int n, int m) {
 		int e;
 		Pop(S, &e);  //出栈
 		printf("%d", e);
+	}
+	//如果栈为空，释放栈空间
+	if (NULL != S)
+	{
+		free(S);
+		S = NULL;
 	}
 };
