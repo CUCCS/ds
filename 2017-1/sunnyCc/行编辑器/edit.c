@@ -11,9 +11,9 @@
 
 //初始化栈
 int InitStack(SqStack *S) {
-	S->base = (SElemType *)malloc(STACK_INIT_SIZE*sizeof(SElemType));
-	if(!S->base) {
-		exit(OVERFLOW);
+	S->base = (SElemType *)malloc(STACK_INIT_SIZE * sizeof(SElemType));
+	if (!S->base) {
+		return OVERFLOW;
 	}
 	S->top = S->base;
 	S->stacksize = STACK_INIT_SIZE;
@@ -22,11 +22,11 @@ int InitStack(SqStack *S) {
 }
 
 //入栈
-int Push(SqStack *S,SElemType e) {
-	if((S->top-S->base)>=S->stacksize) {
-		S->base = (SElemType*)realloc(S->base,(S->stacksize+STACKINCREMENT)*sizeof(SElemType));
-		if(!S->base) {
-			exit(OVERFLOW);
+int Push(SqStack *S, SElemType e) {
+	if ((S->top - S->base) >= S->stacksize) {
+		S->base = (SElemType*)realloc(S->base, (S->stacksize + STACKINCREMENT) * sizeof(SElemType));
+		if (!S->base) {
+			return OVERFLOW;
 		}
 		S->top = S->base + S->stacksize;
 		S->stacksize += STACKINCREMENT;
@@ -37,8 +37,10 @@ int Push(SqStack *S,SElemType e) {
 }
 
 //删除栈中的元素
-int Pop(SqStack *S,SElemType *e) {
-	if(S->top  == S->base) return ERROR;
+int Pop(SqStack *S, SElemType *e) {
+	if (S->top == S->base) {
+		return ERROR;
+	}
 	*e = *--S->top;
 	return OK;
 }
@@ -61,26 +63,29 @@ int DestoryStack(SqStack *S) {
 
 //行编辑程序
 void LineEdit(SqStack *S) {
-	SElemType *p,ch,c;
+	SElemType *p, ch, c;
 	InitStack(S);
 	ch = getchar();
-	while(ch != -1) {
-		while(ch!=-1&&ch!='\n') {
-			switch(ch) {
-			case '#':Pop(S,&c);break;//仅当栈非空时退栈
-			case '@':ClearStack(S);break;//重置S为空栈
-			default:Push(S,ch);break;//有效字符进栈，未考虑栈满情况
+	while (ch != -1) {
+		while (ch != -1 && ch != '\n') {
+			switch (ch) {
+			case '#':Pop(S, &c); break;//仅当栈非空时退栈
+			case '@':ClearStack(S); break;//重置S为空栈
+			default:Push(S, ch); break;//有效字符进栈，未考虑栈满情况
 			}
 			ch = getchar();//从终端接收下一个字符
 		}
 		p = S->base;
-		while(p!=S->top) {
-			printf("%c",*p);
+		while (p != S->top) {
+			printf("%c", *p);
 			++p;
 		}
 		//将从栈底到栈顶的站内字符传送至调用过程的数据区
 		ClearStack(S);//重置S为空栈
-		if(ch!=EOF) ch = getchar();
+		if (ch != EOF)
+		{
+			ch = getchar();
+		}
 	}
 
 }
