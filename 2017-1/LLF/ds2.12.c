@@ -42,7 +42,7 @@ LNode* CreateList_L( int n)//ÄæÎ»ĞòÊäÈën¸öÔªËØµÄÖµ£¬½¨Á¢´ø±íÍ·½áµãµÄµ¥Á´ÏßĞÔ±íL¡
 {
 	LNode * L;
 	int i;
-	srand((unsigned)time(NULL));//ÓÃÊ±¼ä×öÖÖ
+
 
 	if (n < 0)//Èô¸öÊı²»ºÏ·¨£¬±¨´í
 	{

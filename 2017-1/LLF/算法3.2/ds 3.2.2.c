@@ -116,14 +116,9 @@ Status GetTop(SqStack *S, SElemType e)//若栈不空，则用e返回S的栈顶元素，并返回OK
 
 Status Push(SqStack *S, SElemType e)//插入元素e为新的栈顶元素
 {
-	if (S->top - S->base >= S->stacksize) {//栈满，追加存储空间
-										   //暂时不用
-										   //S->base=(SElemaType *)realloc(S->base,(S->stacksize+STACKINCREMENT)*sizeof(SElemType));
-										   //if(!S->base){
+	if (S->top - S->base >= S->stacksize) 
+	{
 		return(OVERFLOW);//存储分配失败
-						 //}
-						 //S->top=S->base+S->stacksize;
-						 //S->stacksize+=STACKINCREMENT;
 	}
 	*S->top++ = e;
 	return OK;
@@ -182,7 +177,7 @@ Status matching(SElemType *exp) //实现括号的匹配
 		case '}':
 		{
 			Pop(&S, &e);
-			if (e != '(')
+			if (e != '{')
 				flag = 1;
 		}
 		break;
@@ -211,7 +206,7 @@ Status matching(SElemType *exp) //实现括号的匹配
 int main()
 {
 
-	SElemType exp1[] = { "([])" }, exp2[] = {"({])"};
+	SElemType exp1[] = { "{([])}" }, exp2[] = {"({])"};
 	printf("EXP1：");
 	matching(exp1);
 	printf("EXP2：");

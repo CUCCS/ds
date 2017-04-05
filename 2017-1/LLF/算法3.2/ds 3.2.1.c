@@ -157,7 +157,7 @@ Status conversion(SqStack *S, int input, int d)//实现数制转换
 	InitStack(S);
 	while (input) {
 		Push(S, input%d);
-		input = input / 8;
+		input = input / d;
 	}
 	while (!StackEmpty(S))
 	{
