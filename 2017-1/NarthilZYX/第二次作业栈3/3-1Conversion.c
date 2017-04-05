@@ -1,6 +1,6 @@
-#include<stdio.h>
-#include<stdlib.h>
-#include<time.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
 typedef enum {
     ERROR, 
 	OK, 
@@ -42,14 +42,20 @@ Status Push(SqStack *S, SElemType e)//
 }
 Status Pop(SqStack *S, SElemType &e) 
 {
-	if(S->top == S->base) return ERROR;
+	if(S->top == S->base) 
+	{
+		return ERROR;
+	}
 	e = * --S->top;
 	return OK;
 }
 Status StackEmpty(SqStack *S)
 {
-	if(S->base == S->top) return OK;
-	else return ERROR;
+	if(S->base == S->top)
+	{
+		return OK;
+	}
+	return ERROR;
 }
 
 Status ModConvert(int input, SqStack *S , int d)
