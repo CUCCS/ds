@@ -34,7 +34,6 @@ Status InitStack(SqStack *S)
 Status Push(SqStack *S, SElemType e)//
 {
 	if(S->top - S->base >= S->stacksize) {
-		//re-alloc
 			return OVERFLOW;
 	}
 	*S->top++ = e;
@@ -42,8 +41,7 @@ Status Push(SqStack *S, SElemType e)//
 }
 Status Pop(SqStack *S, SElemType &e) 
 {
-	if(S->top == S->base) 
-	{
+	if(S->top == S->base){
 		return ERROR;
 	}
 	e = * --S->top;
@@ -51,23 +49,23 @@ Status Pop(SqStack *S, SElemType &e)
 }
 Status StackEmpty(SqStack *S)
 {
-	if(S->base == S->top)
-	{
+	if(S->base == S->top){
 		return OK;
 	}
-	return ERROR;
+	else{
+		return ERROR;
+	}
 }
 
 Status ModConvert(int input, SqStack *S , int d)
 {
-	//InitStack(S);
 	SElemType e;
-	e = *S->top;//
+	e = *S->top;
 	if(d > 10) {
 		return ERROR;
 	}
 	while(input) {
-		Push(S, input % d);//
+		Push(S, input % d);
 		input = input / d;
 	}
 	while(!StackEmpty(S)){
@@ -80,8 +78,6 @@ Status ModConvert(int input, SqStack *S , int d)
 int main()
 {
     SqStack S;
-	//S->base = (SElemType *)malloc(STACK_INIT_SIZE * sizeof(SElemType));
-	//S->top = S->base;
 	InitStack(&S);
 	int num;
 	int d = 8;

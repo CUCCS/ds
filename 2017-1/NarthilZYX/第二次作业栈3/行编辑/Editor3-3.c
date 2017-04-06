@@ -31,12 +31,8 @@ Status InitStack(SqStack *S)
 	return OK;
 }//end of InitStack
 
-Status Push(SqStack *S, SElemType e)//
+Status Push(SqStack *S, SElemType e)
 {
-	//if(S->top - S->base >= S->stacksize) {
-	//	//re-alloc
-	//		return OVERFLOW;
-	//}//黄大大
 	if(S->top - S->base >= S->stacksize)
 	{
       S->base = (SElemType *)realloc(S->base, (S->stacksize + STACKINCREMENT) * sizeof(SElemType));
@@ -46,7 +42,7 @@ Status Push(SqStack *S, SElemType e)//
 	  }
       S->top = S->base + S->stacksize;
       S->stacksize += STACKINCREMENT;
-	}//课本
+	}
 	*S->top++ = e;
 	return OK;
 }//end of Push
@@ -57,7 +53,7 @@ Status Pop(SqStack *S, SElemType *e)
 	{
 		return ERROR;
 	}
-	*e = * --S->top;//待检测
+	*e = * --S->top;
 	return OK;
 }//end of Pop
 
@@ -87,9 +83,7 @@ Status GetTop(SqStack *S, SElemType *e)
 Status ClearStack(SqStack *S)
 {
 	if(S->top==S->base)
-	{
 		return ERROR;
-	}
     S->top=S->base;
 	return OK;
 }//end of ClearStack
@@ -106,11 +100,9 @@ Status DestroyStack(SqStack *S)
 
 Status LineEdit(SqStack *S)
 {
-	//SqStack *S;
 	SElemType e;//栈顶元素
 	SElemType *b;//指向栈底，用于输出
 	char ch;
-	//InitStack(S);
 	ch = getchar();
 	while(ch != EOF)
 	{
@@ -139,9 +131,6 @@ Status LineEdit(SqStack *S)
         if( ch!=EOF )
 		    ch = getchar();
 	}
-	
-	
-	//DestroyStack(S);
 	return OK;
 }//end of LineEdit
 

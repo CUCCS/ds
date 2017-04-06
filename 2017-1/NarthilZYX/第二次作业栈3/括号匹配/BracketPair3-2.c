@@ -34,10 +34,6 @@ Status InitStack(SqStack *S)
 
 Status Push(SqStack *S, SElemType e)//
 {
-	//if(S->top - S->base >= S->stacksize) {
-	//	//re-alloc
-	//		return OVERFLOW;
-	//}//黄大大
 	if(S->top - S->base >= S->stacksize)
 	{
       S->base = (SElemType *)realloc(S->base, (S->stacksize + STACKINCREMENT) * sizeof(SElemType));
@@ -47,7 +43,7 @@ Status Push(SqStack *S, SElemType e)//
 	  }
       S->top = S->base + S->stacksize;
       S->stacksize += STACKINCREMENT;
-	}//课本
+	}
 	*S->top++ = e;
 	return OK;
 }//end of Push
@@ -58,7 +54,7 @@ Status Pop(SqStack *S, SElemType e)
 	{
 		return ERROR;
 	}
-	e = * --S->top;//待检测
+	e = * --S->top;
 	return OK;
 }//end of Pop
 
@@ -87,8 +83,7 @@ Status GetTop(SqStack *S, SElemType *e)
 Status matching(SqStack *S, char *c) {
     int state = 1;
 	int i = 0;
-	SElemType e;//
-	//e = *(S->top);
+	SElemType e;
     while ( c[i]!='\0' && state ) {
         switch(c[i]) 
 		{
@@ -101,7 +96,6 @@ Status matching(SqStack *S, char *c) {
 				GetTop(S,&e);
                 if(! StackEmpty(S) && e == '(') {
                     Pop(S,e);
-					//printf("The nearest ( has been matched.");
                 } else {
                     state = 0;
                 }
@@ -117,7 +111,6 @@ Status matching(SqStack *S, char *c) {
 				GetTop(S,&e);
 				if(! StackEmpty(S) && e == '{') {
                     Pop(S,e); 
-					//printf("The nearest { has been matched.");
                 } else {
                     state = 0;
                 }
@@ -133,7 +126,6 @@ Status matching(SqStack *S, char *c) {
 				GetTop(S,&e);
                 if(! StackEmpty(S) && e == '[') {
                     Pop(S,e);  
-					//printf("The nearest [ has been matched.");
                 } else {
                     state = 0;
                 }
@@ -158,16 +150,15 @@ int main()
 	SqStack S;
 	char c[MAXNUM];
 	int flag=0;
-	//char enter;
 	InitStack(&S);
 	printf("Input a group of brackets as you like!\n");
 	scanf("%s",c);
 	flag = matching(&S,c);
-	//scanf("%c",&enter);
-	if(matching(&S,c))
+	if(matching(&S,c)){
 		printf("Matching succeed!");
-	else
+	}
+	else{
 		printf("Matching fail!");
+	}
 	return 0;
 }
-//{[[()]]}

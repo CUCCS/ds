@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 #define ListLength 2
-typedef int ElemType; //元素类型
+typedef int ElemType; 
 typedef enum {
     ERROR,
 	OK,
@@ -12,31 +12,34 @@ typedef struct LNode{
 	ElemType data;
     struct LNode *next;
 }LNode, *LinkList;
-LNode *createList()//链表创建函数
+//链表创建函数
+LNode *createList()
 {
 	LNode *p1, *p2;
-	LNode *head = NULL;//头结点
+	LNode *head = NULL;
 	int n = 0;
-	int l = ListLength;//l等于链表长度，便于控制输入的数据个数
-	p2 = p1 = (LNode *)malloc(sizeof(LNode));//为p1p2分配内存
+	int l = ListLength;
+	p2 = p1 = (LNode *)malloc(sizeof(LNode));
 	srand((int)time(NULL));
-	p1->data = rand()%101;//create random number
+	p1->data = rand()%101;
 	printf( "%d  ", p1->data );
 	while(l){
 	    n = n + 1;
-		if( n == 1)
-			head = p1;//头结点指向p1
-		else
-			p2->next = p1;//p2尾结点指向p1
-		p2 = p1;//?
-		p1 = (LNode *) malloc(sizeof(LNode));//再次分配内存
+		if( n == 1){
+			head = p1;
+		}
+		else{
+			p2->next = p1;
+		}
+		p2 = p1;
+		p1 = (LNode *) malloc(sizeof(LNode));
 		if( l != 1){
 			srand((int)time(NULL));
-	        p1->data = rand()%101 + 3;//create random number
+	        p1->data = rand()%101 + 3;
 			printf( "%d  ", p1->data );
 		}
 		l--;
-	}//end of while
+	}
 	p2->next = NULL;
 	printf("\n");
 	return head;
@@ -45,7 +48,7 @@ LNode *createList()//链表创建函数
 void printList(LNode *head)
 {
 	LNode *p;
-	p = head;//指针指向链表头结点
+	p = head;
 	if( head != NULL ){
 		do{
 			printf("%d\n", p->data);
