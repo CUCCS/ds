@@ -7,6 +7,7 @@ Status InitList(Linklist* pL, const int length) {
 			/*²ÎÊı¼ì²é*/
 	checkNull(pL, "pL");
 
+	if (length == 0) { (*pL) = NULL; return OK; }
 	(*pL) = NEWNODE;
 	checkOverflow(*pL, "*pL");
 	(*pL)->data = rd(MINNUM, MAXNUM);
@@ -35,8 +36,8 @@ Status TraverseList(const Linklist L) {
 
 	p = L;
 	do {
-		p = p->next;
 		printf("%d ", p->data);
+		p = p->next;
 	} while (p != L);
 	printf("\n");
 	return OK;
@@ -106,7 +107,11 @@ Status DivideList(Linklist list, Linklist* pL1, Linklist* pL2) {
 
 	p1->next = (*pL1)->next;
 	p2->next = (*pL2)->next;
-	p1->next->prev = p1;
-	p2->next->prev = p2;
+	if (p1->next) {
+		p1->next->prev = p1;
+	}
+	if (p2->next) {
+		p2->next->prev = p2;
+	}
 	return OK;
 }

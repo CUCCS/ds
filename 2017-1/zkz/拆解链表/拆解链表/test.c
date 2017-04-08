@@ -3,14 +3,14 @@
 #include <time.h>
 #include "Linklist.h"
 
-#define MAXLEN 9
-#define MINLEN 1
+#define MAXLEN 5
+#define MINLEN 0
 
 int test() {
 	Linklist list, l1, l2;
 
 	srand(rand());
-	InitList(&list, rd(MINLEN, MAXLEN));
+	InitList(&list,rd(MINLEN, MAXLEN));
 
 	printf("list : ");
 	TraverseList(list);
