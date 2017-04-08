@@ -23,7 +23,7 @@ typedef struct {
 }OptrStack;
 
 Status InitOptrStack(OptrStack *S);
-ElemType_Optr GetOptrTop(OptrStack S);
+Status GetOptrTop(OptrStack S, ElemType_Optr *e);
 Status PushOptr(OptrStack *S, ElemType_Optr e);
 Status PopOptr(OptrStack *S, ElemType_Optr *e);
 bool OptrStackEmpty(OptrStack S);
@@ -35,10 +35,10 @@ Status PopOpnd(OpndStack *S, ElemType_Opnd *e);
 bool OpndStackEmpty(OpndStack S);
 
 Status Standard(char *exp);
-char Precede(ElemType_Optr a, ElemType_Optr b);
-Status Pass(char *suffix, char c);
-Status Transform(char *suffix, char exp[]);
-bool  IN(char c);
+bool Precede(ElemType_Optr a, ElemType_Optr b);
+bool IN(char c);
 ElemType_Opnd Operate(ElemType_Opnd a, ElemType_Optr op, ElemType_Opnd b);
-const char *GetOpnd(const char *p, ElemType_Opnd *op);
-ElemType_Opnd Evaluate(char *exp);
+
+Status Evaluate(char suffix[][5]);
+Status Pass(char suffix[50][5], char *c);
+Status Transform(char suffix[50][5], char exp[]);

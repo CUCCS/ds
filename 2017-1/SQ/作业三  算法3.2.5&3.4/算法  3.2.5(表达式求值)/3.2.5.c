@@ -12,17 +12,6 @@ Status InitStack(SqStack *S) { //构造空栈
 	S->stacksize = STACK_INIT_SIZE;
 	return OK;
 };
-Status DestoryStack(SqStack *S) { //销毁栈
-	SqStack *p;
-	if (StackEmpty(*S)) {
-		return ERROR;
-	}
-	free(S);//S->base
-	S->base = NULL;
-	S->top = NULL;
-	S->stacksize = 0;
-	return OK;
-};
 bool StackEmpty(SqStack S) { //判断是否为空栈
 	if (S.top == S.base) {
 		return true;
@@ -31,6 +20,7 @@ bool StackEmpty(SqStack S) { //判断是否为空栈
 };
 Status GetTop(SqStack S, ElemType *e) { //用e返回栈顶元素
 	if (StackEmpty(S)) {
+		printf("Error, the stack is empty\n");
 		return ERROR;
 	}
 	*e = *(S.top - 1);
@@ -40,6 +30,7 @@ Status Push(SqStack *S, ElemType e) { //压栈（插入元素e为新的栈顶元素）
 	if ((S->top) - (S->base) >= (S->stacksize)) {
 		S->base = (ElemType *)realloc(S->base, (S->stacksize + STACKINCREMENT) * sizeof(ElemType));
 		if (!(S->base)) {
+			printf("The increment of the stack failed.\n");
 			return OVERFLOW;
 		}
 		S->top = S->base + S->stacksize;
@@ -50,6 +41,7 @@ Status Push(SqStack *S, ElemType e) { //压栈（插入元素e为新的栈顶元素）
 };
 Status Pop(SqStack *S, ElemType *e) { //出栈（删除栈顶元素，并用e返回其值）
 	if (StackEmpty(*S)) {
+		printf("Error, the stack is empty\n");
 		return ERROR;
 	}
 	*e = *--S->top;
@@ -156,8 +148,8 @@ Status Evaluate(char *suffix) { //将后缀式进行计算
 	ch = *p;
 	temp1 = temp2 = result = 0;
 	if (InitStack(&OPND)) {
-		printf("栈初始化失败\n");
-		return ERROR;
+		printf("ERROR! Initate stack failed.\n");
+		exit(0);
 	}
 	while (ch != '\0') {
 		if (!IN(ch)) {
@@ -180,20 +172,20 @@ Status Evaluate(char *suffix) { //将后缀式进行计算
 		ch = *p;
 	}
 	if (result == 0 && temp1 == 0 && temp2 == 0) {
-		printf("表达式错误！\n");
+		printf("The expression was wrong！\n");
 		return ERROR;
 	}
 	else {
-		printf("\n表达式的结果为：%d\n\n", result);
+		printf("The result of the expression is：%d\n\n", result);
 		return OK;
 	}
 };
-Status Transform(char *suffix, char exp[]) {   //求后缀式，suffix储存后缀式，exp输入的原表达式
+Status Transform(char *suffix, char exp[]) { //求后缀式，suffix储存后缀式，exp输入的原表达式
 	SqStack S; //暂存运算符的栈
 	char *p;
 	char ch, c;
 	if (InitStack(&S)) {
-		printf("栈初始化失败\n");
+		printf("Initiate stack failed.\n");
 		return ERROR;
 	};
 	Push(&S, '#');
@@ -237,7 +229,6 @@ Status Transform(char *suffix, char exp[]) {   //求后缀式，suffix储存后缀式，exp
 			Pass(suffix, c);
 		}
 	} // while
-
 	while (!StackEmpty(S)) {
 		Pop(&S, &c);
 		if (c != '#') {
@@ -262,7 +253,7 @@ int Operate(int a, char op, int b) { //进行运算,op只能为+、-、*、/
 		break;
 	case'/': {
 		if (b == 0) {
-			printf("错误！除数不能为\n");
+			printf("Error, the  divisor can't be 0\n");
 		}
 		result = a / b;
 	    }
@@ -273,16 +264,35 @@ int Operate(int a, char op, int b) { //进行运算,op只能为+、-、*、/
 };
 
 int main() {
-	char exp[100]; //存原表达式
-	char suffix[100] = { '\0' }; //存后缀式
+	//char exp[50];//存原表达式
+	char exp1[]= { '3','+','9','-','(','2','*','2',')','\0' }; 
+	char exp2[] = { '5','*','3','-','(','2','+','6',')','\0' };
+	char suffix[50] = { '\0' }; //存后缀式
 
-	printf("请输入原表达式：");
+	/*printf("Please input an expression:");
 	scanf("%s", exp);
+	printf("The Original expression is: %s\n", exp);
 	Transform(suffix, exp);
-	printf("\n将其化为后缀式：%s\n", suffix);
-	printf("\n运算过程为：\n");
+	printf("The suffix type of the expression:%s\n", suffix);
+	printf("The excuation of the expression:\n");
+	Evaluate(suffix);*/
+
+
+	printf("The Original expression is: %s\n", exp1);
+	Transform(suffix, exp1);
+	printf("The suffix type of the expression:%s\n", suffix);
+	printf("The excuation of the expression:\n");
+	Evaluate(suffix);
+
+	for (int i = 0; i < 50; i++) {
+		suffix[i] = '\0';
+	}
+
+	printf("The Original expression is: %s\n", exp2);
+	Transform(suffix, exp2);
+	printf("The suffix type of the expression:%s\n", suffix);
+	printf("The excuation of the expression:\n");
 	Evaluate(suffix);
 
 	return 0;
 }
-
