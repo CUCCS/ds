@@ -128,7 +128,7 @@ int main()
 	printf("Print the queue:\n");
 	QueueTraverse(&Q);
 	//销毁队列
-	//DestroyQueue(&Q);
+	//DestroyQueue(&Q);因为在打印的过程中调用了DeQueue函数，清空了链表，无法正确调用销毁函数
 	return 0;
 
 
