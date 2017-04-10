@@ -59,7 +59,7 @@ Status DeQueue(LinkQueue *Q, QElemType *e) {
 		return ERROR;
 	}
 	p = Q->front->next;
-	e = p->data;
+	*e = p->data;
 	Q->front->next = p->next;
 	if (Q->rear == p) {
 		Q->rear = Q->front;
@@ -104,7 +104,7 @@ Status CreateQueue(int n){
 	printf("\n");
 
 	for (i = 0; i < n; i++) {
-		DeQueue(&Q, e);
+		DeQueue(&Q, &e);
 		printf("删除第%d个的元素：%d", i + 1, e);
 		printf("\n该队列的元素为：");
 		QueueTraverse(Q);

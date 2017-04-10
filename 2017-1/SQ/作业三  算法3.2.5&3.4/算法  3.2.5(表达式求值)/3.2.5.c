@@ -254,6 +254,7 @@ int Operate(int a, char op, int b) { //进行运算,op只能为+、-、*、/
 	case'/': {
 		if (b == 0) {
 			printf("Error, the  divisor can't be 0\n");
+			exit(0);
 		}
 		result = a / b;
 	    }
