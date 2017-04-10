@@ -24,16 +24,20 @@ Status EnQueue(Queue* pQ, const Elemtype data) {
 		debug_print("p is NULL , return OVERFLOW \n");
 		return OVERFLOW;
 	}
+	printf("\t[%s] Create new node p at %p\n",__FUNCTION__,p);
 	p->data = data;
 	if (isQueueEmpty(*pQ)) {
+		printf("\t[%s] Queue is empty . Set p->next and p->prev as NULL\n", __FUNCTION__);
+		printf("\t[%s] Set Q.rear and Q.head as p \n", __FUNCTION__);
 		p->next = p->prev = NULL;
 		(*pQ).rear = (*pQ).head = p;
 		return OK;
 	}
 	else {
+		printf("\t[%s] Queue is not empty . Set p->next as NULL and p->prev as Q.rear \n",__FUNCTION__);
 		p->next = NULL;
 		p->prev = (*pQ).rear;
-
+		printf("\t[%s] Set Q.rear->next as p and Q.rear as p \n",__FUNCTION__);
 		(*pQ).rear->next = p;
 		(*pQ).rear = p;
 		return OK;
@@ -50,12 +54,14 @@ Status DeQueue(Queue* pQ, Elemtype * pData) {
 
 
 	if (sizeOfQueue(*pQ) == 1) {
+		printf("\t[%s] The size of queue is 1 . Delete Q.head and set Q.rear and Q.head as NULL \n",__FUNCTION__);
 		free(pQ->head);
 		pQ->rear = NULL;
 		pQ->head = NULL;
 		return OK;
 	}
 	else {
+		printf("\t[%s] The size of queue is bigger than 1 . Set Q.head as Q.head->next and delete Q.head->prev \n", __FUNCTION__);
 		pQ->head = pQ->head->next;
 		free(pQ->head->prev);
 		pQ->head->prev = NULL;

@@ -200,7 +200,7 @@ void calculateSuffix(const char const* exp, int* pResult) {
 			case '*':*pResult = a * b; break;
 			case '/':*pResult = a / b; break;
 			default: 
-				printf("Error : What THe FuCK is THAT ???");
+				printf("Error : What THe F**K is THAT ???");
 				return;
 				break;
 			}/*end switch*/
