@@ -91,7 +91,6 @@ Status GetHead(LinkQueue Q,QElemType *e)
 		return ERROR;
 	}
 	*e = Q.front->next->data;
-	printf("The head element is %d.\n",e);
     return OK;
 }
 
@@ -187,6 +186,7 @@ int main()
 	printf("Get the head of the queue:\n");
 	//test GetHead
 	GetHead(Lq,&e);
+	printf("%d\n", e);
 
 	printf("Traverse of queue here:\n");
 	//test TraverseQueue
