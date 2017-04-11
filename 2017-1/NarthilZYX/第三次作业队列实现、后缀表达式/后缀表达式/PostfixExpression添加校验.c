@@ -1,5 +1,28 @@
 #include "STACK.h"
 
+//输入合法性校验函数
+Status isLegal(char exp[100])
+{
+	int i,j;
+	int flag = 0;
+	for( i = 0; exp[i]!='\0'; i++)
+	{
+		if(!IN(exp[i])&&!IN(exp[i+1]))
+		{
+			if(exp[i+1]>=48&&exp[i+1]<=57){
+			    printf("This Program cannot take double-digit.\n");
+			}
+			else{
+				printf("You've input illegal oprand.\n");
+			}
+			return ERROR;
+		}
+		else{
+			return OK;
+		}
+	}
+}
+
 //优先级判断函数
 int Precede( SElemType c, SElemType ch )
 {
@@ -248,7 +271,6 @@ Status Pass(char suffix[100], SElemType ch)
 }//end of Pass
 
 //转换为后缀表达式
-//suffix:接收数字元素
 //exp:中缀表达式
 Status transform(SqStack *S, char suffix[100], char exp[100] ) {
     InitStack(S);
@@ -306,9 +328,22 @@ int main()
 {
 	SqStack S;
 	char suf[101] = { NULL };
-	char ex[100] = {NULL};
+	char ex[100] = {'\0'};
+	char ex2[100] = {'\n'};
+	int i = 0;
+	int flag = 0;
+	printf("Input an arithmetic expression and don't forget to add a '#' at the end of it.\n");
 	gets(ex);
-	transform( &S, suf, ex );
+	if(isLegal(ex)){
+	    transform( &S, suf, ex );
+	}
+	else{
+		printf("Your inputs are illegal, please reset your input here:\n");
+		gets(ex2);
+		transform( &S, suf, ex2 );
+	}
 	return 0;
 }
 //4+(3*3-6)/3#
+//44+(3*3-6)/3#:error
+//4%(3*3-6)/3#:error
