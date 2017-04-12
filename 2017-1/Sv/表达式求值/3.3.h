@@ -40,3 +40,8 @@ void Pass(char *, char);
 int Precede(char, char);
 int  count(char *suffix);
 int operate(char, int, int);
+Status nInitStack(COUNT *S);
+Status nStackEmpty(COUNT S);
+Status nPop(COUNT *S, int *e);
+Status nPush(COUNT *S, int e);
+Status nGetTop(COUNT S, int *e);
