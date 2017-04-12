@@ -83,6 +83,7 @@ Status DeQueue(LinkQueue *Q, QElemType *e) {
 	return OK;
 
 }
+
 Status QueueTraverse(LinkQueue Q) {
 	QNode *p;
 	p = Q.front->Next;
