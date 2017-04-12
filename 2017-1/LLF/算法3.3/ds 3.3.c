@@ -1,406 +1,212 @@
-//实现表达式求值   
-//参考了CSDN部分代码
-//允许用户输入空格（系统自动删除），只能进行整数的四则运算，支持小括号  
-//对不能整除的将按两个整数除法规则进行取整  
-//对结果进行分步显示
-#include <stdio.h>  
-#include <stdlib.h>  
-#define OK      1  
-#define ERROR   0  
-#define TRUE    1  
-#define FALSE   0  
-#define STACK_INIT_SIZE 100  
-#define STACKINCREMENT 10  
-#define BUFFERSIZE 256  
+//顺序栈实现中缀表达式转后缀表达式并计算表达式的值
+//输出表达式 以及计算结果
+//可计算+-*/及含有括号的表达式
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
 
-typedef int Status; //函数返回状态  
-typedef int OPNDelem;  //操作数元素类型  
-typedef struct //操作数栈结构定义 
-{ 
-	OPNDelem *base;
-	OPNDelem *top;
-	int Stacksize;
-}OPNDStack;
+#define N 50//输入字符串长度
+#define OK 1  
+#define ERROR -1  
+#define TRUE 1  
+#define FALSE 0  
+#define MAXSIZE 50  //栈容量
+typedef int Status;
+typedef char ElemType;
 
-typedef char OPTRelem;//操作符元素类型  
+typedef struct {
+	ElemType data[MAXSIZE];
+	int top;//栈顶指针  
+}Stack;
 
-typedef struct //操作符栈结构定义
-{  
-	OPTRelem *base;
-	OPTRelem *top;
-	int Stacksize;
-}OPTRStack;
-
-Status InitStack_OPND(OPNDStack *S);
-//构造一个空栈S  
-Status Gettop_OPND(OPNDStack S, OPNDelem *e);
-//若栈不为空，则用e返回S的栈顶元素，并返回OK；否则返回FALSE  
-Status Push_OPND(OPNDStack *S, OPNDelem e);
-//插入元素e为新的栈顶元素  
-Status Pop_OPND(OPNDStack *S, OPNDelem *e);
-//若栈S不为空，则删除S的栈顶元素，用e返回其值，并返回OK,否则返回ERROR  
-
-
-
-Status InitStack_OPTR(OPTRStack *S);
-//构造一个空栈S  
-OPTRelem Gettop_OPTR(OPTRStack S);
-//若栈不为空，则用e返回S的栈顶元素，并返回OK；否则返回FALSE  
-Status Push_OPTR(OPTRStack *S, OPTRelem e);
-//插入元素e为新的栈顶元素  
-Status Pop_OPTR(OPTRStack *S, OPTRelem *e);
-//若栈S不为空，则删除S的栈顶元素，用e返回其值，并返回OK,否则返回ERROR  
-
-
-
-void Standard(char *expression);
-//将表达式标准化  
-OPNDelem EvalueateExpression(const char *expression);
-//算数表达式求值  
-Status IsOPerator(char c);
-//判断c是否是一个操作符  
-char Precede(char OP1, char OP2);
-//判断OP1和OP2优先级的高低，返回'>','<','='  
-OPNDelem OPerate(OPNDelem a, OPTRelem comp, OPNDelem b);
-//对操作数a，b进行comp运算  
-const char *getopND(const char *c, OPNDelem *OP);
-//获得以*c开始的操作数，返回后c为操作符  
-
-
-Status InitStack_OPND(OPNDStack *S)//构造一个空操作数栈S  
-{
-	 
-	S->base = (OPNDelem *)malloc(STACK_INIT_SIZE * sizeof(OPNDelem));
-	if (!S->base)//分配失败  
-	{
-		printf("分配内存失败.\n");
-		exit(0);
-	}
-	S->top = S->base;
-	S->Stacksize = STACK_INIT_SIZE;
-	return OK;
-}
-
-Status Gettop_OPND(OPNDStack S, OPNDelem *e) {
-	//若操作数栈不为空，则用e返回S的栈顶元素，并返回OK；否则返回FALSE  
-	if (S.top == S.base) {
-		printf("栈为空.\n");
-		return FALSE;
-	}
-	else {
-		*e = *(S.top - 1);
-		return OK;
-	}
-}
-
-Status Push_OPND(OPNDStack *S, OPNDelem e) {
-	//插入元素e为新的栈顶元素  
-	if (S->top - S->base >= S->Stacksize) {//栈已满，追加存储空间  
-		S->base = (OPNDelem *)realloc(S->base, (S->Stacksize + STACKINCREMENT) * sizeof(OPNDelem));
-		if (!S->base)
-		{
-			printf("重新申请空间失败.\n");
-			exit(0);
-		}
-		S->top = S->base + S->Stacksize;//更改栈顶指针  
-		S->Stacksize += STACKINCREMENT;
-	}
-	*S->top++ = e;
-	return OK;
-}
-
-Status Pop_OPND(OPNDStack *S, OPNDelem *e) //若栈S不为空，则删除S的栈顶元素，用e返回其值，并返回OK,否则返回ERROR  
-{
+// 初始化栈  
+Status InitStack(Stack *S) {
 	
-	if (S->top == S->base) {//栈为空  
-		printf("栈为空.\n");
+	int i;
+	for (i = 0; i<MAXSIZE; i++)
+		S->data[i] = NULL;
+	S->top = -1;
+	return OK;
+}
+
+
+//压栈 
+Status Push(Stack *S, ElemType e) {
+	if (MAXSIZE - 1 == S->top)
+	{
+		
 		return ERROR;
 	}
-	*e = *(--S->top);
+	
+	++(S->top);
+	S->data[S->top] = e;
 	return OK;
 }
 
-
-Status InitStack_OPTR(OPTRStack *S) //构造一个空操作数栈S  
-{
-	
-	S->base = (OPTRelem *)malloc(STACK_INIT_SIZE * sizeof(OPTRelem));
-	if (!S->base)//分配失败  
+//出栈  
+Status Pop(Stack *S, ElemType *e) {
+	//将栈顶元素出栈，赋给e  
+	if (-1 == S->top)
 	{
-		printf("分配内存失败.\n");
-		exit(0);
-	}
-	S->top = S->base;
-	S->Stacksize = STACK_INIT_SIZE;
-	return OK;
-}
-
-OPTRelem Gettop_OPTR(OPTRStack S)//若操作数栈不为空，则返回S的栈顶元素，并返回OK；否则返回FALSE   
-{
-	
-	OPTRelem e;
-	if (S.top == S.base) {
-		printf("栈为空.\n");
-	}
-	else {
-		e = *(S.top - 1);
-	}
-	return e;
-}
-
-Status Push_OPTR(OPTRStack *S, OPTRelem e) //插入元素e为新的栈顶元素 
-{
-	 
-	if (S->top - S->base >= S->Stacksize)//栈已满，追加存储空间 
-	{ 
-		S->base = (OPTRelem *)realloc(S->base, (S->Stacksize + STACKINCREMENT) * sizeof(OPTRelem));
-		if (!S->base)
-		{
-			printf("重新申请空间失败!\n");
-			exit(0);
-		}
-		S->top = S->base + S->Stacksize;//更改栈顶指针  
-		S->Stacksize += STACKINCREMENT;
-	}
-	*S->top++ = e;
-	return OK;
-}
-
-Status Pop_OPTR(OPTRStack *S, OPTRelem *e) {
-	//若栈S不为空，则删除S的栈顶元素，用e返回其值，并返回OK,否则返回ERROR  
-	if (S->top == S->base) //栈为空
-	{  
-		printf("栈为空.\n");
 		return ERROR;
 	}
-	*e = *(--S->top);
+	*e = S->data[S->top];
+	--(S->top);
 	return OK;
 }
 
-
-OPNDelem EvalueateExpression(const char *expression)	//对只有四则运算符的算数表达式 expression 求值  
-                                                    	//OPTR:操作符栈，OPND:操作数栈   
+Status Transform(char *mid,char *final)
 {
-	const char *c = expression;
-	OPNDStack OPND;
-	OPTRStack OPTR;
-	OPTRelem x, comp;
-	OPNDelem a, b, num, result;
-	InitStack_OPTR(&OPTR);//初始化操作符栈  
-	InitStack_OPND(&OPND);//初始化操作数栈  
-	Push_OPTR(&OPTR, '#');//首先将匹配符号'#'入栈  
-	while (*c != '#' || Gettop_OPTR(OPTR) != '#')
+	//中缀表达式为mid，转换成的后缀表达式传给final 
+	//新建一个栈，来存储运算符
+	char e;
+	Stack S;
+	if (OK != InitStack(&S)) 
 	{
-		if (*c == '\0')//遇到回车退出  
-			break;
-		if (FALSE == IsOPerator(*c)) {
-			c = getopND(c, &num);
-			Push_OPND(&OPND, num);
+		return ERROR;
 	}
-		else
-			switch (Precede(Gettop_OPTR(OPTR), *c))
-			{
-			case '<':
-				Push_OPTR(&OPTR, *c);
-				c++;
-				break;
-			case '=':
-				Pop_OPTR(&OPTR, &x);
-				c++;
-				break;
-			case '>':
-				Pop_OPTR(&OPTR, &comp);
-				Pop_OPND(&OPND, &b);
-				Pop_OPND(&OPND, &a);
-				result = OPerate(a, comp, b);
-				//printf("temp result is:%d\n",result);  
-				Push_OPND(&OPND, result);
-				break;
-			default:
-				//printf("Precede:%c",Precede(Gettop_OPTR(OPTR),*c));  
-				break;
-			}//switch  
-	}//while  
-	Gettop_OPND(OPND, &result);
-	return result;
-}
-
-void Standard(char *expression) //将字符串表达式标准化为算术表达式
-{	  
-	char *p = expression, *q;
-	while (*p != '\0') //遍历字符串 
-	{ 
-		if (*p == ' ') //如果是空格，删除
-		{  
-			q = p;
-			do 
-			{
-				*q = *(q + 1);
-				q++;
-			} while (*q != '\0');
+	//当字符串*mid未终止时，循环  
+	while (*mid) 
+	{
+		//如果是数字，则直接输出  
+		if (*mid >= '0' && *mid <= '9') 
+		{
+			*(final++) = *(mid++);
+			continue;
 		}
-		p++;
+		else if (*mid == '+' || *mid == '-' || *mid == '*' || *mid == '/' || *mid == '(' || *mid == ')') 
+		{
+			//比较之前是否有更高优先级的符号  
+			if (S.top == -1 || '(' == *mid) 
+			{
+				//当栈为空或遇到左括号时，直接入栈  
+				Push(&S, *(mid++));
+				continue;
+			}
+			if (')' == *mid) 
+			{
+				//遇到右括号时，栈顶元素依次出栈；直到遇到第一个左括号时结束  
+				Pop(&S, &e);
+				*(final++) = e;
+				while (Pop(&S, &e) && e != '(') 
+				{
+					*(final++) = e;
+				}  
+				mid++;
+				continue;
+			}
+			//接下来取出临时的栈顶元素，与当前输入的符号*mid相比较；当栈顶元素优先级大于等于输入符号的优先级时，出栈，且*mid入栈；
+			//否则符号入栈 
+			Pop(&S, &e);
+			if ('+' == *mid || '-' == *mid) 
+			{
+				if (e == '(') 
+				{
+					Push(&S, '(');
+					Push(&S, *(mid++));
+					continue;
+				}
+				else 
+				{
+					*(final++) = e;
+					Push(&S, *(mid++));
+					continue;
+				}
+			}
+			else if ('*' == *mid || '/' == *mid) 
+			{
+				if ('*' == e || '/' == e) 
+				{
+					*(final++) = e;
+					Push(&S, *(mid++));
+					continue;
+				}
+				else 
+				{
+					Push(&S, e);
+					Push(&S, *(mid++));
+					continue;
+				}
+			}
+
+		}
+		else {
+			//输入的字符不合法
+			return ERROR;
+
+		}
 	}
-	*p++ = '#';
-	*p = '\0';
+	//当待转换的字符已经结束时，符号栈应至少还有一个元素，将栈中的元素依次出栈  
+	while (S.top != -1) 
+	{
+		Pop(&S, &e);
+		*(final++) = e;
+	}
+	//final的结束符
+	*final = '\0';
 }
 
-const char *getopND(const char *c, OPNDelem *OP) //获得以*c开始的操作数，返回后c为操作符  
-{	
-	int sum = 0, tmp;
-	while (FALSE == IsOPerator(*c)) {//当c不是操作符  
-		tmp = *c - '0';
-		sum = sum * 10 + tmp;
-		//printf("tmp=%d\n",tmp);  
-		c++;
-	}
-	*OP = sum;
-	//printf("getopND:%d\n",*OP);  
-	return c;
-}
-
-Status IsOPerator(char c)//判断c是否是一个运算操作符 
-{	  
-	switch (c) {
-	case '+':
-	case '-':
-	case '*':
-	case '/':
-	case '(':
-	case ')':
-	case '#':
-		return TRUE;
-		break;
-	default:
-		return FALSE;
-		break;
-	}
-}
-
-char Precede(char OP1, char OP2)//判断OP1和OP2优先级的高低，返回'>','<','='   
+//计算后缀表达式，若数字直接进栈，若是运算符则两个数字出栈，运算结果进栈，最终栈内只剩最后的结果
+int Cul(char *a)
 {
 	
-	switch (OP1) {
-	case '+':
-		switch (OP2) {
-		case '*':
-		case '/':
-		case '(':
-			return '<';
-			break;
-		default:
-			return '>';
-			break;
-		}
-		break;
-	case '-':
-		switch (OP2) {
-		case '*':
-		case '/':
-		case '(':
-			return '<';
-			break;
-		default:
-			return '>';
-			break;
-		}
-		break;
-	case '*':
-		switch (OP2) {
-		case '(':
-			return '<';
-			break;
-		default:
-			return '>';
-			break;
-		}
-		break;
-	case '/':
-		switch (OP2) {
-		case '(':
-			return '<';
-			break;
-		default:
-			return '>';
-			break;
-		}
-		break;
-	case '(':
-		switch (OP2) {
-		case ')':
-			return '=';
-			break;
-		default:
-			return '<';
-			break;
-		}
-		break;
-	case ')':
-		switch (OP2) {
-		default:
-			return '>';
-			break;
-		}
-		break;
-	case '#':
-		switch (OP2) {
-		case '#':
-			return '=';
-			break;
-		default:
-			return '<';
-			break;
-		}
-		break;
-	default:
-		return '<';
-		break;
-	}
-}
+	Stack *s= (struct Stack *)malloc(sizeof(Stack));
+	InitStack(&s);
+	char e1=0, e2=0,e=0;
 
-OPNDelem OPerate(OPNDelem a, OPTRelem comp, OPNDelem b)//对操作数a，b进行comp运算，并返回运算结果   
-	                                                   //comp只能是四则运算符号
-{
 	
-	int result;
-	switch (comp) {
-	case '+':
-		result = a + b;
-		break;
-	case '-':
-		result = a - b;
-		break;
-	case '*':
-		result = a*b;
-		break;
-	case '/':
-		if (b == 0) {
-			printf("ERROR:除数为0!");
-			exit(0);
+	for (int i = 0; i < strlen(a); i++)
+	{
+		if (a[i] >= '0'&&a[i] <= '9')
+			Push(&s, a[i]);
+		
+		else if (a[i] == '+')
+		{
+			Pop(&s, &e2);
+			Pop(&s, &e1);
+			e = (e1 - '0') + (e2 - '0');
+			Push(&s, e);
 		}
-		result = a / b;
-		break;
-	default:
-		printf("It's not a OPerator!\n");
-		break;
+		else if (a[i] == '-')
+		{
+			Pop(&s, &e2);
+			Pop(&s, &e1);
+			e = (e1 - '0') - (e2 - '0');
+			Push(&s, e);
+		}
+		else if (a[i] == '*')
+		{
+			Pop(&s, &e2);
+			Pop(&s, &e1);
+			e = (e1 - '0') * (e2 - '0');
+			Push(&s, e);
+		}
+		else if (a[i] == '/')
+		{
+			Pop(&s, &e2);
+			Pop(&s, &e1);
+			e = (e1 - '0') / (e2 - '0');
+			Push(&s, e);
+		}
 	}
-	printf("%d %c %d = %d\n", a, comp, b, result);
-	return result;
-
+	Pop(&s, &e);
+	
+	return (int)(e);
+				
 }
 
-int main()
+
+void main()
 {
-	OPNDelem result = 0;
-	char *expression = (char*)malloc(sizeof(char)*BUFFERSIZE);
-	if (expression == NULL) {
-		printf("Sorry!Memory initialize ERROR!\n");
-		exit(0);
-	}
+	char middle[N];
+	char final[N];
+	int r;
 	printf("Please input an expression:\n");
-	gets(expression);
-	Standard(expression);				
-	result = EvalueateExpression(expression);
-	printf("The result of the expression:%d\n", result);
-	return 0;
+	gets(middle);
+	Transform(middle,final);
+	printf("After:\n");
+	puts(final);
+	r = Cul(final);
+	printf("The result is %d",r);
+
 }

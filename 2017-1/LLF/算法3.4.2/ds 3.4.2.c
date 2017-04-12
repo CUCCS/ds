@@ -17,9 +17,9 @@ typedef struct
 
 typedef enum
 {
-	OK,
-	ERROR,
-	OVERFLOW
+	OK,//OK=0
+	ERROR,//ERROR=1
+	OVERFLOW//OVERFLOW=2
 }Status;
 
 typedef enum
@@ -92,7 +92,7 @@ QelemType GetHead(LinkQueue *Q, QelemType *e)
 		exit(ERROR);
 	}
 	
-	return  e=Q->front->data;
+	return  *e=Q->front->next->data;
 	
 }
 
@@ -127,26 +127,20 @@ Status DeQueue(LinkQueue *Q, QelemType *e)
 	return OK;
 }
 
-void QueueTraverse(LinkQueue *Q)
-// 从队头到队尾依次对队列Q中每个元素调用函数visit() 
+Status QueueTraverse(LinkQueue Q)
 {
-	Q->front = Q->front->next;
-	while (visit(Q->front) == true)
+	QueuePtr p;
+	QelemType e;
+	p = Q.front->next;
+	while (p)
 	{
-		Q->front = Q->front->next;
+		e = p->data;
+		printf("%d", e);
+		printf("   ");
+		p = p->next;
 	}
+	printf("\n");
 	return OK;
-}
-
-bool  visit(QueuePtr p)
-{
-	if (p != NULL)
-	{
-		QelemType x = p->data;
-		printf(" %d ", x);
-		return true;
-	}
-	else return false;
 }
 
 
@@ -160,13 +154,16 @@ void main()
 	{
 		EnQueue(&q, a[i]);
 	}
-	printf("\n队列的长度: %d\n", QueueLength(&q));
-	
+	if (!QueueEmpty(&q)) printf("队列非空\n");
 	printf("插入完成：");
-	
-	QueueTraverse(&q);
-
-	printf("\n销毁队列\n");
-
-	DestroyQueue(&q);
+	QueueTraverse(q);
+	printf("\n队列的长度： %d\n", QueueLength(&q));
+	GetHead(&q, &e);
+	printf("队头元素：%d\n", e);
+	DeQueue(&q,&e);
+	printf("删除队头元素 %d 后 ：",e);
+	QueueTraverse(q);
+	if (!ClearQueue(&q))printf("\n清空队列成功");
+	if(!DestroyQueue(&q))
+	printf("\n销毁队列成功");
 }
