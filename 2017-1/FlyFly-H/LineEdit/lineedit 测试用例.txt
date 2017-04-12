@@ -1,0 +1,7 @@
+﻿实验三的测试用例为：
+
+输入：whli##ilr#e(s#*s)
+输出：while（*s）
+
+输入：outchar@puthar(*s=#++）
+输出：putchar(*s++)
