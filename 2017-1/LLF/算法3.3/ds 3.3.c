@@ -147,45 +147,42 @@ Status Transform(char *mid,char *final)
 }
 
 //计算后缀表达式，若数字直接进栈，若是运算符则两个数字出栈，运算结果进栈，最终栈内只剩最后的结果
-int Cul(char *a)
+int Cul(char *a,Stack s)
 {
-	
-	Stack *s= (struct Stack *)malloc(sizeof(Stack));
-	InitStack(&s);
-	char e1=0, e2=0,e=0;
+	int e1=0, e2=0,e=0;
 
 	
 	for (int i = 0; i < strlen(a); i++)
 	{
 		if (a[i] >= '0'&&a[i] <= '9')
-			Push(&s, a[i]);
+			Push(&s,(int)( a[i]-'0'));
 		
 		else if (a[i] == '+')
 		{
 			Pop(&s, &e2);
 			Pop(&s, &e1);
-			e = (e1 - '0') + (e2 - '0');
+			 e = e1 + e2 ;
 			Push(&s, e);
 		}
 		else if (a[i] == '-')
 		{
 			Pop(&s, &e2);
 			Pop(&s, &e1);
-			e = (e1 - '0') - (e2 - '0');
+		    e = e1 - e2;
 			Push(&s, e);
 		}
 		else if (a[i] == '*')
 		{
 			Pop(&s, &e2);
 			Pop(&s, &e1);
-			e = (e1 - '0') * (e2 - '0');
+			e = e1 * e2;
 			Push(&s, e);
 		}
 		else if (a[i] == '/')
 		{
 			Pop(&s, &e2);
 			Pop(&s, &e1);
-			e = (e1 - '0') / (e2 - '0');
+			e = e1 / e2;
 			Push(&s, e);
 		}
 	}
@@ -198,6 +195,8 @@ int Cul(char *a)
 
 void main()
 {
+	Stack s;
+	InitStack(&s);
 	char middle[N];
 	char final[N];
 	int r;
@@ -206,7 +205,7 @@ void main()
 	Transform(middle,final);
 	printf("After:\n");
 	puts(final);
-	r = Cul(final);
+	r = Cul(final,s);
 	printf("The result is %d",r);
 
 }
