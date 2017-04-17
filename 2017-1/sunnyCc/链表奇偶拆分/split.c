@@ -13,15 +13,17 @@ void CreateList(LinkList *L, int n)
 	{
 		p = (LNode*)malloc(sizeof(LNode));
 		p->data = rand() % 100 + 1;
+		printf("%d ", p->data);
 		p->next = (*L)->next;
 		(*L)->next = p;
 	}
+	printf("\n");
 }
 void Split(LinkList list, LinkList list1, LinkList list2)
 {
 
 	LNode *temp1, *temp, *p1, *p2;
-
+	int count = 0;
 	list1->data = 0;
 	list1->next = NULL;
 	list2->data = 0;
@@ -32,7 +34,7 @@ void Split(LinkList list, LinkList list1, LinkList list2)
 
 	while (temp)
 	{
-		if (temp->data % 2)//操作奇数项
+		if (count % 2)//操作奇数项
 		{
 			temp1 = temp->next;
 			if (list1->next == NULL)
@@ -47,6 +49,7 @@ void Split(LinkList list, LinkList list1, LinkList list2)
 			}
 			p1 = temp;
 			list1->data++;//储存链表的长度加1
+			count++;
 		}
 		else
 		{
@@ -63,6 +66,7 @@ void Split(LinkList list, LinkList list1, LinkList list2)
 			}
 			p2 = temp;
 			list2->data++;
+			count++;
 		}
 		temp = temp1;
 	}

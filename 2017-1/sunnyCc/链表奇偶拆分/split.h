@@ -8,6 +8,3 @@ typedef struct Node
 void CreateList(LinkList *L, int n);
 void Split(LinkList list, LinkList list1, LinkList list2);
 void Traverse(LinkList head);
-
-
-
