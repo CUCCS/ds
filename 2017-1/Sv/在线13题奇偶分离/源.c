@@ -8,7 +8,7 @@ int main() {
 	CreateList(L, n);
 	printf("随机创建：\n");
 	PRINT(L);
-	printf("\n分离奇偶:\n");
+	printf("\n按序列奇偶分离:\n");
 	SperateList(L, L1, L2, n);
 	printf("奇列：\n");
 	PRINT(L1);

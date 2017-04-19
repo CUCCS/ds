@@ -19,7 +19,7 @@ Status SperateList(LinkList L, LinkList L1, LinkList L2, int n) {
 	LinkList p2 = L2->next = (LinkList)malloc(sizeof(LNode));
 	int n1=0, n2=0;
 	for (int i = 0; i < n; i++) {
-		switch (p->data % 2) {
+		switch ((i+1) % 2) {
 		case 1:
 			p1->next = (LinkList)malloc(sizeof(LNode));
 			p1->data = p->data;
