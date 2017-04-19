@@ -45,8 +45,8 @@ Status Distribute(LinkList L1,LinkList L2,LinkList L3)
 	LinkList c = L3; //p,list
 	L1->data = 0;//初始L1
 	L2->data = 0;//初始L2
-	c=c->next;//初始c的指针指向
-    while(c != NULL)//当c不为空时
+	c = c->next;//初始c的指针指向
+	while(c != NULL)//当c不为空时
 	{
 		a->next = c;//a的尾指针指向c
 		a = a->next;//a指向下一个元素

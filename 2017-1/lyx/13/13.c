@@ -6,7 +6,6 @@ int main ()
 	LinkList L;
 	LinkList L1;
 	LinkList L2;
-
 	L = (LinkList)malloc(sizeof(LNode)); 
     L1 = (LinkList)malloc(sizeof(LNode)); 
 	L2 = (LinkList)malloc(sizeof(LNode)); 
