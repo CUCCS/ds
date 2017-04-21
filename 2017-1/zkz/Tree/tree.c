@@ -1,5 +1,7 @@
 #include "tree.h"
 
+#define EMPTY '#'
+
 /*===字符串相关===*/
 /*手动获取子串*/
 char* substr(char* source, int begin, int end) {
@@ -156,7 +158,7 @@ Tree newBinaryTree(char* str) {
 				current->left = newNode();
 				current->left->parent = current;
 				current->left->data = *str;
-				if (*str != ' ') {
+				if (*str != EMPTY) {
 					current = current->left;
 				}
 			}/*end if current->left == NULL*/
@@ -164,7 +166,7 @@ Tree newBinaryTree(char* str) {
 				current->right = newNode();
 				current->right->parent = current;
 				current->right->data = *str;
-				if (*str != ' ') {
+				if (*str != EMPTY) {
 					current = current->right;
 				}
 			}/*end if current->left == NULL*/
@@ -174,7 +176,7 @@ Tree newBinaryTree(char* str) {
 			}
 		}/*end while*/
 		 /*去掉数据为空格的叶节点*/
-		DeleteSpecialNode(&tree, '#');
+		DeleteSpecialNode(&tree, EMPTY);
 		return tree;
 	}
 	__except (solveException) {};
