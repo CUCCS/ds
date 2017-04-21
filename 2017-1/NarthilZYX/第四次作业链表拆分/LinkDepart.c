@@ -1,6 +1,5 @@
 #include "LinkList.h"
 
-//Á´±í²ð·Öº¯Êý
 Status LinkDepart(LinkList L)
 {
 	LinkList La, Lb;
@@ -16,13 +15,13 @@ Status LinkDepart(LinkList L)
 	while(p)
 	{
 		if(i%2==0){
-			ra = (LNode *)malloc(sizeof(L));
+			ra = (LNode *)malloc(sizeof(LNode));
 			ra->data = p->data;
 			pa->next = ra;
 			pa = ra;
 		}
 		else{
-			rb = (LNode *)malloc(sizeof(L));
+			rb = (LNode *)malloc(sizeof(LNode));
 			rb->data = p->data;
 			pb->next = rb;
 			pb = rb;
@@ -37,6 +36,9 @@ Status LinkDepart(LinkList L)
 	TraverseList(La);
 	printf("LinkListB:\n");
 	TraverseList(Lb);
+	free(ra);
+	free(rb);
+	system("pause");
 	return OK;
 }
 
