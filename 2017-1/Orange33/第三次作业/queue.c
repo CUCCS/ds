@@ -1,7 +1,6 @@
-#include <stdio.h> 
+ï»¿#include <stdio.h> 
 #include <stdlib.h> 
 #include <time.h> 
-
 #define QElemType int 
 
 typedef struct QNode 
@@ -9,7 +8,6 @@ typedef struct QNode
 	QElemType data; 
 	struct QNode *next; 
 }QNode, *QueuePtr; 
-
 typedef struct 
 { 
 	QueuePtr front; 
@@ -23,7 +21,7 @@ typedef enum
 	OVERFLOW 
 }Status; 
 
-Status InitQueue(LinkQueue *Q) //¹¹Ôì¿Õ¶ÓÁĞ
+Status InitQueue(LinkQueue *Q) //æ„é€ ç©ºé˜Ÿåˆ—
 { 
 	Q->front = Q->rear = (QueuePtr)malloc(sizeof(QNode)); 
 	if (!Q->front) 
@@ -33,8 +31,7 @@ Status InitQueue(LinkQueue *Q) //¹¹Ôì¿Õ¶ÓÁĞ
 	Q->front->next = NULL; 
 	return OK; 
 } 
-
-Status DestroyQueue(LinkQueue*Q) //Ïú»Ù¶ÓÁĞ
+Status DestroyQueue(LinkQueue *Q) //é”€æ¯é˜Ÿåˆ—
 { 
 	while (Q->front) 
 	{ 
@@ -45,8 +42,7 @@ Status DestroyQueue(LinkQueue*Q) //Ïú»Ù¶ÓÁĞ
 	} 
 	return OK; 
 } 
-
-Status EnQueue(LinkQueue*Q, QElemType e) // ²åÈëÔªËØeÎªQµÄĞÂµÄ¶ÓÎ²ÔªËØ 
+Status EnQueue(LinkQueue *Q, QElemType e) // æ’å…¥å…ƒç´ eä¸ºQçš„æ–°çš„é˜Ÿå°¾å…ƒç´  
 { 
 	QueuePtr p = (QueuePtr)malloc(sizeof(QNode)); 
 	if (!p) 
@@ -57,31 +53,32 @@ Status EnQueue(LinkQueue*Q, QElemType e) // ²åÈëÔªËØeÎªQµÄĞÂµÄ¶ÓÎ²ÔªËØ
 	{ 
 		p->data = e; 
 		p->next = NULL; 
-
 		Q->rear->next = p; 
 		Q->rear = p; 
-	} 
+	}
+	return OK;
 } 
 
-Status DeQueue(LinkQueue*Q, QElemType*e)  // Èô¶ÓÁĞ²»¿Õ£¬ÔòÉ¾³ıQµÄ¶ÓÍ·ÔªËØ
+Status DeQueue(LinkQueue *Q, QElemType *e)  // è‹¥é˜Ÿåˆ—ä¸ç©ºï¼Œåˆ™åˆ é™¤Qçš„é˜Ÿå¤´å…ƒç´ 
 { 
+	QueuePtr p = (QueuePtr)malloc(sizeof(QNode)); 
 	if (Q->front == Q->rear) 
 	{ 
 		return ERROR; 
 	} 
-	QNode *p= Q->front->next; 
+	p = Q->front->next;
+	
 	*e = p->data; 
 	Q->front->next = p->next; 
 	if (Q->rear == p) 
 	{ 
 		Q->rear = Q->front; 
-
 	} 
 	free(p); 
 	return OK; 
 } 
 
-int QueueEmpty(LinkQueue*Q) //ÅĞ¶Ï¶ÓÁĞÊÇ·ñÎª¿Õ
+int QueueEmpty(LinkQueue*Q) //åˆ¤æ–­é˜Ÿåˆ—æ˜¯å¦ä¸ºç©º
 { 
 	if (Q->front == Q->rear) 
 	{ 
@@ -92,8 +89,7 @@ int QueueEmpty(LinkQueue*Q) //ÅĞ¶Ï¶ÓÁĞÊÇ·ñÎª¿Õ
 		return 0; 
 	}
 } 
-
-Status ClearQueue(LinkQueue*Q) //Çå¿Õ¶ÓÁĞ
+Status ClearQueue(LinkQueue*Q) //æ¸…ç©ºé˜Ÿåˆ—
 { 
 	QElemType e; 
 	if (QueueEmpty(Q)) 
@@ -105,9 +101,9 @@ Status ClearQueue(LinkQueue*Q) //Çå¿Õ¶ÓÁĞ
 	{ 
 		DeQueue(Q,&e); 
 	} 
+	return OK;
 } 
-
-int QueueLength(LinkQueue Q) //Çó¶ÓÁĞ³¤¶È
+int QueueLength(LinkQueue Q) //æ±‚é˜Ÿåˆ—é•¿åº¦
 { 
 	int i = 0; 
 	while (!QueueEmpty(&Q)) 
@@ -115,9 +111,9 @@ int QueueLength(LinkQueue Q) //Çó¶ÓÁĞ³¤¶È
 		Q.front = Q.front->next; 
 		i++; 
 	} 
+	return i;
 } 
-
-Status GetHead(LinkQueue Q, QElemType *e) //·µ»Ø¶ÓÁĞÍ·ÔªËØ 
+Status GetHead(LinkQueue Q, QElemType *e) //è¿”å›é˜Ÿåˆ—å¤´å…ƒç´  
 { 
 	if (QueueEmpty(&Q) == 1) 
 	{ 
@@ -131,22 +127,24 @@ Status GetHead(LinkQueue Q, QElemType *e) //·µ»Ø¶ÓÁĞÍ·ÔªËØ
 	} 
 } 
 
-Status QueueTraverse(LinkQueue Q) //±éÀú¶ÓÁĞ
-{ 
-	if (QueueEmpty(&Q)) 
-	{ 
-		printf("ERROR"); 
-	} 
+Status QueueTraverse (LinkQueue *Q )//éå†é˜Ÿåˆ—
+{
+	QueuePtr p = Q->front->next;
+	if (Q->front == Q->rear)
+	{
+		printf("é˜Ÿåˆ—ä¸ºç©º!\n");
+		return ERROR;
+	}
 	else 
-	{ 
-		QNode*p = Q.front->next; 
-		while (p != Q.rear) 
-		{ 
-			printf("%d", p->data); 
-			p = p->next; 
-		} 
-		return OK; 
-	} 
+	{
+		while (p)
+		{
+			printf("%d ", p->data);
+			p = p->next;
+		}
+		printf("\n");
+		return OK;
+	}
 }
 
 int main() 
@@ -157,34 +155,34 @@ int main()
 	LinkQueue q; 
 	InitQueue(&q); 
 	srand(time(0)); 
-	n = rand() % 9 + 1; //Éú³ÉËæ»úÊı
+	n = rand() % 9 + 1; //ç”Ÿæˆéšæœºæ•°
 	for (i = 0; i < n; i++) 
 	{ 
 		n1 = rand() % 9 + 1; 
 		EnQueue(&q, n1); 
 	} 
-	printf("Ëæ»úÉú³É¶ÓÁĞq:\n"); 
-	QueueTraverse(q); 
+	printf("éšæœºç”Ÿæˆé˜Ÿåˆ—q:\n"); 
+	QueueTraverse(&q); 
 	printf("\n"); 
-	printf("¶ÓÁĞ³¤¶È(¼ÓÉÏÍ·½áµã)£º\n"); 
+	printf("é˜Ÿåˆ—é•¿åº¦(åŠ ä¸Šå¤´ç»“ç‚¹)ï¼š\n");
 	printf("%d", QueueLength(q)); 
-	printf("\n¶ÓÁĞq¶ÓÍ·ÔªËØÎª£º\n"); 
+	printf("\né˜Ÿåˆ—qé˜Ÿå¤´å…ƒç´ ä¸ºï¼š\n"); 
 	GetHead(q, &e); 
 	printf("%d\n", e); 
-	printf("É¾³ı¶ÓÍ·ÔªËØ£¬ĞÂ¶ÓÁĞÎª:\n"); 
+	printf("åˆ é™¤é˜Ÿå¤´å…ƒç´ ï¼Œæ–°é˜Ÿåˆ—ä¸º:\n"); 
 	DeQueue(&q, &e); 
-	QueueTraverse(q); 
+	QueueTraverse(&q); 
 	printf("\n"); 
 	if (!QueueEmpty(&q) ) 
 	{ 
-		printf("Ä¿Ç°¶ÓÁĞ²»Îª¿Õ\n"); 
+		printf("ç›®å‰é˜Ÿåˆ—ä¸ä¸ºç©º\n"); 
 	} 
-	printf("Çå¿Õ¶ÓÁĞ\n"); 
+	printf("æ¸…ç©ºé˜Ÿåˆ—\n"); 
 	{ 
 		ClearQueue(&q); 
 	} 
 	if (QueueEmpty(&q)) 
 	{ 
-		printf("Ä¿Ç°¶ÓÁĞÎª¿Õ\n"); 
+		printf("ç›®å‰é˜Ÿåˆ—ä¸ºç©º\n"); 
 	}
 }
