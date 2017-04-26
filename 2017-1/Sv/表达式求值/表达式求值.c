@@ -37,7 +37,7 @@ Status GetTop(SqStack S, SElemType *e) {
 	return OK;
 }
 
-Status InitStack(COUNT *S) {
+Status nInitStack(COUNT *S) {
 	S->base = (int *)malloc(STACK_INIT_SIZE*sizeof(int));
 	if (!S->base) { exit(OVERFLOW); }
 	S->top = S->base;
@@ -45,18 +45,18 @@ Status InitStack(COUNT *S) {
 	return OK;
 }
 
-Status StackEmpty(COUNT S) {
+Status nStackEmpty(COUNT S) {
 	if (S.base == S.top) { return TRUE; }
 	else { return FALSE; }
 }
 
-Status Pop(COUNT *S, int *e) {
+Status nPop(COUNT *S, int *e) {
 	if (S->top == S->base) { return ERROR; }
 	*e = *(--S->top);
 	return OK;
 }
 
-Status Push(COUNT *S, int e) {
+Status nPush(COUNT *S, int e) {
 	if (S->top - S->base >= S->stacksize) {
 		S->base = (int *)realloc(S->base, (S->stacksize + STACKINCREMENT)*sizeof(int));
 		if (!S->base) { exit(OVERFLOW); }
@@ -67,7 +67,7 @@ Status Push(COUNT *S, int e) {
 	return OK;
 }//Push
 
-Status GetTop(COUNT S, int *e) {
+Status nGetTop(COUNT S, int *e) {
 	//若栈不空，则用e返回S的栈顶元素，并返回OK，否则返回ERROR
 	if (S.top == S.base) { return ERROR; }
 	*e = *(S.top - 1);
@@ -172,13 +172,13 @@ int count(char *suffix) {
 	SqStack(OPTR);//操作符
 	COUNT(OPND);//操作数
 	InitStack(&OPTR);
-	InitStack(&OPND);
+	nInitStack(&OPND);
 	char *p; p = suffix;
 	char ch = *p;
 	char c;
 	while (ch != '#') {
 		if (!IN(ch)) {
-			Push(&OPND, ch - '0');
+			nPush(&OPND, ch - '0');
 		}
 		else {
 			Push(&OPTR, ch);
@@ -186,10 +186,10 @@ int count(char *suffix) {
 				//如果栈顶和其下面的栈有数，则执行算数操作
 				int t1, t2;
 				//GetTop(OPND, &t1);
-				Pop(&OPND, &t1);
-				Pop(&OPND, &t2);
+				nPop(&OPND, &t1);
+				nPop(&OPND, &t2);
 				int t3 = operate(ch, t1, t2);
-				Push(&OPND, t3);
+				nPush(&OPND, t3);
 				Pop(&OPTR, &c);
 			}
 		}
@@ -197,6 +197,6 @@ int count(char *suffix) {
 			ch = *p;
 	}//while
 		int sum;
-		Pop(&OPND,&sum);
+		nPop(&OPND,&sum);
 		return sum;
 }
