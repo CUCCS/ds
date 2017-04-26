@@ -4,7 +4,7 @@ typedef struct QNode
 {
 	QElemtype data;
 	struct QNode *next;
-}QNode,*QNodePtr;
+}QNode, *QNodePtr;
 typedef struct
 {
 	QNodePtr front;
@@ -27,8 +27,9 @@ Status InitQueue(LinkQueue *Q)
 	Q->front->next = NULL;
 	return true;
 }
+
 //向队列尾部插入元素e
-Status EnQueue(LinkQueue *Q,QElemtype e)
+Status EnQueue(LinkQueue *Q, QElemtype e)
 {
 	QNodePtr s = (QNodePtr)malloc(sizeof(QNode));
 	if (!s)
@@ -48,7 +49,7 @@ Status DeQueue(LinkQueue *Q, QElemtype *e)
 	if (Q->rear == Q->front)
 	{
 		return false;
-    }
+	}
 	p = Q->front->next;
 	*e = p->data;
 	Q->front->next = p->next;
@@ -74,8 +75,9 @@ Status Destory(LinkQueue*Q)
 }
 Status Traverse(LinkQueue*Q)
 {
-	if (Q->front == Q->rear)
+	if (Q->rear == Q->front)
 	{
+		printf("error ,Is a empty queue!\n");
 		return false;
 	}
 	printf("遍历队列：\n");
@@ -90,16 +92,17 @@ Status Traverse(LinkQueue*Q)
 }
 int main()
 {
-	int i,result;
+	int i, result;
 	LinkQueue Q;
 	InitQueue(&Q);
 	for (i = 0; i < 5; i++)
 	{
-		EnQueue(&Q, i);
+		EnQueue(&Q, i);//向队列尾部添加元素
 	}
-	Traverse(&Q);
-	DeQueue(&Q, &result);
-	
-	Traverse(&Q);
+	Traverse(&Q);//第一次遍历
+	DeQueue(&Q, &result);//销毁队列头元素
+	Traverse(&Q);//第二次遍历
+	Destory(&Q);//销毁队列
+	Traverse(&Q);//第三次遍历
 	return 0;
 }
