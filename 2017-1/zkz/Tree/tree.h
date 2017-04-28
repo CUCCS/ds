@@ -3,7 +3,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include "solveException.h"
 
 #define DEBUG 1
 #define debug_print(...) if(DEBUG){printf(__VA_ARGS__);}
