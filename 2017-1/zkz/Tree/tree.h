@@ -24,11 +24,12 @@ void divideString(char* source, char delim, char** pDes1, char** pDes2);
 
 inline Node* newNode();
 void InitializeTree(Tree* pT);
-void _TraverseTree(const Tree root, Order order);
+void _ShowTree(const Tree root);
+void _TraverseTree(const Tree root, Order order, void func(const Tree));
 /*遍历二叉树*/
 /*root : 待遍历的二叉树*/
 /*order : 遍历顺序(pre , in , post , all 分别为前序、中序、后序及所有顺序)*/
-void TraverseTree(const Tree root, Order order);
+void TraverseTree(const Tree root, Order order, void func(const Tree));
 inline int getDepth(const Tree t);
 /*新建一个完全二叉树*/
 void NewCBTree(Tree* pRoot, int depth);

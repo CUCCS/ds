@@ -9,9 +9,9 @@ int main() {
 	Tree t1,t2;
 	/*方法一*/
 	t1 = newBinaryTree(rootLR);
-	TraverseTree(t1, all);
+	TraverseTree(t1, all,_ShowTree);
 	/*方法二*/
 	t2 = newBinaryTree2(_pre, _in);
-	TraverseTree(t2, all);
+	TraverseTree(t2, all, _ShowTree);
 	return 0;
 }

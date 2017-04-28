@@ -39,29 +39,32 @@ void InitializeTree(Tree* pT) {
 	 
 		*pT = newNode();
 }
-void _TraverseTree(const Tree root, Order order) {
+void _ShowTree(const Tree root) {
+	printf("%c",root->data);
+}
+void _TraverseTree(const Tree root, Order order, void func(const Tree)) {
 	 
 		/*如果root不为空 , 则根据order按顺序遍历root*/
 		if (root) {
-			if (order == pre)printf("%c ", root->data);
-			_TraverseTree(root->left, order);
-			if (order == in)printf("%c ", root->data);
-			_TraverseTree(root->right, order);
-			if (order == post)printf("%c ", root->data);
+			if (order == pre)func(root);
+			_TraverseTree(root->left, order,func);
+			if (order == in)func(root);
+			_TraverseTree(root->right, order,func);
+			if (order == post)func(root);
 		}
 }
 /*遍历二叉树*/
 /*root : 待遍历的二叉树*/
 /*order : 遍历顺序(pre , in , post , all 分别为前序、中序、后序及所有顺序)*/
-void TraverseTree(const Tree root, Order order) {
+void TraverseTree(const Tree root, Order order , void func(const Tree)) {
 	if (order == all) {
-		TraverseTree(root, pre);
-		TraverseTree(root, in);
-		TraverseTree(root, post);
+		TraverseTree(root, pre , func);
+		TraverseTree(root, in, func);
+		TraverseTree(root, post, func);
 		return;
 	}
 	debug_print("%s序遍历树0x%p : ", order == pre ? "前" : order == in ? "中" : "后", root);
-	_TraverseTree(root, order);
+	_TraverseTree(root, order, func);
 	debug_print("\n");
 }
 inline int getDepth(const Tree t) {
