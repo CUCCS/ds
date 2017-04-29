@@ -1,14 +1,5 @@
 #include "tree.h"
 Tree t1, t2, t3, t4;
-void _theTraverse(const Tree t, int n) {
-	for (int i = 0; i < n; ++i)printf("    ");
-	printf("%c\n", t->data);
-	if (t->left)_theTraverse(t->left, n + 1);
-	if (t->right)_theTraverse(t->right, n + 1);
-}
-void theTraverse(const Tree t) {
-	_theTraverse(t, 0);
-}
 void testNewBinaryTree() {
 	/*方法一测试用例*/
 	char* rootLR = "ABDG###EH##I#K##C#F##";
