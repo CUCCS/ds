@@ -29,7 +29,7 @@ void PostOrderTraverse(BiTree T)
 	}
 	PostOrderTraverse(T->lchild);
 	PostOrderTraverse(T->rchild);
-	printf("%c", T->data);
+	printf("%c ", T->data);
 }
 int Depth(BiTree T)
 {

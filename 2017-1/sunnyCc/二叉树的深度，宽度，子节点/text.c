@@ -12,8 +12,8 @@ int main()
 	PostOrderTraverse(T);
 	printf("\nDepth                 : %d\n", Depth(T));
 	printf("Width                 : %d\n", Width(T));
-	printf("Count                 : %d\n", Count(T));
-	printf("NoLeafCount           : %d\n", NoLeafCount( T));
+	printf("TotalNodeCount        : %d\n", Count(T) + NoLeafCount(T));
+	printf("LeafCount             : %d\n", Count(T));
 
 	extern int count;
 	count = 0;//"count" is redefined to begin the second binary's postorder tarverse
@@ -24,8 +24,8 @@ int main()
 	PostOrderTraverse(T);
 	printf("\nDepth                  : %d\n", Depth(T));
 	printf("Width                  : %d\n", Width(T));
-	printf("Count                  : %d\n", Count(T));
-	printf("NoLeafCount            : %d\n", NoLeafCount( T));
+	printf("TotalNodeCount         : %d\n", Count(T)+ NoLeafCount(T));
+	printf("LeafCount              : %d\n", Count( T));
 
 	return 0;
 
