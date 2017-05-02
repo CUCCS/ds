@@ -4,9 +4,9 @@
 #include "BiTree.h"
 
 int i = 0;
-int length = 0;
+int length = 0;//深度
 int testlength = 0;
-int width[10] = {0};
+int width[10] = {0};//宽度
 
 Status CreateBiTree(BiTree *T,char *c){
 	char ch;
@@ -16,18 +16,12 @@ Status CreateBiTree(BiTree *T,char *c){
 		*T = NULL;
 	}
 	else{
-		testlength++;
-		width[testlength]=width[testlength]+1;
 		if(!(*T = (BiTNode * )malloc(sizeof(BiTNode)))){
 			exit(OVERFLOW);
 		}
 		(*T)->data = ch;
 		CreateBiTree( &(*T)->lchild,c);
 		CreateBiTree( &(*T)->rchild,c);
-		testlength--;
-	}
-	if(testlength > length){
-		length = testlength;
 	}
 	return OK;
 }
@@ -41,16 +35,48 @@ Status PostOrderTraverse(BiTree T){
 	return OK;
 }
 
-Status MeasureWidth(){
-	int w = 0;
+Status MeasureLength(BiTree T){
+	if(!T){
+		if(testlength > length){
+			length = testlength;
+		}
+		return OK;
+	}
+	else{
+		testlength++;
+		MeasureLength(T->lchild);
+		MeasureLength(T->rchild);
+		testlength--;
+	}
+	if(testlength > length){
+		length = testlength;
+	}
+	return OK;
+}
+
+Status MeasureWidth(BiTree T,int len){
+	if(!T){
+		return ERROR;
+	}
+	else{
+		width[len] = width[len]+1;
+		len++;
+	}
+	MeasureWidth(T->lchild, len);
+	MeasureWidth(T->rchild, len);
+	return OK;
+}
+
+Status GetWidth(){
+	int wi = 0;
 	int i;
 	for(i = 1;i <= length;i++){
-		if(w < width[i]){
-			w = width[i];
+		if(wi<width[i]){
+			wi=width[i];
 		}
 		width[i] = 0;
 	}
-	printf("该二叉树最大宽度为%d\n", w);
+	printf("最大宽度为%d\n", wi);
 	return OK;
 }
 
@@ -76,8 +102,10 @@ int main(){
 	BiTree T=NULL;
 	printf("开始创建第一个二叉数 : ABDG###EH##I#K##C#F##\n");
 	CreateBiTree( &T, c);
+	MeasureLength(T);
 	printf("创建完毕第一个二叉树\n二叉树的高度为%d\n",length);
-	MeasureWidth();
+	MeasureWidth(T, 1);
+	GetWidth();
 	printf("后序遍历第一个二叉树:\n");
 	PostOrderTraverse(T);
 	printf("\n遍历结束\n");
@@ -91,8 +119,10 @@ int main(){
 	count2=0;
 	printf("开始创建第二个二叉数 : ABD#F###CE###\n");
 	CreateBiTree( &T, c1);
+	MeasureLength(T);
 	printf("创建完毕第二个二叉树\n二叉树的高度为%d\n",length);
-	MeasureWidth();
+	MeasureWidth(T, 1);
+	GetWidth();
 	printf("后序遍历第二个二叉树:\n");
 	PostOrderTraverse(T);
 	printf("\n遍历结束\n");
