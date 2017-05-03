@@ -98,7 +98,7 @@ int getHigh(BiTree T)
 		
  		lhigh=getHigh(T->lchild);
 		rhigh=getHigh(T->rchild);
-		high = max(lhigh, rhigh)+1;
+		high = Max(lhigh, rhigh)+1;
 		return high;
 	}
 	
