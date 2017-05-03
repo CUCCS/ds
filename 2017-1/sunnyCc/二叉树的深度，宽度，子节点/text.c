@@ -1,4 +1,4 @@
-#include"BinaryTree.h"
+#include "BinaryTree.h"
 int main()
 {
 	BiTree T = NULL;
@@ -12,7 +12,7 @@ int main()
 	PostOrderTraverse(T);
 	printf("\nDepth                 : %d\n", Depth(T));
 	printf("Width                 : %d\n", Width(T));
-	printf("LeafCount             : %d\n", Count(T) );
+	printf("LeafCount             : %d\n", Count(T));
 	printf("NoLeafCount           : %d\n", NoLeafCount(T));
 
 	extern int count;
@@ -26,7 +26,4 @@ int main()
 	printf("Width                  : %d\n", Width(T));
 	printf("LeafCount              : %d\n", Count(T));
 	printf("NoLeafCount            : %d\n", NoLeafCount(T));
-
-	return 0;
-
 }

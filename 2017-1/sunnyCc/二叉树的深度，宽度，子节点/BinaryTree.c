@@ -1,4 +1,5 @@
-#include"BinaryTree.h"
+#include "BinaryTree.h"
+#include <stdbool.h>
 int count = 0;
 Status CreateBiTree(BiTree *T, TElemType *p)
 {
@@ -91,4 +92,6 @@ int NoLeafCount(BiTree  T)/*求二叉树中非叶子结点的数目*/
 		return 0; /*叶子结点*/
 	else
 		return (1 + NoLeafCount(T->lchild) + NoLeafCount(T->rchild));/*当前结点+左子树的非叶子数+右子树的非叶子数*/
+
 }
+
