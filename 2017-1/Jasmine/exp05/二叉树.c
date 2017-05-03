@@ -1,6 +1,7 @@
 #include<stdio.h>
 #include<stdlib.h>
 #define TelemType char
+TelemType count = 0;
 typedef struct BitNode
 {
 	TelemType data;
@@ -10,18 +11,17 @@ typedef enum
 {
 	error,ok
 }Status;
-BitNode* CreateBiTree(BitNode* T)
+BitNode* CreateBiTree(BitNode* T,TelemType *c)
 {
-	TelemType c;
-	scanf("%c", &c);
-	if (c == ' ')
+
+	if (c[count++] == ' ')
 		T = NULL;
 	else
 	{
 			T = (BitNode*)malloc(sizeof(BitNode));
-			T->data = c;
-			T->lchild=CreateBiTree(T->lchild);
-			T->rchild=CreateBiTree(T->rchild);
+			T->data = c[count-1];
+			T->lchild=CreateBiTree(T->lchild,c);
+			T->rchild=CreateBiTree(T->rchild,c);
 	}
 	return T;
 }
@@ -37,8 +37,11 @@ void PostOrder(BitNode* T)
 int main()
 {
 	BitNode* T=NULL;
+	char str[25] = "ABDG   EH  I K  C F  ";
+	TelemType *c = str;
 	printf("Create a BitTree:");
-	T=CreateBiTree(T);
+	T=CreateBiTree(T,c);
+	printf("%s\n", str);
 	printf("Postorder Traverse:");
 	PostOrder(T);
 }
