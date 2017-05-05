@@ -3,7 +3,7 @@
 #include "Tree.h"
 
 //==========方法一，以字符串的形式“根 左子树 右子树”定义一棵二叉树=============// 
-char c[] = "ABC  DE G  F   ";
+char c[] = "ABC DFE  G  H   ";
 int i = 0;
 
 Status CreateBiTree(BiTree *T) {

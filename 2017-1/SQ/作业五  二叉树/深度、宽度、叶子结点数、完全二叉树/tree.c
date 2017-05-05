@@ -5,7 +5,7 @@
 #include "tree.h"
 
 //==========队列的基本操作=============//
-Status InitQueue(LinkQueue *Q) {
+Status InitQueue(LinkQueue *Q)  {
 	//构造空队列
 	Q->front = Q->rear = (QueuePtr)malloc(MAXQSIZE * sizeof(QNode));
 	if (!(Q->front)) {
@@ -147,6 +147,15 @@ bool Compelete(BiTree T) {
 		if ((!p->lchild) && p->rchild) {
 			return false;
 		}
+	}
+
+	int depth; //左孩子都存在时，进一步判断
+	depth = Depth(T);
+	if ((Count(T) - CountLeaf(T)) == pow(2, depth - 1)) {
+		return true; //除了最后一层，其余层的结点都达到最大值
+	}
+	else {
+		return false;
 	}
 	return true;
 }
@@ -368,6 +377,11 @@ int main() {
 	//==========新增用例二=============// 
 	strcpy(p1, "ABCDEFG"); //构建新的先序序列
 	strcpy(p2, "CBDAFEG"); //构建新的中序序列
+
+    //==========新增用例（非完全树）=============// 
+	//strcpy(p1, "ABDEFGC"); //构建新的先序序列
+	//strcpy(p2, "DBFEGAC"); //构建新的中序序列
+
 	length = Getlength(p1);
 	flag = CrtBT(&Tree, p1, p2, 0, 0, length);
 	printf("\n---------------Test Four---------------\n");
