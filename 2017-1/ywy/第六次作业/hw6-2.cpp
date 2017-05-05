@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 int count = 0;
+int jiedian = 0;//总节点数
 typedef char ElemType;
 typedef struct BiNode
 {
@@ -25,6 +26,7 @@ Status CreatBiTree(BiTree *T, ElemType *ar)
 	}
 	else
 	{
+		jiedian++;
 		if (!(*T = (BiTree)malloc(sizeof(BiNode))))
 		{
 			return OVERFLOW;//内存分配失败
@@ -48,7 +50,7 @@ void PostOrderTraverse(BiTree T)//后序遍历及输出
 int depth(BiTree T)//计算深度
 {
 	int ldepth, rdepth;
-	if(T==NULL)
+	if (T == NULL)
 	{
 		return 0;
 	}
@@ -58,17 +60,16 @@ int depth(BiTree T)//计算深度
 	{
 		return ldepth + 1;
 	}
-	else 
+	else
 	{
 		return rdepth + 1;
 	}
 }
+int j = 0;
+int max = 0;//最大宽度
+int counter[20];//每层宽度
 int width(BiTree T)
 {
-	int static level[10];//假设最多有10层
-	int static max = 0;//最大宽度
-	int static j = 0;
-	int static counter[20];
 	if (T == NULL)
 	{
 		return 0;
@@ -84,16 +85,51 @@ int width(BiTree T)
 	j--;
 	return max;
 }
+int leaf_num(BiTree T)//叶子节点
+{
+	int l, r;
+	if (T == NULL)
+	{
+		return 0;
+	}
+	if (T->lchild == NULL&&T->rchild == NULL)
+	{
+		return 1;
+	}
+	else
+	{
+		l = leaf_num(T->lchild);
+		r = leaf_num(T->rchild);
+		return l + r;
+	}
+}
 
 int main()
 {
-	BiTree T;
-	ElemType str[30] = "ABDG###EH##I#K##C#F##";
-	printf("输出:    ");
-	CreatBiTree( &T,  str);
-	printf("用例：ABDG###EH##I#K##C#F##:\n");
-	PostOrderTraverse(T);
-	printf("深度为：%d\n最大宽度为：%d\n",depth(T),width(T));
-	printf("\n");
+	BiTree T,R;
+	ElemType str1[30] = "ABDG###EH##I#K##C#F##";
+	ElemType str2[30]= "ABD#F###CE###";
+	CreatBiTree(&T, str1);
 	
+	printf("用例-1：ABDG###EH##I#K##C#F##:\n");
+	printf("深度为：%d\n最大宽度为：%d\n", depth(T), width(T));
+	printf("输出:    ");
+	PostOrderTraverse(T);
+	printf("\n");
+	printf("叶子节点数：%d\n", leaf_num(T));
+	printf("非叶子节点数：%d", jiedian - leaf_num(T));
+	printf("\n\n");
+
+	count = 0; 
+	jiedian = 0;
+	CreatBiTree(&R, str2);
+	printf("用例-2：ABD#F###CE###:\n");
+	printf("深度为：%d\n最大宽度为：%d\n", depth(R), width(R));
+	printf("输出:    ");
+	PostOrderTraverse(R);
+	printf("\n");
+	printf("叶子节点数：%d\n", leaf_num(R));
+	printf("非叶子节点数：%d", jiedian - leaf_num(R));
+	printf("\n");
 }
+
