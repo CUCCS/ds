@@ -2,56 +2,80 @@
 
 int main()
 {
-	//用例一
-	BiTree T1 = NULL;
 	int level = 0;
 	int j;
-	int *counts=(int*)malloc(sizeof(int));
 	int count = 0;
 	int ncounts = 0;
-	char*s1 = "ABDG   EH  I K  C F  ";
 
+
+	/*=========用例一=========*/
+	BiTree T1 = NULL;
+	char*s1 = "ABDG   EH  I K  C F  ";
 	printf("测试用例1为：\n");
 	puts(s1);
-	printf("后序式表达式为：\n");
 	CreateBiTree(&T1, s1);
-	PostOrderTraverse(T1);
-	printf("\n");
+	printBiTree(T1);
 	printf("二叉树的高度为:%d\n", getHigh(T1));
 	printf("二叉树的宽度为:%d\n", getWide(T1, level));
 	CountLeaf(T1, &count, &ncounts);
-	printf("叶子结点个数为:%d\n", count);
-	printf("非叶子结点个数为:%d\n", ncounts-count);
+	printLeafNumber(T1, count, ncounts);
+	printIsComplete(T1);
 	destoryBiTree(T1);
 
 
 
 
-	//用例二
-	level = 0;
-	i = 0;
-	count = 0;
-	ncounts = 0;
-	for (j = 0; j < 50; j++)
-	{
-		wide[j] = 0;
-	}
+	/*=========用例二=========*/
+	valInit(level, wide, count, ncounts);
 	BiTree T2 = NULL;
 	char*s2 = "ABD F   CE   ";
-
 	printf("\n\n\n测试用例2为:\n");
 	puts(s2);
-	printf("后序式表达式为：\n");
+
 	CreateBiTree(&T2, s2);
-	PostOrderTraverse(T2);
-	printf("\n");
+	printBiTree(T2);
 	printf("二叉树的高度为:%d\n", getHigh(T2));
 	printf("二叉树的宽度为:%d\n", getWide(T2, level));
-	CountLeaf(T2, &count,&ncounts);
-	printf("叶子结点个数为:%d\n", count);
-	printf("非叶子结点个数为:%d\n", ncounts-count);
+	CountLeaf(T2, &count, &ncounts);
+	printLeafNumber(T2, count, ncounts);
+	printIsComplete(T2);
 	destoryBiTree(T2);
+
+
+	/*=========新增用例三=========*/
+	valInit(level, wide, count, ncounts);
+	BiTree T3 = NULL;
+	char*s3 = "ABC  D  E  ";
+	printf("\n\n\n测试用例3为:\n");
+	puts(s3);
+
+	CreateBiTree(&T3, s3);
+	printBiTree(T3);
+	printf("二叉树的高度为:%d\n", getHigh(T3));
+	printf("二叉树的宽度为:%d\n", getWide(T3, level));
+	CountLeaf(T3, &count, &ncounts);
+	printLeafNumber(T3, count, ncounts);
+	printIsComplete(T3);
+	destoryBiTree(T3);
+
+/*=========新增用例四=========*/
+valInit(level, wide, count, ncounts);
+BiTree T4 = NULL;
+char*s4 = "ABCH   D  EFK   G  ";
+printf("\n\n\n测试用例4为:\n");
+puts(s4);
+CreateBiTree(&T4, s4);
+printBiTree(T4);
+
+printf("二叉树的高度为:%d\n", getHigh(T4));
+printf("二叉树的宽度为:%d\n", getWide(T4, level));
+
+CountLeaf(T4, &count, &ncounts);
+printLeafNumber(T4, count, ncounts);
+printIsComplete(T4);
+destoryBiTree(T4);
 }
+
 
 
 

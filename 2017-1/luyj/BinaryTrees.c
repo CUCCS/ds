@@ -1,9 +1,22 @@
 #include "BinaryTrees.h"
 int i = 0;
-int high;
+int high = 0;
 int wide[50] = { 0 };
 int swide = 0;
 
+void valInit(int level, int wide[50], int count, int ncounts)
+{
+	int j;
+	level = 0;
+	i = 0;
+	count = 0;
+	ncounts = 0;
+	swide = 0;
+	for (j = 0; j < 50; j++)
+	{
+		wide[j] = 0;
+	}
+}
 
 char AbstractWord(char*s)
 {
@@ -96,8 +109,8 @@ int getHigh(BiTree T)
 	else
 	{
 		
- 		lhigh=getHigh(T->lchild);
-		rhigh=getHigh(T->rchild);
+		lhigh = getHigh(T->lchild);
+		rhigh = getHigh(T->rchild);
 		high = Max(lhigh, rhigh)+1;
 		return high;
 	}
@@ -135,5 +148,132 @@ void CountLeaf(BiTree T, int *count,int *ncounts)
 		}
 		CountLeaf(T->lchild, count,ncounts);
 		CountLeaf(T->rchild, count,ncounts);
+	}
+}
+
+bool QueueEmpty(LinkQueue*Q)
+{
+	if (Q->front == Q->rear)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
+Status EnQueue(LinkQueue*Q, BiTNode e)
+{
+	QueuePtr p = (QueuePtr)malloc(sizeof(QNode));
+	if (!p)
+	{
+		return ERROR;
+	}
+	else
+	{
+		p->data = e;
+		p->next = NULL;
+		Q->rear->next = p;
+		Q->rear = p;
+	}
+}
+
+Status DeQueue(LinkQueue*Q, BiTNode*e)
+{
+	if (Q->front == Q->rear)
+	{
+		return ERROR;
+	}
+	QNode *p = Q->front->next; //指向队头;
+	*e = p->data;
+	Q->front->next = p->next;
+	if (Q->rear == p)
+	{
+		Q->rear = Q->front;
+	}
+	free(p);
+	return OK;
+}
+
+Status InitQueue(LinkQueue *Q)
+{
+	Q->front = Q->rear = (QueuePtr)malloc(sizeof(QNode));
+	if (!Q->front)
+	{
+		return ERROR;
+	}
+	Q->front->next = NULL;
+	return OK;
+}
+
+
+bool isComplete(BiTree T)
+{
+	if (!T)
+	{
+		return true;  //首先判断空树.根据完全二叉树定义,判断空树为完全二叉树;
+	}
+
+	int isL = 0; //用以标记;
+	LinkQueue q;
+	InitQueue(&q);  //建立空队列;
+	BiTree t = T;
+	EnQueue(&q, *T);//树根结点入队列;
+
+	//开始广度优先遍历;
+	while (QueueEmpty(&q)!=NULL)
+	{
+		DeQueue(&q,t);
+		if (T->lchild != NULL)
+		{
+			if (t->lchild != NULL)
+			{
+				if (isL == 1)
+				{
+					return false;
+				}
+				EnQueue(&q, *(t->lchild));
+			}
+			if (t->rchild != NULL)
+			{
+				EnQueue(&q, *(t->rchild));
+			}
+			if (t->lchild == 0 && t->rchild != 0)
+			{
+				return false;
+			}
+			if (t->lchild != 0 && t->rchild == 0||t->lchild==0&&t->rchild)
+			{
+				isL = 1;
+			}
+		}
+	}
+	return true;
+}
+
+//输出后序式表达式;
+void printBiTree(BiTree T)
+{
+	printf("后序式表达式为：\n");
+	PostOrderTraverse(T);
+	printf("\n");
+}
+
+void printLeafNumber(BiTree T,int count,int ncounts)
+{
+	printf("叶子结点个数为:%d\n", count);
+	printf("非叶子结点个数为:%d\n", ncounts - count);
+}
+
+void printIsComplete(BiTree T)
+{
+	if (isComplete(T) == true)
+	{
+		printf("此树是完全二叉树");
+	}
+	else
+	{
+		printf("此树不是完全二叉树");
 	}
 }
