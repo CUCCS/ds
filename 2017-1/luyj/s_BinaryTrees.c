@@ -26,7 +26,7 @@ int main()
 
 
 	/*=========用例二=========*/
-	valInit(level, wide, count, ncounts);
+	valInit(&level, wide, &count, &ncounts);
 	BiTree T2 = NULL;
 	char*s2 = "ABD F   CE   ";
 	printf("\n\n\n测试用例2为:\n");
@@ -43,7 +43,7 @@ int main()
 
 
 	/*=========新增用例三=========*/
-	valInit(level, wide, count, ncounts);
+	valInit(&level, wide, &count, &ncounts);
 	BiTree T3 = NULL;
 	char*s3 = "ABC  D  E  ";
 	printf("\n\n\n测试用例3为:\n");
@@ -58,23 +58,22 @@ int main()
 	printIsComplete(T3);
 	destoryBiTree(T3);
 
-/*=========新增用例四=========*/
-valInit(level, wide, count, ncounts);
-BiTree T4 = NULL;
-char*s4 = "ABCH   D  EFK   G  ";
-printf("\n\n\n测试用例4为:\n");
-puts(s4);
-CreateBiTree(&T4, s4);
-printBiTree(T4);
-
-printf("二叉树的高度为:%d\n", getHigh(T4));
-printf("二叉树的宽度为:%d\n", getWide(T4, level));
-
-CountLeaf(T4, &count, &ncounts);
-printLeafNumber(T4, count, ncounts);
-printIsComplete(T4);
-destoryBiTree(T4);
+	/*=========新增用例四=========*/
+	valInit(&level, wide, &count, &ncounts);
+	BiTree T4 = NULL;
+	char*s4 = "ABCH   D  EFK   G  ";
+	printf("\n\n\n测试用例4为:\n");
+	puts(s4);
+	CreateBiTree(&T4, s4);
+	printBiTree(T4);
+	printf("二叉树的高度为:%d\n", getHigh(T4));
+	printf("二叉树的宽度为:%d\n", getWide(T4, level));
+	CountLeaf(T4, &count, &ncounts);
+	printLeafNumber(T4, count, ncounts);
+	printIsComplete(T4);
+	destoryBiTree(T4);
 }
+
 
 
 

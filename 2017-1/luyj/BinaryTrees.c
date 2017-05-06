@@ -4,13 +4,13 @@ int high = 0;
 int wide[50] = { 0 };
 int swide = 0;
 
-void valInit(int level, int wide[50], int count, int ncounts)
+void valInit(int *level, int wide[50], int *count, int *ncounts)
 {
 	int j;
-	level = 0;
+	*level = 0;
 	i = 0;
-	count = 0;
-	ncounts = 0;
+	*count = 0;
+	*ncounts = 0;
 	swide = 0;
 	for (j = 0; j < 50; j++)
 	{
