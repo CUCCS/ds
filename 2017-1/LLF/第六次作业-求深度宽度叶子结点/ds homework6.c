@@ -201,8 +201,8 @@ int main()
 	printf("ch1 postorder: ");
 	CreatBiTree(&p1, ch1);
 	PostOrderTraverse(p1);
-	printf("ch1 depth is %d\n", TreeDepth(p1));
-	printf("ch1 depth is %d\n", TreeWidth(p1));
+	printf("\nch1 depth is %d\n", TreeDepth(p1));
+	printf("ch1 width is %d\n", TreeWidth(p1));
 	printf("ch1 leaf node is %d\n", LeafCount(p1));
 	printf("ch1 not leaf node is %d\n", NodeCount(p1) - LeafCount(p1));
 	destoryBiTree(p1);
@@ -215,8 +215,8 @@ int main()
 	printf("ch2 postorder: ");
 	CreatBiTree(&p2, ch2);
 	PostOrderTraverse(p2);
-	printf("ch2 depth is %d\n", TreeDepth(p2));
-	printf("ch2 depth is %d\n", TreeWidth(p2));
+	printf("\nch2 depth is %d\n", TreeDepth(p2));
+	printf("ch2 width is %d\n", TreeWidth(p2));
 	printf("ch2 leaf node is %d\n", LeafCount(p2));
 	printf("ch2 not leaf node is %d\n", NodeCount(p2) - LeafCount(p2));
 	destoryBiTree(p2);
