@@ -229,7 +229,9 @@ bool isComplete(BiTree T)
 		{
 			if (t->lchild != NULL)
 			{
-				if (isL == 1)
+				/*如果isL==1则说明此结点的左边已经有没有孩子或只有左孩子的结点，
+				此时该结点还有孩子，则说明此树为不完全二叉树。*/
+				if (isL == 1)  
 				{
 					return false;
 				}
@@ -239,13 +241,15 @@ bool isComplete(BiTree T)
 			{
 				EnQueue(&q, *(t->rchild));
 			}
-			if (t->lchild == 0 && t->rchild != 0)
+			if (t->lchild == NULL && t->rchild != NULL)
 			{
 				return false;
 			}
-			if (t->lchild != 0 && t->rchild == 0||t->lchild==0&&t->rchild)
+			if (t->lchild != NULL&&t->rchild == NULL||t->lchild==NULL&&t->rchild==NULL)
 			{
-				isL = 1;
+				/*从左向右遍历时如果左边出现结点的
+				左孩子不为空但右孩子为空，或左孩子右孩子都为空则isL=1;*/
+				isL = 1;  
 			}
 		}
 	}
