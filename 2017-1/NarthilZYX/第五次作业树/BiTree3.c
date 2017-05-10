@@ -1,7 +1,7 @@
 #include "BiTree.h"
 
 //test1
-char c[] = "ABC  DE G  F   ";
+char c[] = "ABDG   EH  I K  C F  ";
 int i = 0;
 
 Status CreateBiTree(BiTree *T) {

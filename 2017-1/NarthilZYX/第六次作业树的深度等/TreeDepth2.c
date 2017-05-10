@@ -144,5 +144,46 @@ int main(){
 		printf("Created tree failed!\n");
 	}
 	
+	//第二题新增用例
+	char p3[] ="ABCDEFGHK"; //构建新的先序序列
+	char p4[] = "BDCAEHGKF"; //构建新的中序序列
+	flag = CrtBT(&Tree, p3, p4, 0, 0, Getlength(p3));
+	printf("\nTest Three is as followed\n");
+	if (!flag) {
+		printf("Tree creating succeeded!\n");
+	    printf("Preorder input: %s\n", p3);
+	    printf("Inorder input: %s\n", p4);
+		if (Compelete(Tree)) {
+			printf("It is a compeleted tree\n");
+		}
+		else {
+			printf("It is not a compeleted tree\n");
+		}
+		Full(Tree);
+	}
+	else {
+		printf("Created tree failed!\n");
+	}
+ 
+	char p5[] = "ABCDEFG"; //构建新的先序序列
+	char p6[] = "CBDAFEG"; //构建新的中序序列
+	flag = CrtBT(&Tree, p5, p6, 0, 0, Getlength(p5));
+	printf("\nTest Four is as followed\n");
+	if (!flag) {
+		printf("Tree creating succeeded!\n");
+	    printf("Preorder input: %s\n", p5);
+	    printf("Inorder input: %s\n", p6);
+		if (Compelete(Tree)) {
+			printf("It is a compeleted tree\n");
+		}
+		else {
+			printf("It is not a compeleted tree\n");
+		}
+		Full(Tree);
+	}
+	else {
+		printf("Created tree failed!\n");
+	}
+
 	return 0;
 }
