@@ -16,7 +16,7 @@ Status PostOrderTraverse(BiTree T);
 Status InOrderTraverse(BiTree T);
 Status PostOrderTraverse(BiTree T);
 
-char*s[]={"ABDG###EH##I#K##C#F##","ABD#F###C#E#G##"};int si[]={0,0};
+char*s[]={"ABDG###EH##I#K##C#F##","ABD#F##CE###"};int si[]={0,0};
 
 Status CreateBitree (BiTree *T,int i)
 {
