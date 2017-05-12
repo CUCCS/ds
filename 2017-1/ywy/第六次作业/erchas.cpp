@@ -106,11 +106,11 @@ int leaf_num(BiTree T)//叶子节点
 
 int main()
 {
-	BiTree T,R;
+	BiTree T, R;
 	ElemType str1[30] = "ABDG###EH##I#K##C#F##";
-	ElemType str2[30]= "ABD#F###CE###";
+	ElemType str2[30] = "ABD#F###CE###";
 	CreatBiTree(&T, str1);
-	
+
 	printf("用例-1：ABDG###EH##I#K##C#F##:\n");
 	printf("深度为：%d\n最大宽度为：%d\n", depth(T), width(T));
 	printf("输出:    ");
@@ -120,8 +120,14 @@ int main()
 	printf("非叶子节点数：%d", jiedian - leaf_num(T));
 	printf("\n\n");
 
-	count = 0; 
+	count = 0;
 	jiedian = 0;
+	max = 0;
+	int g;
+	for (g = 0; g < 20; g++)
+	{
+		counter[g] = 0;
+	}
 	CreatBiTree(&R, str2);
 	printf("用例-2：ABD#F###CE###:\n");
 	printf("深度为：%d\n最大宽度为：%d\n", depth(R), width(R));
@@ -132,4 +138,3 @@ int main()
 	printf("非叶子节点数：%d", jiedian - leaf_num(R));
 	printf("\n");
 }
-
