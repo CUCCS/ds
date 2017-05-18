@@ -1,17 +1,15 @@
 // ——————图的数组存储表示————————
-#include<stdio.h>
-#include<stdlib.h>
+#include <stdio.h>
+#include <stdlib.h>
 
 #define MAX 9
 typedef int VRType;
 typedef int QElemType;
 
 typedef enum {
-	FALSE,
 	OK,
-	OVERFLOW,
+	FALSE,
 	TRUE,
-	ERROR,
 }Status;
 
 typedef int Array[MAX][MAX];

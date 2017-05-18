@@ -33,8 +33,8 @@ Status DestroyQueue(LinkQueue *Q) {
 //——————————————————
 Status CreatGraph(Graph *G, Array A) {
 	//创建课件上的图
-	for (int i = 0; i<9; i++) {
-		for (int j = 0; j<9; j++) {
+	for (int i = 0; i < 9; i++) {
+		for (int j = 0; j < 9; j++) {
 			G->a[i][j] = A[i][j];
 		}
 	}
@@ -42,14 +42,14 @@ Status CreatGraph(Graph *G, Array A) {
 	G->vexnum = 9;
 	G->arcnum = 12;
 
-	for (int i = 0; i<9; i++) {
+	for (int i = 0; i < 9; i++) {
 		G->vexs[i] = 0;//全部设置为访问
 	}
 	return OK;
 }
 
 int FirstFind(Graph G, QElemType e) {
-	for (int i = 0; i<G.vexnum; i++) {
+	for (int i = 0; i < G.vexnum; i++) {
 		if (G.a[e][i] == 1)//如果e结点和i结点之间连通
 		{
 			return i;//返回和e连通的这个结点的数值
@@ -58,7 +58,7 @@ int FirstFind(Graph G, QElemType e) {
 	return -1;
 }
 int NextFind(Graph G, QElemType e, int w) {
-	for (int i = w + 1; i<G.vexnum; i++)//从第w+1个结点开始找
+	for (int i = w + 1; i < G.vexnum; i++)//从第w+1个结点开始找
 	{
 		if (G.a[e][i] == 1)
 		{
@@ -78,8 +78,10 @@ LinkQueue BFSTraverse(Graph G, int a, int b)
 	}
 	QElemType e = a - 1;
 	for (v = e; v < G.vexnum; v++) {
+		int flag = 0;
 		if (G.vexs[v] == 0)// v 尚未访问
 		{
+
 			G.vexs[v] = 1;
 			EnQueue(&Q, v);
 			while (QueueEmpty(Q) == FALSE)
@@ -94,15 +96,20 @@ LinkQueue BFSTraverse(Graph G, int a, int b)
 
 					if (w == b - 1)
 					{
+						flag = 1;
 						break;//按顺序遍历所有连通节点完毕
 					}
+					if (flag == 1) { break; }
 				}
-				break;
+				if (flag == 1) { break; }
 			}
 		}
-		break;
+		if (flag == 1) { break; }
 	}
+
 	return Q;
+
+
 }
 
 void Print(LinkQueue Q, int a, int b)
@@ -110,7 +117,7 @@ void Print(LinkQueue Q, int a, int b)
 	int temp[10];
 	int count = 0;
 	QueuePtr p = Q.rear;
-	for (int i = 0; i<10; i++) {
+	for (int i = 0; i < 10; i++) {
 		temp[i] = 0;
 	}
 	while (p->Priou != NULL) {
@@ -123,10 +130,11 @@ void Print(LinkQueue Q, int a, int b)
 	}
 	printf("\n");
 	QueuePtr q = Q.front->Next;//将q置于Q之后
-	while (q->Priou!= NULL) {
+	while (q->Priou != NULL) {
 		q = q->Priou;
 	}
 	q = q->Next;
 	Q.front = q;
 	DestroyQueue(&Q);
+
 }

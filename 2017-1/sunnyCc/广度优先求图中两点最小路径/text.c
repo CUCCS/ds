@@ -15,11 +15,11 @@ int main()
 	Graph G;
 	LinkQueue Q;
 	CreatGraph(&G, A);
-	for (int i = 1; i<10; i++) {
-		for (int j = 1; j<10; j++) {
+	for (int i = 1; i < MAX + 1; i++) {
+		for (int j = 1; j < MAX + 1; j++) {
 			if (i != j) {
-				Q=BFSTraverse(G, i, j);//广度优先遍历求结点i到j的最小路径
-				Print(Q,i,j);
+				Q = BFSTraverse(G, i, j);//广度优先遍历求结点i到j的最小路径
+				Print(Q, i, j);
 			}
 
 		}
