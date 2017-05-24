@@ -10,8 +10,8 @@ typedef enum
 
 typedef enum
 {
-	true,
-	false
+	TRUE,
+	FALSE
 }bool;
 
 
@@ -60,11 +60,12 @@ bool QueueEmpty(LinkQueue*Q);
 Status DestroyQueue(LinkQueue*Q);
 
 /*=========图的基本操作=========*/
-Status LocateVex(MGraph *G, int v1, int v2);
+bool LocateVex(MGraph *g, int v, int *i);
 Status CreateUDN(MGraph *G);
 int FirstAdjVex(MGraph *G, int u);
 int NextAdjvex(MGraph *G, int u, int w);
 Status BFSTraverse(MGraph*G, LinkQueue *Q, int a, int b);
-Status print(LinkQueue *Q, int a);
+Status print(LinkQueue *Q, int a); 
+Status InsertArc(MGraph *G, int v1, int v2);
 
 

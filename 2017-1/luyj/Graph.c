@@ -2,18 +2,18 @@
 
 
 /*=========队列的基本操作=========*/
-Status InitQueue(LinkQueue *Q)
+Status InitQueue(LinkQueue *q)
 {
-	Q->front = Q->rear = (QueuePtr)malloc(sizeof(QNode));
-	if (!Q->front)
+	q->front = q->rear = (QueuePtr)malloc(sizeof(QNode));
+	if (!q->front)
 	{
 		return ERROR;
 	}
-	Q->front->next = Q->rear->next = NULL;
+	q->front->next = q->rear->next = NULL;
 	return OK;
 }
 
-Status EnQueue(LinkQueue*Q, QElemType e)
+Status EnQueue(LinkQueue*q, QElemType e)
 {
 	QueuePtr p = (QueuePtr)malloc(sizeof(QNode));
 	if (!p)
@@ -24,118 +24,115 @@ Status EnQueue(LinkQueue*Q, QElemType e)
 	{
 		p->data = e;
 		p->next = NULL;
-		p->pre = Q->front;
-		Q->rear->next = p;
-		Q->rear = p;
+		p->pre = q->front;
+		q->rear->next = p;
+		q->rear = p;
 	}
 }
 
-Status DeQueue(LinkQueue*Q, QElemType*e)
+Status DeQueue(LinkQueue*q, QElemType*e)
 {
-	if (Q->front == Q->rear)
+	if (q->front == q->rear)
 	{
 		return ERROR;
 	}
-	Q->front = Q->front->next;
-	*e = Q->front->data;
+	q->front = q->front->next;
+	*e = q->front->data;
 	return OK;
 }
 
-bool QueueEmpty(LinkQueue*Q)
+bool QueueEmpty(LinkQueue*q)
 {
-	if (Q->front == Q->rear)
+	if (q->front == q->rear)
 	{
-		return true;
+		return TRUE;
 	}
 	else
 	{
-		return false;
+		return FALSE;
 	}
 }
 
-Status DestroyQueue(LinkQueue*Q)
+Status DestroyQueue(LinkQueue*q)
 {
-	while (Q->front)
+	while (q->front)
 	{
-		Q->rear = Q->front->next;
-		free(Q->front);
-		Q->front = Q->rear;
+		q->rear = q->front->next;
+		free(q->front);
+		q->front = q->rear;
 	}
 	return OK;
 }
 /*=========图的基本操作=========*/
 
-Status LocateVex(MGraph *G,int v1,int v2)
+Status InsertArc(MGraph *g,int v1,int v2)
 {
-	int i;
-	int j;
-	int m = 0;
-	int n = 0;
-	for (i = 0; i <= G->vexnum; i++)
+	int i = 0;
+	int j = 0;
+	if (LocateVex(g, v1, &i) == TRUE && LocateVex(g, v2, &j) == TRUE)
 	{
-		if (G->vexs[i]==v1)
+		g->arcs[i][j].adj = 1;//两点之间有连线，弧值为1;
+		g->arcs[j][i] = g->arcs[i][j];
+	}
+}
+bool LocateVex(MGraph *g,int v,int *i)
+{
+	int m;
+	for (m = 0; m <= g->vexnum; m++)
+	{
+		if (g->vexs[m]==v)
 		{
-			m = i;
-			break;
+			*i = m;
+			return TRUE;
 		}
 	}
-	for (j = 0; j <= G->vexnum; j++)
-	{
-		if (G->vexs[j] == v2)
-		{
-			n = j;
-			break;
-		}
-	}
-	G->arcs[i][j].adj = 1;//两点之间有连线，弧值为1;
-	G->arcs[j][i] = G->arcs[i][j];
-	return OK;
+	return FALSE;
 }
 
 //构建图
-Status CreateUDN(MGraph *G)
+Status CreateUDN(MGraph *g)
 {
 	int i;
 	int j;
 	//根据用例直接赋值。
-	G->vexnum = 9;
-	G->arcnum = 12;
-	for (i = 1; i <= G->vexnum; i++)
+	g->vexnum = 9;
+	g->arcnum = 12;
+	for (i = 1; i <= g->vexnum; i++)
 	{
-		G->vexs[i] = i;//构建顶点向量;
+		g->vexs[i] = i;//构建顶点向量;
 	}
-	for (i = 0; i <= G->vexnum; i++)//初始化邻接矩阵;
+	for (i = 0; i <= g->vexnum; i++)//初始化邻接矩阵;
 	{
-		for (j = 0; j <= G->vexnum; j++)
+		for (j = 0; j <= g->vexnum; j++)
 		{
-			G->arcs[i][j].adj = INFINITY;
-			G->arcs[i][j].info = NULL;
+			g->arcs[i][j].adj = INFINITY;
+			g->arcs[i][j].info = NULL;
 		}
 	}
 	//构建邻接矩阵;
-		LocateVex(G, 1, 2);
-		LocateVex(G, 1, 3);
-		LocateVex(G, 1, 4);
-		LocateVex(G, 1, 7);
-		LocateVex(G, 2, 3);
-		LocateVex(G, 4, 5);
-		LocateVex(G, 4, 6);
-		LocateVex(G, 5, 6);
-		LocateVex(G, 6, 8);
-		LocateVex(G, 7, 8);
-		LocateVex(G, 7, 9);
-		LocateVex(G, 8, 9);
+		InsertArc(g, 1, 2);
+		InsertArc(g, 1, 3);
+		InsertArc(g, 1, 4);
+		InsertArc(g, 1, 7);
+		InsertArc(g, 2, 3);
+		InsertArc(g, 4, 5);
+		InsertArc(g, 4, 6);
+		InsertArc(g, 5, 6);
+		InsertArc(g, 6, 8);
+		InsertArc(g, 7, 8);
+		InsertArc(g, 7, 9);
+		InsertArc(g, 8, 9);
 
 		return OK;
 }
 
 //找出第一个邻接点
-int FirstAdjVex(MGraph *G, int u)
+int FirstAdjVex(MGraph *g, int u)
 {
 	int i;
-	for (i = 1; i <= G->vexnum; i++)
+	for (i = 1; i <= g->vexnum; i++)
 	{
-		if (G->arcs[u][i].adj == 1)
+		if (g->arcs[u][i].adj == 1)
 		{
 			return i;
 		}
@@ -144,12 +141,12 @@ int FirstAdjVex(MGraph *G, int u)
 }
 
 //找出下一个邻接点
-int NextAdjvex(MGraph *G, int u, int w)
+int NextAdjvex(MGraph *g, int u, int w)
 {
 	int i;
-	for (i = w + 1; i <= G->vexnum; i++)
+	for (i = w + 1; i <= g->vexnum; i++)
 	{
-		if (G->arcs[u][i].adj == 1)
+		if (g->arcs[u][i].adj == 1)
 		{
 			return i;
 		}
@@ -157,7 +154,7 @@ int NextAdjvex(MGraph *G, int u, int w)
 	return -1;
 }
 //广度优先遍历图,求两点a,b间的最短路径;
-Status BFSTraverse(MGraph*G, LinkQueue *Q,int a,int b)
+Status BFSTraverse(MGraph*g, LinkQueue *q,int a,int b)
 {
 	
 	int v;
@@ -166,21 +163,21 @@ Status BFSTraverse(MGraph*G, LinkQueue *Q,int a,int b)
 	int m = 0;
 	int n = 0;
 	bool visited[MAX_VERTEX_NUM];
-	for (v = 1; v <= G->vexnum; v++)
+	for (v = 1; v <= g->vexnum; v++)
 	{
-		visited[v] = false;  //标记数组，标记图中已访问的点
+		visited[v] = FALSE;  //标记数组，标记图中已访问的点
 	}
 	
-	EnQueue(Q, a); //a先入队列;
-	while (QueueEmpty(Q)!= true)
+	EnQueue(q, a); //a先入队列;
+	while (QueueEmpty(q)!= TRUE)
 	{
-		DeQueue(Q, &u);
-		for (w = FirstAdjVex(G, u); w >=0; w = NextAdjvex(G, u, w))
+		DeQueue(q, &u);
+		for (w = FirstAdjVex(g, u); w >=0; w = NextAdjvex(g, u, w))
 		{
-			if (visited[w] == false)//判断w是否已经访问过
+			if (visited[w] == FALSE)//判断w是否已经访问过
 			{
-				visited[w] = true;
-				EnQueue(Q, w); 
+				visited[w] = TRUE;
+				EnQueue(q, w); 
 			}
 			if (w == b)
 			{
@@ -194,9 +191,9 @@ Status BFSTraverse(MGraph*G, LinkQueue *Q,int a,int b)
 	}
 }
 
-Status print(LinkQueue *Q,int a)
+Status print(LinkQueue *q,int a)
 {
-	if (Q->rear->data == a)
+	if (q->rear->data == a)
 	{
 		printf("%d->%d\n", a, a);
 		return OK;
@@ -205,10 +202,10 @@ Status print(LinkQueue *Q,int a)
 	int i = 0;
 	int j;
 	int num[MAX_VERTEX_NUM] = { 0 };
-	while (Q->rear->data!=a)//倒序进入数组
+	while (q->rear->data!=a)//倒序进入数组
 	{
-		num[i] = Q->rear->data;
-		Q->rear = Q->rear->pre;
+		num[i] = q->rear->data;
+		q->rear = q->rear->pre;
 		i++;
 	}
 	printf("%d", a);

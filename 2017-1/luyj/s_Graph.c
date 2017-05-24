@@ -5,16 +5,16 @@ int main()
 	int i;
 	int j;
 
-	MGraph Graph;
-	CreateUDN(&Graph);
-	for (i = 1; i <= Graph.vexnum; i++)
+	MGraph graph;
+	CreateUDN(&graph);
+	for (i = 1; i <= graph.vexnum; i++)
 	{
-		for (j = 1; j <= Graph.vexnum; j++)
+		for (j = 1; j <= graph.vexnum; j++)
 		{
 			LinkQueue Q;
 			InitQueue(&Q);
 			printf("%d<->%d:", i, j);
-			BFSTraverse(&Graph, &Q, i, j);
+			BFSTraverse(&graph, &Q, i, j);
 			print(&Q, i);
 			DestroyQueue(&Q);
 		}
