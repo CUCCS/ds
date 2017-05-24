@@ -67,6 +67,7 @@ Status EnQueue(LinkQueue*Q, QElemType e)
 		p->pre = Q->front;
 		Q->rear->next = p;
 		Q->rear = p;
+		return OK;
 	}
 }
 
@@ -105,33 +106,41 @@ Status DestroyQueue(LinkQueue*Q)
 }
 /*=========图的基本操作=========*/
 
-Status LocateVex(MGraph *G, int v1, int v2)
+int LocateVex(MGraph *G, int v1)//返回顶点v1的位置
 {
 	int i;
-	int j;
-	int m = 0;
-	int n = 0;
+	int n = -1;
+	
 	for (i = 0; i <= G->vexnum; i++)
 	{
 		if (G->vexs[i] == v1)
 		{
-			m = i;
+			n= i;
 			break;
 		}
 	}
-	for (j = 0; j <= G->vexnum; j++)
+	if (n != -1)
 	{
-		if (G->vexs[j] == v2)
-		{
-			n = j;
-			break;
-		}
+		return n;
 	}
-	G->arcs[i][j].adj = 1;//两点之间有连线，弧值为1;
-	G->arcs[j][i] = G->arcs[i][j];
-	return OK;
+	return 0;
 }
-
+Status InsertArc(MGraph *G, int v1, int v2)//v1、v2间添加弧
+{
+	int i, j;
+	i = LocateVex(G, v1);
+	j= LocateVex(G, v2);
+	if (i != 0 && j != 0)
+	{
+		G->arcs[i][j].adj = 1;//两点之间有连线，弧值为1;
+		G->arcs[j][i] = G->arcs[i][j];
+		return OK;
+	}
+	else
+	{
+		return ERROR;
+	}
+}
 //构建图
 Status CreateUDN(MGraph *G)
 {
@@ -153,18 +162,18 @@ Status CreateUDN(MGraph *G)
 		}
 	}
 	//构建邻接矩阵;
-	LocateVex(G, 1, 2);
-	LocateVex(G, 1, 3);
-	LocateVex(G, 1, 4);
-	LocateVex(G, 1, 7);
-	LocateVex(G, 2, 3);
-	LocateVex(G, 4, 5);
-	LocateVex(G, 4, 6);
-	LocateVex(G, 5, 6);
-	LocateVex(G, 6, 8);
-	LocateVex(G, 7, 8);
-	LocateVex(G, 7, 9);
-	LocateVex(G, 8, 9);
+	InsertArc(G, 1, 2);
+	InsertArc(G, 1, 3);
+	InsertArc(G, 1, 4);
+	InsertArc(G, 1, 7);
+	InsertArc(G, 2, 3);
+	InsertArc(G, 4, 5);
+	InsertArc(G, 4, 6);
+	InsertArc(G, 5, 6);
+	InsertArc(G, 6, 8);
+	InsertArc(G, 7, 8);
+	InsertArc(G, 7, 9);
+	InsertArc(G, 8, 9);
 
 	return OK;
 }
