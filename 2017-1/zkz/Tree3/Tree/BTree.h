@@ -123,6 +123,14 @@ Elemtype swapWithMid(Elemtype* arr, int size, Elemtype data) {
 	free(_arr);
 	return mid;
 }
+bool Find(BTree root, Elemtype data) {
+	int pos = 0;
+	while (data > root->keys[pos] && pos<root->usedKeys)pos += 1;
+	if (data == root->keys[pos])
+		return true;
+	else
+		return root->childs[pos] ? Find(root->childs[pos], data) : false;
+}
 BTree Insert(BTree root, Elemtype data) {
 	if (!isLeaf(root)) {
 		int pos = 0;
@@ -158,7 +166,7 @@ BTree Insert(BTree root, Elemtype data) {
 	}
 	return root;
 }
-
+BTree Remove(BTree root, Elemtype data) {}
 /*°´²ã±éÀúÊä³öBÊ÷*/
 typedef struct _QueueNode {
 	Node* data;
