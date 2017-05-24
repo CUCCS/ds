@@ -5,83 +5,83 @@
 #include "2.1.h"
 
 void InitList(List *L) {
-    L->length = 0;
+	L->length = 0;
     L->listsize = LISTSIZE;
 }
 
 int equal_fn(ElemType a, ElemType b) {
-    return a == b ? 1 : 0;
+	return a == b ? 1 : 0;
 }
 
 int ListLength(List a) {
-    return a.length;
+	return a.length;
 }
 
 void GetElem(List Lb, int i, ElemType *e) {
-    *e = Lb.elem[i];
+	*e = Lb.elem[i];
 }
 
 int LocateElem(List La, ElemType e, int (*equal)(ElemType, ElemType)) {
-    int i;
-    for(i = 0; i < ListLength(La); i++) {
-        if((*equal)(e, La.elem[i]) == 1) {
-            return i;
-        }
-    }
+	int i;
+	for(i = 0; i < ListLength(La); i++) {
+		if((*equal)(e, La.elem[i]) == 1) {
+			return i;
+		}
+	}
 
-    return -1;
+	return -1;
 }
 
 int ListInsert(List *L, int i, ElemType e) {
     ElemType *p, *q;
-    if (i < 0 || i > L->length + 1) {  // æ’å…¥ä½ç½®ä¸åˆæ³•
-        return ERROR; // ç¨‹åºè®¾è®¡çš„fail early and openlyåŸåˆ™
+	if (i < 0 || i > L->length + 1) {  // ²åÈëÎ»ÖÃ²»ºÏ·¨
+        return ERROR; // ³ÌĞòÉè¼ÆµÄfail early and openlyÔ­Ôò
     }
-    if (L->length >= L->listsize)  { // å½“å‰å­˜å‚¨ç©ºé—´å·²æ»¡
-        return  OVERFLOW; // ç¨‹åºè®¾è®¡çš„è¿”å›çŠ¶æ€ç è§„èŒƒ
+    if (L->length >= L->listsize)  { // µ±Ç°´æ´¢¿Õ¼äÒÑÂú
+        return  OVERFLOW; // ³ÌĞòÉè¼ÆµÄ·µ»Ø×´Ì¬Âë¹æ·¶
     }
-    q = &(L->elem[i-1]);     // q æŒ‡ç¤ºæ’å…¥ä½ç½®
+    q = &(L->elem[i-1]);     // q Ö¸Ê¾²åÈëÎ»ÖÃ
     for (p = &(L->elem[L->length]); p >= q; --p) {
-        *(p+1) = *p;       // æ’å…¥ä½ç½®åŠä¹‹åçš„å…ƒç´ å³ç§»
+        *(p+1) = *p;       // ²åÈëÎ»ÖÃ¼°Ö®ºóµÄÔªËØÓÒÒÆ
     }
-    *q = e;       // æ’å…¥e
-    ++L->length;   // è¡¨é•¿å¢1
+    *q = e;       // ²åÈëe
+    ++L->length;   // ±í³¤Ôö1
     return OK;
 }
 
 void Union(List *la, List lb) {
-    int i;
-    ElemType e;
-    int La_len = ListLength(*la);
-    int Lb_len = ListLength(lb);
-
-    for(i = 0; i < Lb_len; i++) {
-        GetElem(lb, i, &e);
-        if(LocateElem(*la, e, &equal_fn) == -1) {
-            ListInsert(la, ++La_len, e);
-        }
-    }
+	int i;
+	ElemType e;
+	int La_len = ListLength(*la);
+	int Lb_len = ListLength(lb);
+	
+	for(i = 0; i < Lb_len; i++) {
+		GetElem(lb, i, &e);
+		if(LocateElem(*la, e, &equal_fn) == -1) {
+			ListInsert(la, ++La_len, e);
+		}
+	}
 }
 
 void ListTraverse(List L) {
-    int i;
-    for(i = 0; i < ListLength(L); i++) {
-        printf("%d ", L.elem[i]);
-    }
-    printf("\n");
+	int i;
+	for(i = 0; i < ListLength(L); i++) {
+		printf("%d ", L.elem[i]);
+	}
+	printf("\n");
 }
 
 int main() {
-    List la;
-    List lb;
+	List la;
+	List lb;
     int i;
     int la_length = 5;
     int lb_length = 6;
 
-    InitList(&la);
-    InitList(&lb);
+	InitList(&la);
+	InitList(&lb);
 
-    // äº§ç”Ÿæµ‹è¯•æ•°æ®
+	// ²úÉú²âÊÔÊı¾İ
     srand(time(NULL));
     for(i = 0; i < la_length; i++) {
         la.elem[i] = (int)rand() % 1024;
@@ -92,12 +92,12 @@ int main() {
     }
     lb.length = lb_length;
 
-    ListTraverse(la);
-    ListTraverse(lb);
+	ListTraverse(la);
+	ListTraverse(lb);
 
     Union(&la, lb);
 
-    ListTraverse(la);
+	ListTraverse(la);
 
-    return 0;
+	return 0;
 }

@@ -1,11 +1,11 @@
-#define LISTSIZE 100    // 瀹归噺锛氬瓨鍌ㄧ┖闂寸殑鏈�澶у垎閰嶉噺
+#define LISTSIZE 100    // 容量：存储空间的最大分配量
 
 typedef int ElemType;
 
 typedef  struct _SqList{
     ElemType elem[LISTSIZE];
-    int      length;          // 褰撳墠闀垮害
-    int      listsize;
+    int      length;          // 当前长度
+	int      listsize;
 } SqList;
 
 #define OK 0
