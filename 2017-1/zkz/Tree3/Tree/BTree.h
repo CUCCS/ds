@@ -158,3 +158,63 @@ BTree Insert(BTree root, Elemtype data) {
 	}
 	return root;
 }
+
+/*按层遍历输出B树*/
+typedef struct _QueueNode {
+	Node* data;
+	struct _QueueNode* prev;
+	struct _QueueNode* next;
+}QueueNode;
+typedef struct _Queue {
+	QueueNode* front;
+	QueueNode* rear;
+}Queue;
+Queue newQueue() {
+	Queue q; q.front = q.rear = NULL; return q;
+}
+Queue EnQueue(Queue q,Node* data) {
+	QueueNode* temp = (QueueNode*)malloc(sizeof(QueueNode));
+	temp->data = data; temp->next = temp->prev = NULL;
+	//如果是空队列
+	if (!q.front) {
+		q.front = q.rear = temp;
+	}
+	else {
+		temp->prev = q.rear;
+		q.rear->next = temp;
+		q.rear = temp;
+	}
+	return q;
+}
+Queue DeQueue(Queue q, Node** result) {
+	if (q.front == q.rear) {
+		*result = q.front->data;
+		free(q.front);
+		q.front = q.rear = NULL;
+	}
+	else {
+		*result = q.front->data;
+		QueueNode* temp = q.front;
+		q.front = q.front->next;
+		free(temp);
+	}
+	return q;
+}
+void BFSprint(BTree root) {
+	Queue q = newQueue();
+	Node* front;
+	q = EnQueue(q, root);
+	do {
+		q = DeQueue(q, &front);
+		for (int i = 0; i < front->usedKeys; ++i) {
+			printf("%d", front->keys[i]);
+			if (q.front || front->childs[0] || i<=front->usedKeys-1&&front->keys[i+1]) {
+				printf(", ");
+			}
+		}
+		for (int i = 0; i < M; ++i) {
+			if (front->childs[i])
+				q = EnQueue(q, front->childs[i]);
+		}
+	} while (q.front);
+}
