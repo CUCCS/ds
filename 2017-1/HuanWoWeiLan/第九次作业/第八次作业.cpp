@@ -6,7 +6,7 @@ typedef struct node
 	struct node *lchild, *rchild;
 }BSTNode, *BSTree;
 
-//²åÈë
+//æ’å…¥
 int InsertBST(BSTree *bst, int k)
 {
 	BSTree r, s, pre;
@@ -110,7 +110,7 @@ void CreateBST(BSTree *bst)
 		scanf("%d", &key);
 	}
 }
-/*´òÓ¡¶ş²æÊ÷£ºÖĞĞò±éÀú*/
+/*æ‰“å°äºŒå‰æ ‘ï¼šä¸­åºéå†*/
 void InOrder(BSTree root)
 {
 	if(root != NULL)
@@ -121,12 +121,12 @@ void InOrder(BSTree root)
 	}
 }
 
-/*ËÑË÷*/
+/*æœç´¢*/
 BSTree SearchBST(BSTree bst, int key)
 {
 	BSTree q;
 	q = bst;
-	//µİ¹é
+	//é€’å½’
 	while(q)
 	{
 		if(q->key == key)
@@ -136,7 +136,7 @@ BSTree SearchBST(BSTree bst, int key)
 		else
 			q=q->rchild;
 	}
-	return NULL;                        //²éÕÒÊ§°Ü
+	return NULL;                        //æŸ¥æ‰¾å¤±è´¥
 }
 
 int main()
@@ -144,26 +144,26 @@ int main()
 	BSTree T;
 	int tag = 1;
 	int m, n;
-	printf("½¨Á¢¶ş²æÅÅĞòÊ÷£¬ÇëÊäÈëĞòÁĞÒÔ-1½áÊø£º");
+	printf("å»ºç«‹äºŒå‰æ’åºæ ‘ï¼Œè¯·è¾“å…¥åºåˆ—ä»¥-1ç»“æŸï¼š");
 	CreateBST(&T);
-	printf("ÖĞĞò±éÀú¶ş²æÊ÷£¬ĞòÁĞÎª£º");
+	printf("ä¸­åºéå†äºŒå‰æ ‘ï¼Œåºåˆ—ä¸ºï¼š");
 	InOrder(T);
 	while(tag != 0)
 	{
-		printf("ÇëÊäÈëÄãÒª²éÕÒµÄÔªËØ:");
+		printf("è¯·è¾“å…¥ä½ è¦æŸ¥æ‰¾çš„å…ƒç´ :");
 		scanf("%d", &n);
 		if(SearchBST(T, n) == NULL)
 		{
-			printf("±§Ç¸²éÕÒÊ§°Ü!");
+			printf("æŠ±æ­‰æŸ¥æ‰¾å¤±è´¥!");
 			InsertBST(&T, n);
 		}
 		else
 		{
-			printf("²éÕÒ³É¹¦£¡²éÕÒµÄÊı×ÖÎª%d\n", SearchBST(T,n)->key);
+			printf("æŸ¥æ‰¾æˆåŠŸï¼æŸ¥æ‰¾çš„æ•°å­—ä¸º%d\n", SearchBST(T,n)->key);
 			DeleteBST(SearchBST(T,n),n);
 		}
 		InOrder(T);
-		printf("\nÊÇ·ñ¼ÌĞø²éÕÒ ÊÇ £ºÇë°´ 1 ·ñÔò°´ 0:");
+		printf("\næ˜¯å¦ç»§ç»­æŸ¥æ‰¾ æ˜¯ ï¼šè¯·æŒ‰ 1 å¦åˆ™æŒ‰ 0:");
 		scanf("%d", &tag);
 	}
 	return 0;
