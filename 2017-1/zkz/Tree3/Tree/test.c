@@ -3,13 +3,13 @@
 
 void SuperShow(Node* tree) {
 	if (!tree)return;
-	printf("(");
+	if(!isLeaf(tree))printf("(");
 	SuperShow(tree->left);
 	if (tree->left)printf("←");
 	printf(" %d ",tree->data);
 	if (tree->right)printf("→");
 	SuperShow(tree->right);
-	printf(")");
+	if(!isLeaf(tree))printf(")");
 }
 
 int main() {
@@ -20,17 +20,18 @@ int main() {
 	int size2 = 5;
 
 	/*初始化查找表*/
-	BST bst = newBST(8);
+	AVL avl = newAVL(8);
 	for (int i = 1; i < size1; ++i) {
-		bst = BSTinsert(bst, inputs[i]);
+		avl = AVLinsert(avl, inputs[i]);
+		if (DEBUG)SuperShow(avl),printf("\n");
 	}
-	Show(bst);
+	Show(avl);
 	printf("\n");
 	/*开始查找操作*/
 	for (int j = 0; j < size2; ++j) {
 		/*如果找到就删除，没找到就插入*/
-		BSTfind(bst, toFind[j]) ? BSTremove(bst, toFind[j]) : BSTinsert(bst, toFind[j]);
-		Show(bst);
+		AVLfind(avl, toFind[j]) ? AVLremove(avl, toFind[j]) : AVLinsert(avl, toFind[j]);
+		Show(avl);
 		printf("\n");
 	}
 }

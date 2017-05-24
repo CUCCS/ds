@@ -15,6 +15,7 @@
 /*测试用相关宏*/
 #define DEBUG 0
 #define debug_print(...) if(DEBUG)printf(__VA_ARGS__)
+#define Value(p) ((p) ? (p)->data : 0)
 #include <stdlib.h>
 typedef enum _bool {false,true} bool;
 typedef int elemType;
@@ -23,7 +24,7 @@ typedef struct _Node{
 	Node * parent;
 	Node * left;
 	Node * right;
-}*BST;
+}*BST,*AVL;
 
 Node* newNode() {
 	Node* temp = (Node*)malloc(sizeof(Node));
@@ -42,6 +43,19 @@ void Show(Node* tree) {
 		printf(", ");
 		Show(tree->right);
 	}
+}
+int getDepth(Node* tree) {
+	int leftDepth, rightDepth;
+	if (!tree)return 0;
+	leftDepth = 1 + getDepth(tree->left);
+	rightDepth = 1 + getDepth(tree->right);
+	return leftDepth > rightDepth ? leftDepth : rightDepth;
+}
+
+BST newBST(int data) {
+	BST bst = newNode();
+	bst->data = data;
+	return bst;
 }
 bool BSTfind(BST bst, elemType data) {
 	if (data == bst->data)return true;
@@ -121,8 +135,123 @@ BST BSTremove(BST bst, elemType data) {
 
 	return bst;
 }
-BST newBST(int data) {
-	BST bst = newNode();
-	bst->data = data;
-	return bst;
+
+
+AVL newAVL(int data) {
+	AVL avl = newNode();
+	avl->data = data;
+	return avl;
+}
+int getBalanceFactor(AVL avl) {
+	if (!avl) { printf(__FUNCTION__"NULL avl to get BF\n"); exit(-1); }
+	return getDepth(avl->left) - getDepth(avl->right);
+}
+bool isAVL(AVL avl) {
+	return avl ? abs(getBalanceFactor(avl)) <= 1 && isAVL(avl->left) && isAVL(avl->right) : true;
+}
+bool AVLfind(AVL avl, elemType data) {
+	return BSTfind(avl, data);
+}
+/*使非平衡树平衡的调整操作*/
+void rightRotate(AVL root) {
+	debug_print(__FUNCTION__" at node (%d)\n", root->data);
+	debug_print("Before : node(%d) is {%d,%d,%d}\n", root->data, Value(root->parent), Value(root->left), Value(root->right));
+
+	AVL temp = root->left;
+	if (isLeftChild(root))root->parent->left = temp;
+	else if (isRightChild(root)) root->parent->right =temp;
+	temp->parent = root->parent;
+
+	root->left = temp->right;
+	if (temp->right)temp->right->parent = root;
+	temp->right = root;
+	root->parent = temp;
+	debug_print("After : node(%d) is {%d,%d,%d}\n", root->data, Value(root->parent), Value(root->left), Value(root->right));
+	root = root->parent;
+	debug_print("After : node(%d) is {%d,%d,%d}\n", root->data, Value(root->parent), Value(root->left), Value(root->right));
+}
+void leftRotate(AVL root) {
+	debug_print(__FUNCTION__" at node (%d)\n",root->data);
+	debug_print("Before : node(%d) is {%d,%d,%d}\n", root->data, Value(root->parent), Value(root->left), Value(root->right));
+
+	AVL temp = root->right;
+	if (isLeftChild(root))root->parent->left = temp;
+	else if (isRightChild(root)) root->parent->right = temp;
+	temp->parent = root->parent;
+
+	root->right = temp->left;
+	if (temp->left)temp->left->parent = root;
+	temp->left = root;
+	root->parent = temp;
+	debug_print("After : node(%d) is {%d,%d,%d}\n", root->data, Value(root->parent), Value(root->left), Value(root->right));
+	root = root->parent;
+	debug_print("After : node(%d) is {%d,%d,%d}\n", root->data, Value(root->parent), Value(root->left), Value(root->right));
+}
+AVL AVLfix(AVL avl) {
+	AVL temp = avl;
+	bool leftIsAVL, rightIsAVL;
+	int BF,leftBF, rightBF;
+	if (isAVL(avl))return avl;
+	debug_print("node (%d) need to fix\n",avl->data);
+	leftIsAVL = isAVL(temp->left);
+	rightIsAVL = isAVL(temp->right);
+	/*如果自己不平衡但左右子树平衡，则自己就是最小非平衡二叉树*/
+	while (!leftIsAVL || !rightIsAVL) {
+		/*否则如果左/右子树不平衡，那就让自己成为左/右子树*/
+		temp = leftIsAVL ? temp->right : temp->left;
+
+		leftIsAVL = isAVL(temp->left);
+		rightIsAVL = isAVL(temp->right);
+	}
+	debug_print("The minimum unbalanced tree is at node (%d)\n",temp->data);
+	/*此时，temp应该就是最小非平衡二叉树了*/
+	BF = getBalanceFactor(temp);
+	if (BF == 2) {
+		leftBF = getBalanceFactor(temp->left);
+		if (leftBF == 1) {
+			debug_print("It needs a LL\n");
+			rightRotate(temp);
+		}
+		else if (leftBF == -1) {
+			debug_print("It needs a LR\n");
+			leftRotate(temp->left);
+			rightRotate(temp);
+		}
+		else {
+			printf("%d Boom!\n",__LINE__);
+			exit(-1);
+		}
+	}//end if BF==2
+	else if (BF == -2) {
+		rightBF = getBalanceFactor(temp->right);
+		if (rightBF == 1) {
+			debug_print("It needs a RL\n");
+			rightRotate(temp->right);
+			leftRotate(temp);
+		}
+		else if (rightBF == -1) {
+			debug_print("It needs a RR\n");
+			leftRotate(temp);
+		}
+		else {
+			printf("%d Boom!\n", __LINE__);
+			exit(-1);
+		}
+	}//end if BF==-2
+	else{
+		printf("%d BOOMSHAKALAKA!\n", __LINE__);
+		exit(-1);
+	}
+	while (avl->parent)avl = avl->parent;
+	return avl;
+}
+AVL AVLinsert(AVL avl, elemType data) {
+	debug_print(__FUNCTION__"((%d),%d)\n",avl->data,data);
+	BSTinsert(avl, data);
+	return AVLfix(avl);
+}
+AVL AVLremove(AVL avl, elemType data) {
+	debug_print(__FUNCTION__"((%d),%d)\n", avl->data, data);
+	BSTremove(avl, data);
+	return AVLfix(avl);
 }
