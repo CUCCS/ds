@@ -1,5 +1,5 @@
 #pragma once
-#include "Queen.h"
+#include "Queue.h"
 
 /*初始化队列*/
 Status InitQueue(LinkQueue *q) {

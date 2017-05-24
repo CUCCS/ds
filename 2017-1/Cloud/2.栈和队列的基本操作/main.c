@@ -1,5 +1,5 @@
 #include<stdio.h>
-#include "Queen.h"
+#include "Queue.h"
 int main() {
 	int _queueLen;
 	QElemType _e;
