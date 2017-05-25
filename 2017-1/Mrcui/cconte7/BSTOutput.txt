@@ -1,9 +1,5 @@
-/Users/cclin/Library/Caches/CLion2016.2/cmake/generated/COM7-b3dd15a0/b3dd15a0/Debug/COM7
-12
-8, 10, 14, 3, 1, 6, 4, 7, 5, 19, 22, 30
+/Users/cclin/Library/Caches/CLion2016.2/cmake/generated/untitled7-9ac2788/9ac2788/Debug/untitled7
 8, 3, 1, 6, 4, 5, 7, 10, 14, 19, 22, 30, 
-5
-13, 8, 5, 20, 6
 8, 3, 1, 6, 4, 5, 7, 10, 14, 13, 19, 22, 30, 
 7, 3, 1, 6, 4, 5, 10, 14, 13, 19, 22, 30, 
 7, 3, 1, 6, 4, 10, 14, 13, 19, 22, 30, 
