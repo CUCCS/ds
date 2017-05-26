@@ -1,12 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
-typedef enum status
+typedef enum
 {
 	OK,
 	ERROR,
 	OVERFLOW
 }Status;
-typedef enum { // 定义布尔函数值
+typedef enum {
 	false,
 	true
 }bool;
