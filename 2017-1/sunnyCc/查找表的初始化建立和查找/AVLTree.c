@@ -272,7 +272,7 @@ int TraversePrint(BSTree T, FILE*pfile)
 bool print(int data, FILE*pfile)
 {
 
-	char d[1] = { "," };
+	char d[2] = { ", " };
 	if (NULL == pfile)
 	{
 		return false;

@@ -136,7 +136,7 @@ bool DeleteBST(BiTree *T, int key)
 bool print(int data, FILE*pfile)
 {
 
-	char d[1] = { "," };
+	char d[2] = { ", " };
 	/*char *d =",";*/
 	if (NULL == pfile)
 	{
