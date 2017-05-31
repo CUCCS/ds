@@ -19,7 +19,7 @@ treeNode* FindMin(treeNode *node)
 		return NULL;
 	}
 	if (node->left)
-		return FindMin(node->left);
+		return FindMin(node->left);//若左子树非空，则继续向左寻找最小值
 	else
 		return node;
 }
@@ -32,7 +32,7 @@ treeNode* FindMax(treeNode *node)
 		return NULL;
 	}
 	if (node->right)
-		FindMax(node->right);
+		FindMax(node->right);//若右子树非空，继续向右寻找最大值
 	else
 		return node;
 }
@@ -48,14 +48,22 @@ treeNode * Insert(treeNode *node, int data)
 		temp->left = temp->right = NULL;
 		return temp;
 	}
-	if (data >(node->data))
+	if (data >(node->data))//若大于则存在右子树中
 	{
 		node->right = Insert(node->right, data);
 	}
-	else if (data < (node->data))
+	else if (data < (node->data))//若小于则存在左子树中
 	{
 		node->left = Insert(node->left, data);
 	}
+	return node;
+}
+
+//创建树
+treeNode*  createTree(treeNode *node, int *a,int n)
+{
+	for (int i = 0; i < n;i++)
+		node=Insert(node, a[i]);
 	return node;
 }
 
@@ -163,18 +171,9 @@ int main()
 {
 	//建立二叉树并插入测试数据
 	treeNode *root = NULL;
-	root = Insert(root, 8);
-	root = Insert(root, 10);
-	root = Insert(root, 14);
-	root = Insert(root, 3);
-	root = Insert(root, 1);
-	root = Insert(root, 6);
-	root = Insert(root, 4);
-	root = Insert(root, 7);
-	root = Insert(root, 5);
-	root = Insert(root, 19);
-	root = Insert(root, 22);
-	root = Insert(root, 30);
+	int s[] = { 8,10,14,3,1,6,4,7,5,19,22,30 };
+	int n = 12;
+	root=createTree(root, &s,n);
 	PrintPreorder(root);
 	printf("\n");
 	//待查找关键字
