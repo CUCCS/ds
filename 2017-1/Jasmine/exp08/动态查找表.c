@@ -106,8 +106,8 @@ void PreOrder(NodeType *t)//先序遍历输出
 {
 	if (t != NULL)
 	{
-		PreOrder(t->lc);
 		printf("%d ", t->elem);
+		PreOrder(t->lc);
 		PreOrder(t->rc);
 		
 	}
@@ -127,7 +127,9 @@ int main()
 	printf("\n");
 	for (i = 0;i < 5;i++)//查找删除
 	{
-		DeleteBST(&t,b[i]);
+		if (!DeleteBST(&t, b[i]))
+			InsertBST(&t, b[i]);
+		PreOrder(t);
+		printf("\n");
 	}
-	PreOrder(t);//先序输出
 }
