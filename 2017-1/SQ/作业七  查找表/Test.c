@@ -19,7 +19,7 @@ int main(){
 	PrintTree(Tree,p);
 
 	for (i = 0; i < search_number; i++) {
-		if (SearchBST(&Tree, Key[i], NULL, &temp)) {
+		if (!SearchBST(&Tree, Key[i], NULL, &temp)) {
 			DeleteBST(&Tree, Key[i]);
 			PrintTree(Tree,p);
 		}

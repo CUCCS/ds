@@ -5,8 +5,8 @@ typedef int KeyType; // 关键字类型
 typedef int ElemType;
 
 typedef enum { // 函数返回值
-	ERROR,
-	OK
+	OK,
+	ERROR
 }Status;
 
 typedef enum { // 定义布尔函数值
