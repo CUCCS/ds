@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 
-typedef char QElemType;
+typedef int QElemType;
 typedef enum{
 	false,
 	true,
