@@ -1,9 +1,10 @@
 ﻿#include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+int flag;
 typedef enum{
+	OK,
 	ERROR,
-	OK
 }Status;
 typedef struct BiTNode
 {
@@ -81,7 +82,7 @@ Status CreateBST(BiTNode * &T, int a[], int n)
 	}  
 	return OK;
 }
-	void PreOrderTraverse(BiTree root) //先序遍历
+void PreOrderTraverse(BiTree root) //先序遍历
 {
 	if(root)
 	{
@@ -95,19 +96,36 @@ void InOrderTraverse(BiTree root) //中序遍历
 	if(root)
 	{
 		InOrderTraverse(root->lchild);
-		printf("%d ",root->value);
+		printf("%d ,",root->value);
 		InOrderTraverse(root->rchild);
 	}
 }
-void PostOrderTraverse(BiTree root)  //后序遍历
+Status print(int data, FILE*pfile)
 {
-	if(root)
+	char *d = ", ";
+	if (NULL == pfile)
 	{
-			PostOrderTraverse(root->lchild);
-		PostOrderTraverse(root->rchild);
-		printf("%d ",root->value);
+		return ERROR;
+	}
+	if (NULL != pfile)
+	{
+		if (flag == 1)
+		{
+			fwrite(d, sizeof(d), 1, pfile);
+		}
+		fprintf(pfile, "%d", data);
+		flag = 1;
 	}
 }
+void PreOrderTraverse(BiTree T, FILE*pfile)
+{
+	if (T)
+	{
+		print(T->value, pfile);
+		PreOrderTraverse(T->lchild, pfile);
+		PreOrderTraverse(T->rchild, pfile);
+	}
+};
 int Delete(BiTree *p)
 { 
 	BiTree q,s;
@@ -177,40 +195,22 @@ int main()
 	FILE*pfile = fopen("BSTOutput.txt", "a"); 
 	if(CreateBST(T,a,n))
 	{
-		printf("Tree creates success:\n");
 		PreOrderTraverse(T);
 		printf("\n");
 	}//end if
-	else
-	{
-		printf("Tree creates failure.\n");
-	}//end else
 	for(i = 0;i < 5;i++)
 	{
 		if(SearchBST(T,b[i]))
 		{
-			printf("%d are found succeed!\n",b[i]);
-			printf("Delete %d !\n",b[i]);
-			printf("Tree:");
 			DeleteBST(&T,b[i]);
-			PreOrderTraverse(T);
-			printf("\n");
 		}//end if
 		else
 		{
-			printf("%d are not found succeed!\n",b[i]);
-			printf("Insert %d !\n",b[i]);
-			if(InsertBST(T,b[i]))
-			{
-				printf("Tree:");
-				PreOrderTraverse(T);
-				printf("\n");
-			}//end if
-			else
-			{
-				printf("Insert fail !");
-				printf("\n");
-			}//end else
+			InsertBST(T,b[i]);		
 		}//end else
+		flag=0;
+		PreOrderTraverse(T);
+		printf("\n");
+		//end if
 	}//end for
 }//end main

@@ -1,20 +1,5 @@
-Tree creates success:
-8 3 1 6 4 5 7 10 14 19 22 30
-未找到该数据,请重新输入!
-13 are not found succeed!
-Insert 13 !
-Tree:8 3 1 6 4 5 7 10 14 13 19 22 30
-8 are found succeed!
-Delete 8 !
-Tree:7 3 1 6 4 5 10 14 13 19 22 30
-5 are found succeed!
-Delete 5 !
-Tree:7 3 1 6 4 10 14 13 19 22 30
-未找到该数据,请重新输入!
-20 are not found succeed!
-Insert 20 !
-Tree:7 3 1 6 4 10 14 13 19 22 20 30
-6 are found succeed!
-Delete 6 !
-Tree:7 3 1 4 10 14 13 19 22 20 30
-Press any key to continue . . .
+8, 3, 1, 6, 4, 5, 7, 10, 14, 13, 19, 22, 30
+7, 3, 1, 6, 4, 5, 10, 14, 13, 19, 22, 30
+7, 3, 1, 6, 4, 10, 14, 13, 19, 22, 30
+7, 3, 1, 6, 4, 10, 14, 13, 19, 22, 20, 30
+7, 3, 1, 4, 10, 14, 13, 19, 22, 20, 30
