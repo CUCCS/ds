@@ -1,7 +1,7 @@
 #pragma once
 #include <stdio.h>
 
-
+#define min(a,b) ((a)<(b) ? (a) : (b))
 typedef int KeyType;
 typedef int DataType;
 typedef struct _RecordType {
@@ -151,4 +151,50 @@ void _HeapSort(RecordType* arr, int length, int*ct, int* mt) {
 void HeapSort(RecordType* arr, int length, int*ct, int* mt) {
 	*ct = *mt = 0;
 	_HeapSort(arr, length, ct, mt);
+}
+
+/*合并一个数组中的两个有序部分*/
+void _Merge(RecordType* left, RecordType*right, RecordType* end , int*ct,int*mt) {
+	//printf(__FUNCTION__);
+	//ShowArr(left, end - left + 1);
+	RecordType* temp = (RecordType*)malloc((end-left+1) * sizeof(RecordType));
+	RecordType* pl = left, *pr = right, *p = temp;
+	while (pl < right && pr <= end) {
+		if (++*ct,pl->key < pr->key) {
+			*p = *pl; ++p; ++pl;
+			++*mt;
+		}
+		else {
+			*p = *pr; ++p; ++pr;
+			++*mt;
+		}
+	}
+	while (pl < right) {
+		*p = *pl; ++p; ++pl;
+		++*mt;
+	}
+	while (pr <= end) {
+		*p = *pr; ++p; ++pr;
+		++*mt;
+	}
+	--p;
+	while (p >= temp) {
+		left[p - temp] = *p;
+		--p;
+		++*mt;
+	}
+}
+void _MergeSort(RecordType* arr, int length, int *ct, int* mt) {
+	//printf(__FUNCTION__);
+	//ShowArr(arr, length);
+	if (length >= 3) {
+		_MergeSort(arr, length / 2, ct, mt);
+		_MergeSort(arr + length / 2, length - length / 2, ct, mt);
+	}
+	_Merge(arr, arr + length / 2, arr + length - 1,ct,mt);
+	//ShowArr(arr, length);
+}
+void MergeSort(RecordType* arr, int length, int *ct, int* mt) {
+	*ct = *mt = 0;
+	_MergeSort(arr, length, ct, mt);
 }
