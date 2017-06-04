@@ -1,0 +1,44 @@
+¡¾Before sort¡¿
+19 60 15 43 44 61 59 53 78
+
+¡¾After InsertSort¡¿
+15 19 43 44 53 59 60 61 78
+compareTime :   17
+moveTime :      17
+total :         34
+
+¡¾After ShellSort¡¿
+15 19 43 44 53 59 60 61 78
+compareTime :   27
+moveTime :      27
+total :         54
+
+¡¾After BubbleSort¡¿
+15 19 43 44 53 59 60 61 78
+compareTime :   36
+moveTime :      27
+total :         63
+
+¡¾After QuickSort¡¿
+15 19 43 44 53 59 60 61 78
+compareTime :   37
+moveTime :      24
+total :         61
+
+¡¾After SelectSort¡¿
+15 19 43 44 53 59 60 61 78
+compareTime :   36
+moveTime :      24
+total :         60
+
+¡¾After HeapSort¡¿
+15 19 43 44 53 59 60 61 78
+compareTime :   27
+moveTime :      21
+total :         48
+
+¡¾After MergeSort¡¿
+15 19 43 44 53 59 60 61 78
+compareTime :   20
+moveTime :      60
+total :         80
