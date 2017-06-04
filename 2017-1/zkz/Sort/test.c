@@ -19,7 +19,7 @@ void CopyArr(RecordType* dest, const RecordType* source, int size) {
 int main() {
 	srand(time(0) ^ rand());
 	int compareTime = 0, moveTime = 0;
-	const int length = rand()%5 ? rand()%9+1 : rand()%19 + 80;
+	const int length = rand() % 5 ? rand() % 9 + 1 : rand() % 19 + 80;
 	RecordType* origin = (RecordType*)malloc(length * sizeof(RecordType));
 	RecordType* arr = (RecordType*)malloc(length * sizeof(RecordType));
 	GenTestInputs(origin, length);
