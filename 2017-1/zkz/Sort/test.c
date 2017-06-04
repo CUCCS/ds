@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
 #include "Sort.h"
@@ -76,7 +77,4 @@ int main() {
 	ShowArr(arr, length);
 	ShowTimes();
 
-	system("pause");
-	system("cls");
-	main();
 }
