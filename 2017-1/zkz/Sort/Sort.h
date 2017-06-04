@@ -72,7 +72,7 @@ void _QuickSort(RecordType*arr, int length, int *ct, int* mt) {
 			RecordType temp = arr[0];
 			arr[0] = arr[j];
 			arr[j] = temp;
-			(*mt) += 1;
+			(*mt) += 3;
 			break;
 		}
 		//printf("Swap %d and %d\n", arr[i].key, arr[j].key);
@@ -100,11 +100,55 @@ void _SelectSort(RecordType*arr, int length, int *ct, int* mt) {
 	RecordType temp = arr[0];
 	arr[0] = arr[id];
 	arr[id] = temp;
-	++*mt;
+	(*mt) += 3;
 }
 void SelectSort(RecordType*arr, int length, int *ct, int* mt) {
 	*ct = *mt = 0;
 	for (int i = 0; i < length - 1; ++i) {
 		_SelectSort(arr+i, length-i, ct, mt);
 	}
+}
+
+int getLeft(int id, int length) {
+	id = 2 * id + 1;
+	return id < 0 || id >= length ? -1 : id;
+}
+int getRight(int id, int length) {
+	id = 2 * id + 2;
+	return id < 0 || id >= length ? -1 : id;
+}
+void CreateHeap(RecordType* arr,int size , int*ct,int*mt) {
+	int left, right , toSwap=-1;
+	for (int j = size / 2 - 1; j >= 0; --j) {
+		int current = j;
+		do {
+			//ShowArr(temp, size);
+			//printf("当前元素 : 第%2d个元素%2d\n",current+1,temp[current]);
+			left = getLeft(current, size);
+			right = getRight(current, size);
+			//printf(left == -1 ? "它没有左孩子\n" : "它的左孩子为%d\n", left == -1 ? 999 : temp[left].key);
+			//printf(right == -1 ? "它没有右孩子\n" : "它的右孩子为%d\n", right == -1 ? 999 : temp[right].key);
+			++*ct;
+			if (left == -1 && right != -1)toSwap = right;
+			else if ( left != -1 && right == -1)toSwap = left;
+			else if (left != -1 && right != -1)toSwap = arr[left].key < arr[right].key ? left : right;
+			if (arr[toSwap].key >= arr[current].key)toSwap = -1;
+			if (toSwap == -1)break;
+			RecordType t = arr[current];
+			arr[current] = arr[toSwap];
+			arr[toSwap] = t;
+			(*mt) += 3;
+			current = toSwap;
+			toSwap = -1;
+		} while (1);
+	}//end for
+}
+void _HeapSort(RecordType* arr, int length, int*ct, int* mt) {
+	if (length <= 1)return;
+	CreateHeap(arr, length,ct,mt);
+	_HeapSort(arr + 1, length - 1,ct,mt);
+}
+void HeapSort(RecordType* arr, int length, int*ct, int* mt) {
+	*ct = *mt = 0;
+	_HeapSort(arr, length, ct, mt);
 }

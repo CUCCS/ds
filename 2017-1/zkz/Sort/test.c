@@ -16,9 +16,9 @@ void CopyArr(RecordType* dest, const RecordType* source, int size) {
 	}
 }
 int main() {
-	srand(time(0)^rand());
+	srand(time(0) ^ rand());
 	int compareTime = 0, moveTime = 0;
-	const int length = rand()%9+1;
+	const int length = rand() % 9 + 1;
 	RecordType* origin = (RecordType*)malloc(length * sizeof(RecordType));
 	RecordType* arr = (RecordType*)malloc(length * sizeof(RecordType));
 	GenTestInputs(origin, length);
@@ -33,7 +33,7 @@ int main() {
 	InsertSort(arr, length, &compareTime, &moveTime);
 	ShowArr(arr, length);
 	ShowTimes();
-	
+
 	/*Ï£¶ûÅÅÐò*/
 	printf("¡¾After ShellSort¡¿\n");
 	CopyArr(arr, origin, length);
@@ -59,6 +59,13 @@ int main() {
 	printf("¡¾After SelectSort¡¿\n");
 	CopyArr(arr, origin, length);
 	SelectSort(arr, length, &compareTime, &moveTime);
+	ShowArr(arr, length);
+	ShowTimes();
+
+	/*¶ÑÅÅÐò*/
+	printf("¡¾After HeapSort¡¿\n");
+	CopyArr(arr, origin, length);
+	HeapSort(arr, length, &compareTime, &moveTime);
 	ShowArr(arr, length);
 	ShowTimes();
 
