@@ -1,9 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-//定义队列的结构以及相关函数
 typedef int QElemType;
+#define MAX 20 //最大顶点个数
 
+
+//定义队列的结构以及相关函数
 typedef enum 
 
 {
@@ -24,6 +26,7 @@ typedef struct QNode
 	struct QNode *next;
 	struct QNode *prious;
 }QNode, *QueuePtr;
+
 typedef struct LinkQueue 
 {
 	QueuePtr front;
@@ -40,8 +43,6 @@ Status TraverseQueue(LinkQueue q);//遍历队列
 /*-------------------------------------------------------------------------------------------------------------------------*/
 
 //定义图的结构以及相关的操作函数
-
-#define MAX 20 //最大顶点个数
 
 typedef struct Graph 
 {

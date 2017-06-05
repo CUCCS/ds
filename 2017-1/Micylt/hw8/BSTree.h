@@ -2,18 +2,20 @@
 #include <stdlib.h>
 
 typedef int KeyType;
+FILE *fp;
 
 typedef enum 
 {
 	false,
 	true,
 }bool;
+
 typedef enum {
 	OK,
 	OVERFLOW,
 	ERROR,
 } Status;
-typedef struct BiTNode 
+typedef struct BiTNode //¶¨Òå¶þ²æÊ÷
 {
 	int data;
 	struct BiTNode *lchild, *rchild;

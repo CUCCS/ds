@@ -1,6 +1,8 @@
 #include"BSTree.h"
 
-int main() {
+int main()
+{
+
 	char c[30] = { 8, 10, 14, 3, 1, 6, 4, 7, 5, 19, 22, 30 };
 	char c1[10] = { 13, 8, 5, 20, 6 };
 	int i;
@@ -15,6 +17,7 @@ int main() {
 
 	preOrderTraverse(T);
 	printf("\n\n");
+	fprintf(fp, "\n\n");
 
 	for (i = 0; i<5; i++)  //5为待查找数组的长度
 	{
@@ -27,6 +30,7 @@ int main() {
 		}
 		preOrderTraverse(T);
 		printf("\n\n");
+		fprintf(fp, "\n\n");
 	}
 	return 0;
 }
