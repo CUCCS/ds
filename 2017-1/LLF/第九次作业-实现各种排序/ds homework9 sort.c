@@ -4,54 +4,54 @@
 #include<time.h>
 #include<malloc.h>
 
-void Print(int *t, int len,int comp,int move);
+void Print(int *t, int len,int c,int m);
 void swap(int *a, int *b);
-int c1 = 0, m1 = 0;//记录快速排序的比较与移动次数
-int c2 = 0, m2 = 0;//记录归并排序的比较与移动次数
+int c=0; m = 0;//记录排序的比较与移动次数
 
-//直接插入排序
-void InsertSort(int s[], int len) 
+//copy函数
+int * Copy(int s[],int len)
 {
 	int *r;//copy原数组
 	r = (int *)malloc(len * sizeof(int));
 	for (int m = 0; m < len; m++)
 		r[m] = s[m];
+	return r;
+}
+
+//直接插入排序
+void InsertSort(int s[], int len) 
+{
 	int insertVal = 0;
 	int i = 0, j = 0;
-	int comp = 0, move = 0;
+	 c=0; m = 0;
 	for (i = 1; i < len; ++i) 
 	{
-		insertVal = r[i];
+		insertVal = s[i];
 		//若第i-1个元素大于第i个元素，则移动后插入；  
 		//否则无需任何操作  
-		if (r[i - 1] > insertVal) 
+		if (s[i - 1] > insertVal) 
 		{
 			j = i - 1;
 			//寻找插入位置，一边寻找一边后移  
-			while (j >= 0 && r[j] > insertVal) 
+			while (j >= 0 && s[j] > insertVal) 
 			{
-				r[j + 1] = r[j];
+				s[j + 1] = s[j];
 				--j;
-				comp++;
+				c++;
 			}
-			r[j + 1] = insertVal;
-			move++;
+			s[j + 1] = insertVal;
+			m++;
 		}
 
 	}
-	Print(r, len,comp,move);
 
 }
 
 //希尔排序
 void ShellSort(int s[], int len)
 {
-	int *r;//copy原数组
-	r = (int *)malloc(len * sizeof(int));
-	for (int m = 0; m < len; m++)
-		r[m] = s[m];
 	int i, j, k;
-	int comp = 0, move = 0;
+	 c=0; m = 0;
 	int gap;    //gap是分组的长度  
 	int temp;   //因为希尔排序是在直接插入排序的基础上实现的,所以仍然需要监视哨 
 	for (gap = len / 2; gap>0; gap = gap / 2) 
@@ -60,48 +60,42 @@ void ShellSort(int s[], int len)
 		{
 			for (j = i + gap; j<len; j = j + gap) 
 			{ //单独一次的插入排序  
-				if (r[j] < r[j - gap]) 
+				if (s[j] < s[j - gap]) 
 				{
-					temp = r[j];    //监视哨
+					temp = s[j];    //监视哨
 					k = j - gap;
-					while (k >= 0 && r[k]>temp) 
+					while (k >= 0 && s[k]>temp) 
 					{
-						r[k + gap] = r[k];
+						s[k + gap] = s[k];
 						k = k - gap;
 					}
-					r[k + gap] = temp;
+					s[k + gap] = temp;
 					
 				}
-				comp++;
-			}move++;
+				c++;
+			}m++;
 		}
 	}
-	Print(r, len, comp, move);
 }
 
 
 //冒泡排序
 void BubbleSort(int s[], int len)
 {
-	int *r;//copy原数组
-	r = (int *)malloc(len * sizeof(int));
-	for (int m = 0; m < len; m++)
-		r[m] = s[m];
 	int i, j,t;
-	int comp = 0, move = 0;
+	 c=0; m = 0;
 	for (i = 0; i < len; i++)
 	{
 		for (j = i + 1; j < len; j++)
 		{
-			if (r[i] > r[j])
+			if (s[i] > s[j])
 			{
-				swap(&r[i], &r[j]);
+				swap(&s[i], &s[j]);
 			}
-			comp++;
+			c++;
 		}
-		move++;
+		m++;
 	}
-	Print(r, len, comp, move);
 }
 
 //交换
@@ -119,11 +113,7 @@ void swap(int *a, int *b)
 //简单选择排序
 void SelectSort(int s[], int len)//n为数组a的元素个数 
 {
-	int comp = 0, move = 0;
-	int *r;//copy原数组
-	r = (int *)malloc(len * sizeof(int));
-	for (int m = 0; m < len; m++)
-		r[m] = s[m];
+	 c = 0; m = 0;
 	//进行N-1轮选择 
 	for (int i = 1 - 1; i<len ; i++)
 	{
@@ -131,27 +121,25 @@ void SelectSort(int s[], int len)//n为数组a的元素个数
 		//找出第i小的数所在的位置 
 		for (int j = len - 1 ; j >= i; j--)
 		{
-			if (r[j] < r[min])
+			if (s[j] < s[min])
 			{
 				min = j;
 			}
-			move++;
+			m++;
 		}
 		//将第i小的数，放在第i个位置；如果刚好，就不用交换 
 		if (i != min)
 		{
-			swap(&r[i], &r[min]);
+			swap(&s[i], &s[min]);
 		}
-		comp++;
+		c++;
 	}
-	Print(r, len, comp, move);
 }
 
 //快速排序
 void QuickSort(int s[], int len, int low, int high)
 {
 	int i, j;
-
 	if (low < high)
 	{
 		i = low + 1;  // 将s[low]作为基准数，因此从s[low+1]开始与基准数比较！  
@@ -163,12 +151,12 @@ void QuickSort(int s[], int len, int low, int high)
 			{
 				swap(&s[i], &s[j]);  // 交换两个数  
 				j--;
-				c1++;
+				c++;
 			}
 			else
 			{
 				i++;  // 将数组向后移一位，继续与基准数比较。  
-				m1++;
+				m++;
 			}
 			
 		}
@@ -180,10 +168,10 @@ void QuickSort(int s[], int len, int low, int high)
 		* 最后将s[i]与s[low]交换，进行两个分割部分的排序！以此类推，直到最后i = j不满足条件就退出！
 		*/
 
-		if (s[i] >= s[low])  // 否则数组元素由相同的值时，会出错  
+		if (s[i] >= s[low])  // 这里必须要取等“>=”，否则数组元素由相同的值时，会出现错误！  
 		{
 			i--;
-			m1++;
+			m++;
 		}
 
 		swap(&s[low], &s[i]);  // 交换s[i]与s[low]  
@@ -208,14 +196,14 @@ void merge(int s[], int low, int mid, int high)
 		if (s[left_low] <= s[right_low]) 
 		{
 			tmp[k] = s[left_low++];
-			m2++;
+			m++;
 		}
 		else 
 		{
 			tmp[k] = s[right_low++];
-			m2++;
+			m++;
 		}
-		c2++;
+		c++;
 	}
 	if (left_low <= left_high) 
 	{  
@@ -223,7 +211,7 @@ void merge(int s[], int low, int mid, int high)
 		for (i = left_low; i <= left_high; i++)
 		{
 			tmp[k++] = s[i];
-			m2++;
+			m++;
 		}
 	}
 	if (right_low <= right_high)
@@ -232,13 +220,13 @@ void merge(int s[], int low, int mid, int high)
 		for (i = right_low; i <= right_high; i++)
 		{
 			tmp[k++] = s[i];
-			m2++;
+			m++;
 		}
 	}
 	for (i = 0; i < high - low + 1; i++)
 	{
 		s[low + i] = tmp[i];
-		m2++;
+		m++;
 	}
 	free(tmp);
 	return;
@@ -249,7 +237,7 @@ void MergeSort(int s[], int first, int last)
 	int mid = 0;
 	if (first<last) 
 	{
-		mid = (first + last) / 2; //防止溢出 
+		mid = (first + last) / 2; //注意防止溢出 
 								  //mid = first/2 + last/2;
 								  //mid = (first & last) + ((first ^ last) >> 1);
 		MergeSort(s, first, mid);
@@ -259,12 +247,12 @@ void MergeSort(int s[], int first, int last)
 	return;
 }
 
-void Print(int *t,int len,int comp,int move)
+void Print(int *t,int len,int c,int m)
 {
 
 	for (int j = 0; j < len; j++)
 		printf("%d  ", t[j]);
-	printf("compare: %d   move: %d   total: %d\n", comp, move, comp + move);
+	printf("care: %d   m: %d   total: %d\n", c, m, c + m);
 	
 }
 
@@ -281,11 +269,13 @@ int main()
 		t[i] = rand() % 200;
 	}
 
-	//copy测试数组给归并排序使用
-	int *r;
-	r = (int *)malloc(n * sizeof(int));
-	for (int m = 0; m < n; m++)
-		r[m] = t[m];
+	//copy测试数组
+	int *a,*b,*d,*e,*h;
+	a = Copy(t,n);
+	b = Copy(t, n);
+	e = Copy(t, n);
+	d = Copy(t, n);
+	h = Copy(t, n);
 
 	printf("Example: ");
 	for (int j = 0; j < n; j++)
@@ -294,29 +284,36 @@ int main()
 
 	//直接插入排序
 	printf("InsertSort: ");
-	InsertSort(t, n);
+	InsertSort(a, n);
+	Print(a, n, c, m);
 
 	//希尔排序
 	printf("ShellSort:  ");
-	ShellSort(t, n);
+	ShellSort(b, n);
+	Print(b, n, c, m);
 
 	//冒泡排序
 	printf("BubbleSort: ");
-	BubbleSort(t, n);
+	BubbleSort(d, n);
+	Print(d, n, c, m);
+
 
 	//简单选择排序
 	printf("SelectSort: ");
-	SelectSort(t, n);
+	SelectSort(e, n);
+	Print(e, n, c, m);
 
 	//快速排序
+	c = 0; m = 0;
 	printf("QuickSort:  ");
-	QuickSort(t,n,0,n-1);
-	Print(t, n, c1, m1);
+	QuickSort(h,n,0,n-1);
+	Print(h, n, c, m);
 	
 	//归并排序
+	c = 0; m = 0;
 	printf("MergeSort:  ");
-	MergeSort(r, 0, n - 1);
-	Print(r, n, c2, m2);
+	MergeSort(t, 0, n - 1);
+	Print(t, n, c, m);
 
 	free(t);
 	return 0;
