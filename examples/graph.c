@@ -44,37 +44,59 @@ Status _InitEmptyMatrix(Graph *g) {
     return OK;
 }
 
-Status _CreateUnNetwork(Graph *g, GraphKind kind, VertexRelation **vr) {
+Status _CreateUnNetwork(Graph *g, VertexRelation *vr) {
 
     int i = 0, v, w, weight;
 
-    if(!vr || !*vr) {
+    if(!vr) {
         fprintf(stderr, "vr is null\n");
     }
 
     while(i < g->arcnum) {
-        v = (*vr[i]).v;
-        w = (*vr[i]).w;
-        weight = (*vr[i]).weight;
+        v = (vr[i]).v;
+        w = (vr[i]).w;
+        weight = (vr[i]).weight;
         g->matrix[v][w] = weight;
         g->matrix[w][v] = weight;
         i++;
     }
-    g->kind = kind;
 
     return OK;
 }
 
-Status CreateGraph(Graph *g, GraphKind kind, VertexRelation **vr) {
-    switch(kind) {
+Status _CreateDiNetwork(Graph *g, VertexRelation *vr) {
+
+    int i = 0, v, w, weight;
+
+    if(!vr) {
+        fprintf(stderr, "vr is null\n");
+    }
+
+    while(i < g->arcnum) {
+        v = (vr[i]).v;
+        w = (vr[i]).w;
+        weight = (vr[i]).weight;
+        g->matrix[v][w] = weight;
+        i++;
+    }
+
+    return OK;
+}
+
+Status CreateGraph(Graph *g, VertexRelation *vr) {
+    switch(g->kind) {
         case UnNetwork: /* 无向网 */
             if(OK == _InitEmptyMatrix(g)) {
-                return _CreateUnNetwork(g, kind, vr);
+                return _CreateUnNetwork(g, vr);
+            }
+            break;
+        case DiNetwork:/* 有向网 */
+            if(OK == _InitEmptyMatrix(g)) {
+                return _CreateDiNetwork(g, vr);
             }
             break;
         case Undigraph: /* 无向图 */
         case Digraph:   /* 有向图 */
-        case DiNetwork:/* 有向网 */
         default:
             fprintf(stderr, "%s", "not implemented yet");
             break;
@@ -95,10 +117,11 @@ void Print(Graph g) {
     }
 }
 
-Status LoadVertexRelation(const char *file_path, Graph *g, VertexRelation ***vr) {
+Status LoadVertexRelation(const char *file_path, Graph *g, VertexRelation **vr) {
     char line[MAX_LINE];
     int vexnum, arcnum, i = 0;
     char *col;
+    int graph_kind;
 
     FILE *file = fopen(file_path, "r");
     if(file == NULL) {
@@ -117,25 +140,29 @@ Status LoadVertexRelation(const char *file_path, Graph *g, VertexRelation ***vr)
                 if(errno == EINVAL) {
                     return FILE_PARSE_ERROR;
                 }
-                *vr = (VertexRelation **)realloc(*vr, arcnum * sizeof(VertexRelation *));
-                printf("vexnum:%d arcnum:%d\n", vexnum, arcnum);
+                col = strtok(NULL, COL_SEP);
+                graph_kind = (int)strtol(col, NULL, 10);
+                if(errno == EINVAL) {
+                    return FILE_PARSE_ERROR;
+                }
+                *vr = (VertexRelation *)malloc(arcnum * sizeof(VertexRelation));
+                printf("vexnum:%d arcnum:%d graph_kind:%d\n", vexnum, arcnum, graph_kind);
             } else { // 处理文件中其他行，解析v, w, weight
-                vr[0][i - 1] = (VertexRelation *)malloc(sizeof(VertexRelation));
-                (*vr[0][i - 1]).v = (int)strtol(col, NULL, 10);
+                (*vr)[i - 1].v = (int)strtol(col, NULL, 10);
                 if(errno == EINVAL) {
                     return FILE_PARSE_ERROR;
                 }
                 col = strtok(NULL, COL_SEP);
-                (*vr[0][i - 1]).w = (int)strtol(col, NULL, 10);
+                (*vr)[i - 1].w = (int)strtol(col, NULL, 10);
                 if(errno == EINVAL) {
                     return FILE_PARSE_ERROR;
                 }
                 col = strtok(NULL, COL_SEP);
-                (*vr[0][i - 1]).weight = (int)strtol(col, NULL, 10);
+                (*vr)[i - 1].weight = (int)strtol(col, NULL, 10);
                 if(errno == EINVAL) {
                     return FILE_PARSE_ERROR;
                 }
-                printf("%d %d %d\n", (*vr[0][i - 1]).v, (*vr[0][i - 1]).w, (*vr[0][i - 1]).weight);
+                printf("%d %d %d\n", (*vr)[i - 1].v, (*vr)[i - 1].w, (*vr)[i - 1].weight);
             }
         }
         i++;
@@ -146,6 +173,7 @@ Status LoadVertexRelation(const char *file_path, Graph *g, VertexRelation ***vr)
     if(i <= arcnum) { // 文件第一行定义的列数 > 实际文件中定义的边的数量
         return FILE_PARSE_ERROR;
     }
+    g->kind = graph_kind;
     g->vexnum = vexnum;
     g->arcnum = arcnum;
     fclose(file);

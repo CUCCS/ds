@@ -45,14 +45,14 @@ typedef struct {
 } Graph;
 
 /* 方法接口（函数指针） */
-Status CreateGraph(Graph *g, GraphKind kind, VertexRelation **vr); /* 按定义构造图 */
+Status CreateGraph(Graph *g, VertexRelation *vr); /* 按定义构造图 */
 
 int FirstAdjVex(Graph g, Vertex v); /* 返回 v 的“第一个邻接点” 。若该顶点在 G 中没有邻接点，则返回“空”。 */
 int NextAdjVex(Graph g, Vertex v, Vertex w); /* 返回 v 的“第一个邻接点” 。若该顶点在 G 中没有邻接点，则返回“空”。 */
 void Print(Graph g); /* 打印图的邻接矩阵 */
 
 /* 从文件中读取弧/边集 */
-Status LoadVertexRelation(const char *file_path, Graph *g, VertexRelation ***vr);
+Status LoadVertexRelation(const char *file_path, Graph *g, VertexRelation **vr);
 
 #endif
 

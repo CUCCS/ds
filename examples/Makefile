@@ -12,20 +12,35 @@ VPATH    =
 
 all:$(EXENAME)
 
-t_dijsktra:t_dijsktra.c dijsktra.o dijsktra_graph.o
-		$(CC) $(CFLAGS) $(LDFLAGS) $^ -o t_dijsktra.exe
+t_sort:t_sort.c sort.o
+		$(CC) $(CFLAGS) $(LDFLAGS) $^ -o t_sort.exe
 			-rm -rf *.o
 
-dijsktra_graph.o:graph.c
-		$(CC) -c $(CFLAGS) $(LDFLAGS) -DDIJSKTRA $^ -o dijsktra_graph.o
+t_hashtable:t_hashtable.c hashtable.o
+		$(CC) $(CFLAGS) $(LDFLAGS) $^ -o t_hashtable.exe
+			-rm -rf *.o
+
+t_hashtable_chained:t_hashtable.c chained_hashtable.o
+		$(CC) $(CFLAGS) $(LDFLAGS) -DCHAINED_HASH $^ -o t_hashtable_chained.exe
+			-rm -rf *.o
+
+chained_hashtable.o:hashtable.c
+		$(CC) -c $(CFLAGS) $(LDFLAGS) -DCHAINED_HASH $^ -o chained_hashtable.o
+
+t_dijkstra:t_dijkstra.c dijkstra.o dijkstra_graph.o
+		$(CC) $(CFLAGS) $(LDFLAGS) $^ -o t_dijkstra.exe
+			-rm -rf *.o
+
+dijkstra_graph.o:graph.c
+		$(CC) -c $(CFLAGS) $(LDFLAGS) -DDIJSKTRA $^ -o dijkstra_graph.o
 
 
 t_graph:t_graph.c graph.o
 		$(CC) $(CFLAGS) $(LDFLAGS) $^ -o t_graph.exe
 			-rm -rf *.o
 
-t_BiTree:t_BiTree.c BTiree.o
-		$(CC) $(CFLAGS) $(LDFLAGS) $^ -o t_BiTree.exe
+t_BTree:t_BTree.c BTree.o
+		$(CC) $(CFLAGS) $(LDFLAGS) $^ -o t_BTree.exe
 			-rm -rf *.o
 
 3.2:t_3.2.c 3.2.o

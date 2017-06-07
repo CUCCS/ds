@@ -19,15 +19,14 @@
 int main(int argc, char* argv[])
 {
     Graph g;
-    GraphKind kind = UnNetwork;
     Status ret;
-    VertexRelation **vr = (VertexRelation **)malloc(sizeof(VertexRelation *));
+    VertexRelation *vr = (VertexRelation *)malloc(sizeof(VertexRelation));
 
     const char file_path[] = "t_graph.1.txt";
 
     ret = LoadVertexRelation(file_path, &g, &vr);
     if(ret == OK) {
-        ret = CreateGraph(&g, kind, vr);
+        ret = CreateGraph(&g, vr);
         Print(g);
     } else {
         fprintf(stderr, "load vertex relation from file failed with ret_code = %d\n", ret);
