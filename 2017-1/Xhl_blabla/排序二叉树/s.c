@@ -124,7 +124,7 @@ Status InOrder(BiTree T)
 {
 	if (T)
 	{
-	out[k]=T->data  ;//每次输出结点的值 
+	    out[k]=T->data  ;//每次输出结点的值 
 		k++;
 		InOrder(T->lchild);
 		InOrder(T->rchild);
