@@ -4,27 +4,27 @@ int  main() {
 	SqList s;
 
 	printf("\n---------------------------------");
-	printf("\n1.ºÚµ•≤Â»Î≈≈–Ú\n");
+	printf("\n1.InsertSort\n");
 	CreatArray(&s);
 	InsertSort(&s);
 
 	printf("---------------------------------");
-	printf("\n2.øÏÀŸ≈≈–Ú\n");
+	printf("\n2.QuickSort\n");
 	CreatArray(&s);
 	QuickSort(&s);
 
 	printf("---------------------------------");
-	printf("\n3.ºÚµ•—°‘Ò≈≈–Ú\n");
+	printf("\n3.SelectSort\n");
 	CreatArray(&s);
 	SelectSort(&s);
 
 	printf("---------------------------------");
-	printf("\n4.√∞≈›≈≈–Ú\n");
+	printf("\n4.BubbleSort\n");
 	CreatArray(&s);
 	BubbleSort(&s);
 
 	printf("---------------------------------");
-	printf("\n5.œ£∂˚≈≈–Ú\n");
+	printf("\n5.ShellSort\n");
 	CreatArray(&s);
 	ShellSort(&s);
 
