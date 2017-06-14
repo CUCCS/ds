@@ -6,7 +6,7 @@ void CreateList(LinkList L, int n)  //´´½¨Ô­ÏßÐÔÁ´±í
 	LNode* p = L;
 	L->next = NULL;  
 	srand(time(NULL));    
-	for (i = n; i >0 ; --i)
+	for (i = 0; i <n ; i++)
 	{
 		p = (LNode*)malloc(sizeof(LNode));   //·ÖÅä¿Õ¼ä
 		p->data = rand() % 50+1;    //Ëæ»úÉú³ÉÊý¾Ý
@@ -42,18 +42,18 @@ void TraverseList_L2(LinkList L)   //±éÀúÊä³öÑ­»·Á´±í
 
 void change(LinkList list,LinkList *list1, LinkList *list2)    //²ð·ÖÔ­ÏßÐÔÁ´±íÎªÁ½¸öÑ­»·Á´±í
 {
-	LNode*p, *p1, *p2;     //ÓÃÓÚ±éÀúlist,list1,list2µÄÈý¸öÖ¸Ïò½ÚµãµÄÖ¸Õë
+	LNode*p;     //ÓÃÓÚ±éÀúlist,list1,list2µÄÈý¸öÖ¸Ïò½ÚµãµÄÖ¸Õë
 	LNode*rear1, *rear2;   //Î²Ö¸Õë
 	int count = 0;
 	*list1 = (LNode*)malloc(sizeof(LNode));  
 	(*list1)->data = 0;
 	(*list1)->next = NULL;
-	rear1 = p1 = *list1;
+	rear1  = *list1;
 
 	*list2 = (LNode*)malloc(sizeof(LNode));     //·ÖÅä´æ´¢¿Õ¼ä
 	(*list2)->data = 0;
 	(*list2)->next = NULL;
-	rear2 = p2 = *list2; 
+	rear2 = *list2; 
 
 	for (p = list->next; p != NULL; p = p->next)
 	{
@@ -73,8 +73,8 @@ void change(LinkList list,LinkList *list1, LinkList *list2)    //²ð·ÖÔ­ÏßÐÔÁ´±íÎ
 			printf("\nµ±Ç°Îª£º%d£¬Å¼ÊýÏî£¬·ÖÅä¸ølist2  ", rear2->data);
 		}
 	}
-	rear1->next = p1->next;
-	rear2->next = p2->next;
+	rear1->next = (*list1)->next;
+	rear2->next = (*list2)->next;
 }
 
 int main()
