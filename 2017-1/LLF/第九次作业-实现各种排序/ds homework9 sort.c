@@ -6,7 +6,8 @@
 
 void Print(int *t, int len,int c,int m);
 void swap(int *a, int *b);
-int c=0; m = 0;//记录排序的比较与移动次数
+int c = 0; 
+int m = 0;//记录排序的比较与移动次数
 
 //copy函数
 int * Copy(int s[],int len)
@@ -23,7 +24,8 @@ void InsertSort(int s[], int len)
 {
 	int insertVal = 0;
 	int i = 0, j = 0;
-	 c=0; m = 0;
+	 c = 0; 
+	 m = 0;
 	for (i = 1; i < len; ++i) 
 	{
 		insertVal = s[i];
@@ -51,7 +53,8 @@ void InsertSort(int s[], int len)
 void ShellSort(int s[], int len)
 {
 	int i, j, k;
-	 c=0; m = 0;
+	 c = 0;
+	 m = 0;
 	int gap;    //gap是分组的长度  
 	int temp;   //因为希尔排序是在直接插入排序的基础上实现的,所以仍然需要监视哨 
 	for (gap = len / 2; gap>0; gap = gap / 2) 
@@ -83,7 +86,8 @@ void ShellSort(int s[], int len)
 void BubbleSort(int s[], int len)
 {
 	int i, j,t;
-	 c=0; m = 0;
+	 c = 0; 
+	 m = 0;
 	for (i = 0; i < len; i++)
 	{
 		for (j = i + 1; j < len; j++)
@@ -113,7 +117,8 @@ void swap(int *a, int *b)
 //简单选择排序
 void SelectSort(int s[], int len)//n为数组a的元素个数 
 {
-	 c = 0; m = 0;
+	 c = 0;
+	 m = 0;
 	//进行N-1轮选择 
 	for (int i = 1 - 1; i<len ; i++)
 	{
@@ -304,17 +309,24 @@ int main()
 	Print(e, n, c, m);
 
 	//快速排序
-	c = 0; m = 0;
+	c = 0; 
+	m = 0;
 	printf("QuickSort:  ");
 	QuickSort(h,n,0,n-1);
 	Print(h, n, c, m);
 	
 	//归并排序
-	c = 0; m = 0;
+	c = 0;
+	m = 0;
 	printf("MergeSort:  ");
 	MergeSort(t, 0, n - 1);
 	Print(t, n, c, m);
 
 	free(t);
+	free(a);
+	free(b);
+	free(d);
+	free(e);
+	free(h);
 	return 0;
 }
