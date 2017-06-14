@@ -1,32 +1,19 @@
-#include<stdio.h>
-#include<stdlib.h>
+#include "BSTree.h"
 
-typedef int ElementType;
-typedef int KeyType;
-typedef enum {
-    OK,
-    ERROR,
-    OVERFLOW
-} Status;
+Status CreatBST(BiTree &Tree, ElementType element[], int n) //初始化二叉排序树
+{
+    int i = 0;
+    for (i = 0; i < n; i++) {
+        InsertBST(Tree, element[i]);
+    }
+    if (Tree) {
+        return ERROR;
+    }
+    return OK;
+}
 
-typedef struct BiTNode {
-
-    ElementType data;//数据元素
-    struct BiTNode *lchild;//左孩子指针
-    struct BiTNode *rchild; //右孩子指针
-} BiTNode, *BiTree;//二叉树节点类型
-
-
-bool SearchBST(BiTree Tree, BiTree f, BiTree &p, KeyType key);//二叉排序树的查找
-Status InsertBST(BiTree &Root, KeyType key);     //二叉排序树未找到关键字的插入和构造一棵二叉排序树,Tree为传引用指针
-void PreOrderTraverse(BiTree Tree);//先序遍历
-void InOrderTraverse(BiTree Tree);//中序遍历
-void VisitBiTree(BiTree Tree);//输出根节点
-int Delete(BiTree &Tree);//删除节点
-int DeleteBST(BiTree &Tree, KeyType key);//二叉排序树找到关键字的删除
-
-
-bool SearchBST(BiTree Tree, BiTree f, BiTree &p, KeyType key) {
+bool SearchBST(BiTree Tree, BiTree f, BiTree &p, KeyType key) //二叉排序树的查找
+{
     int flag = 0;//是否查找成功标记
     if (!Tree) {
         p = f;
@@ -63,40 +50,32 @@ Status InsertBST(BiTree &Root, KeyType key)     //二叉排序树未找到关键
         else
             p->rchild = s;//结点*s被插为右孩子
     }
-
-
     return OK;
-
 }
-
 
 void PreOrderTraverse(BiTree Tree)//先序遍历
 {
     if (Tree != NULL) {
-
-        printf("%d, ", Tree->data);
+        printf(", ");
+        printf("%d", Tree->data);
         PreOrderTraverse(Tree->lchild); //访问左子树结点
         PreOrderTraverse(Tree->rchild);//访问右子树结点
     }
 }
 
-
 void InOrderTraverse(BiTree Tree)//中序遍历
 {
     if (Tree != NULL) {
-
+        printf(", ");
         InOrderTraverse(Tree->lchild);//访问左子树结点
-        printf("%d, ", Tree->data);
+        printf("%d", Tree->data);
         InOrderTraverse(Tree->rchild);//访问右子树结点
     }
-
 }
 
 void VisitBiTree(BiTree Tree) //输出根节点
 {
-    if (Tree->data != ' ') {
-        printf("%c ", Tree->data);
-    }
+    printf("%d", Tree->data);
 }
 
 int Delete(BiTree &Tree)//删除节点
@@ -148,42 +127,9 @@ int DeleteBST(BiTree &Tree, KeyType key)//二叉排序树找到关键字的删�
     }
 }
 
-int main() {
-    ElementType element[12] = {8, 10, 14, 3, 1, 6, 4, 7, 5, 19, 22, 30};
-    KeyType key[5] = {13, 8, 5, 20, 6};
-    int i, j, n1, n2;
-    BiTree Tree, pp;
-    //printf("输入初始化查找表中元素的个数:");
-    //scanf("%d", &n1);
-    Tree = NULL;
-    //printf("输入查找表中各个元素的值:");
-    for (i = 0; i < 12; i++) {
-        //scanf("%d,", &element[i]);
-        InsertBST(Tree, element[i]);
-    }
-    PreOrderTraverse(Tree);
-    printf("\n");
-    //printf("输入你要查找的关键字个数:");
-    //scanf("%d", &n2);
-    //printf("输入关键字:");
-    /*for (j = 0; j < 5; j++) {
-        scanf("%d,", &key[j]);
-    }*/
-    for (j = 0; j < 5; j++) {
-        if (SearchBST(Tree, NULL, pp, key[j])) {
-            DeleteBST(Tree, key[j]);
-            PreOrderTraverse(Tree);
-            printf("\n");
-        }
-        else {
-            InsertBST(Tree, key[j]);
-            PreOrderTraverse(Tree);
-            printf("\n");
-        }
-    }
-
-    return 0;
+void PrintTree(BiTree Tree)//打印二叉排序树
+{
+    VisitBiTree(Tree);//打印根节点
+    PreOrderTraverse(Tree->lchild);//打印左子树
+    PreOrderTraverse(Tree->rchild);//打印右子树
 }
-/*测试用例*/
-/*查找表:8, 10, 14, 3, 1, 6, 4, 7, 5, 19, 22, 30(8 10 14 3 1 6 4 7 5 19 22 30)*/
-/*关键字:13, 8, 5, 20, 6(13 8 5 20 6)*/
