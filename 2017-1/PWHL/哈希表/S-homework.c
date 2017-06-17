@@ -1,3 +1,5 @@
+//²Î¿¼jackcily´úÂë
+
 #include "S-homework.h"
 status  make(int **q, int l)
 {
