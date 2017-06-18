@@ -7,7 +7,7 @@ int main() {
 	CreateHashTable(&H);
 	PrintHashTable(H);
 	_Search(H);
-	//RecreateHashTable(&H);
-	//PrintHashTable(H);
+	RecreateHashTable(&H);
+	PrintHashTable(H);
 	return 0;
 }

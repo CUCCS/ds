@@ -9,7 +9,7 @@
 #define  FAILED     0
 #define  DUPLICATE -1
 #define  NULLKEY -1
-#define  SizeIndex 17;    // hash表的表长
+#define  SizeIndex 7   // hash表的表长
 
 typedef int KeyType;
 typedef int ValueType;
@@ -38,15 +38,20 @@ void CreateHashTable(HashTable * H);
 /* 查找函数(for本题) */
 void _Search(HashTable T);
 
+/* 解决哈希冲突 */
+void collision(HashTable H, int *p, int *c);
+
+/* 返回哈希地址 */
+int Hash(HashTable H, ValueType k);
+
 /* 哈希表的查找 */
-Status SearchHash(HashTable H, KeyType K, int * p, int *c);
+Status SearchHash(HashTable H, ElemType e, int *p, int *c);
 
 /* 向哈希表中插入数据 */
 Status InsertHash(HashTable *H, ElemType e);
 
 /* 重建哈希表 */
 void RecreateHashTable(HashTable *H);
-
 
 /* 打印哈希表 */
 void PrintHashTable(HashTable H);
