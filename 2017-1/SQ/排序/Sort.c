@@ -71,7 +71,7 @@ Status BubbleSort(RecordType **r, int length, int *compare, int *move) {
 	for (i = 0; i < n && change; ++i) {
 		change = FALSE;
 		for (j = 0; j < n - i - 1; ++j) {
-			if ((*r)[j].key > (*r)[j + 1].key && ++(*compare)) {
+			if ((*r)[j].key >(*r)[j + 1].key && ++(*compare)) {
 				temp = (*r)[j];
 				(*r)[j] = (*r)[j + 1];
 				(*r)[j + 1] = temp;
@@ -131,11 +131,14 @@ Status SelectSort(RecordType **r, int length, int *compare, int *move) {
 		k = i;
 		for (j = i + 1; j < n; ++j) {
 			if ((*r)[j].key < (*r)[k].key && ++(*compare)) {
-				temp = (*r)[i];
-				(*r)[i] = (*r)[j];
-				(*r)[j] = temp;
-				*move += 3;
+				k = j;
 			}
+		}
+		if (k != i) {
+			temp = (*r)[i];
+			(*r)[i] = (*r)[k];
+			(*r)[k] = temp;
+			*move += 3;
 		}
 	}
 	return OK;
@@ -158,7 +161,7 @@ Status HeapAdjust(RecordType **r, int s, int m, int *compare, int *move) {
 		}
 		rc = (*r)[s];
 		(*r)[s] = (*r)[j];
-		
+
 		(*r)[j] = rc;
 		(*move) += 3;
 	}
