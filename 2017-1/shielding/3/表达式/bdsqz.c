@@ -50,7 +50,7 @@ void inFix2PostFix(char* inFix, char* postFix)
 {
 	int j = 0, len;
 	char c;
-	SqStack *st;
+	SqStack *st=NULL;
 	InitStack(st);
 	SElemType *e;
 	len = strlen(inFix);
@@ -60,22 +60,22 @@ void inFix2PostFix(char* inFix, char* postFix)
 		c = inFix[i];
 
 		if (c == '(')
-			Push(st,c);
+			Push(st, c);
 		else if (c == ')')
 		{
 			GetTop(st, e);
-			while ( e!= '(')
+			while (e != '(')
 			{
 				GetTop(st, e);
 				postFix[j++] = e;
-				Pop(st,e);
+				Pop(st, e);
 			}
-			Pop(st,e);
+			Pop(st, e);
 		}
 		else
 		{
 			if (!IsOperator(c))
-				Push(st,c);
+				Push(st, c);
 			else
 			{
 				while (!StackEmpty(st)
@@ -83,18 +83,18 @@ void inFix2PostFix(char* inFix, char* postFix)
 				{
 					GetTop(st, e);
 					postFix[j++] = *e;
-					Pop(st,e);
+					Pop(st, e);
 				}
-				Push(st,c);
+				Push(st, c);
 			}
 		}
 	}
 
 	while (!StackEmpty(st))
 	{
-		GetTop(st,e);
+		GetTop(st, e);
 		postFix[j++] = *e;
-		Pop(st,e);
+		Pop(st, e);
 	}
 	postFix[j] = 0;
 }
@@ -111,17 +111,17 @@ double postFixEval(char* postFix)
 		c = postFix[i];
 		if (IsOperator(c) == FALSE)
 		{
-			Push(st,c - '0');
+			Push(st, c - '0');
 		}
 		else
 		{
-			SElemType *o1, *o2,*e;
+			SElemType *o1, *o2, *e;
 			int val;
 
-			GetTop(st,o1);
-			Pop(st,e);
-			GetTop(st,o2);
-			Pop(st,e);
+			GetTop(st, o1);
+			Pop(st, e);
+			GetTop(st, o2);
+			Pop(st, e);
 
 			int op1 = *o1 - '0';
 			int op2 = *o2 - '0';
@@ -140,7 +140,7 @@ double postFixEval(char* postFix)
 				val = op2 / op1;
 				break;
 			}
-			Push(st,val);
+			Push(st, val);
 		}
 	}
 	SElemType *e;
