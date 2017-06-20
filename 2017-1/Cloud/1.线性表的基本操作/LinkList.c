@@ -42,6 +42,8 @@ void InitList(LinkList a) {
 
 /* 拆分链表 */
 void SeparateList(LinkList A, LinkList b, LinkList c) {
+//算法分析：算法的的时间复杂度为 O（n），空间复杂度为O（1），
+//在保证算法的正确性的前提下，使用了最少的时间复杂度和最少的空间复杂度
 	LinkList p = A,p1 = b,p2 = c;
 	InitList(b);
 	InitList(c);
