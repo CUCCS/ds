@@ -16,7 +16,7 @@ Status InsertBST(BSTree *T, ElemType e) {
 	// 当二叉排序树中不存在关键字等于 e 的数据元素时，插入元素值为 e 的结点，并返回 true
 	// 否则，不进行插入并返回false
 	BSTree p, s;
-	if (!SearchBST(T, e, NULL, &p)) {
+	if (SearchBST(T, e, NULL, &p)) {
 		s = (BSTree)malloc(sizeof(BSTNode)); // 为新结点分配空间
 		s->key = e;
 		s->lchild = s->rchild = NULL;
