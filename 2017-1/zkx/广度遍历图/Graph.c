@@ -32,7 +32,7 @@ void BFSTraverse(Graph G, int a, int b)
 	}
 	InitQueue(&Q);      // 置空队列Q
 	EnQueue(&Q, a);   //a入列
-	Visit(a);
+	visited[a] = true;
 	while (!QueueEmpty(Q)) 
 	{
 		DeQueue(&Q, &u);      //队头元素出队并置为u
@@ -95,9 +95,9 @@ Status Show(LinkQueue Q, int start)
 	{
 		path[i] = -1;
 	}
-	path[0] = p->data;
-	p = p->priou;
-	for (i = 1; p->data != start; i++)
+	/*path[0] = p->data;
+	p = p->priou;*/
+	for (i = 0; p->data != start; i++)
 	{
 		path[i] = p->data;
 		p = p->priou;

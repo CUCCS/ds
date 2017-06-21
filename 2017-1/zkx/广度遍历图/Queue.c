@@ -23,7 +23,7 @@ bool QueueEmpty(LinkQueue Q)    //判断队列是否为空
 
 Status EnQueue(LinkQueue *Q, ElemType e)  // 插入元素e为Q的新的队尾元素
 {
-	QueuePtr p = (QueuePtr *)malloc(MAX_SIZE * sizeof(QueuePtr));  //分配存储空间
+	QueuePtr p = (QueuePtr )malloc(MAX_SIZE * sizeof(QueuePtr));  //分配存储空间
 
 	if (!p)
 	{
