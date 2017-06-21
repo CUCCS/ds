@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include<time.h>
      
-void Swap(int a, int b);   //交换元素
+
 void InsertSort(int *array, int n, int *comp, int *mov); //直接插入排序			   
 void ShellSort(int *array, int n, int *comp, int *mov);  //希尔排序
 void BubbleSort(int *array, int n, int *comp, int *mov); //起泡排序								  

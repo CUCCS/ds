@@ -1,13 +1,5 @@
 #include "sort.h"
 
-//交换元素
-void Swap(int a, int b)
-{
-	int tmp = a;
-	a = b;
-	b = tmp;
-}
-
 //直接插入排序
 void InsertSort(int *array, int n, int *comp, int *mov)
 {
@@ -19,7 +11,9 @@ void InsertSort(int *array, int n, int *comp, int *mov)
 		tmp = array[i];
 		for (j = i - 1; j >= 0 && tmp < array[j]; j--)
 		{
-			Swap(array[j], array [j + 1]);
+			int arr = array[j + 1];
+			array[j + 1] = array[j];
+			array[j] = arr;
 			(*mov) += 3;
 			++(*comp);
 		}
@@ -41,13 +35,17 @@ void ShellSort(int *array, int n, int *comp, int *mov)
 			temp = array[i];
 			for (j = i - d; j >= 0 && temp < array[j]; j = j - d)
 			{
-				Swap(array[j + d], array [j]);
+				int arr = array[j + d];
+				array[j + d] = array[j];
+				array[j] = arr;
 				(*mov) += 3;
 				++(*comp);
 			}
 			if (array[j + d] != temp)
 			{
-				Swap(array[j + d], temp);
+				int arr = array[j + d];
+				array[j + d] = temp;
+				temp = arr;
 				(*mov) += 3;
 				++(*comp);
 			}
@@ -69,7 +67,10 @@ void BubbleSort(int *array, int n, int *comp, int *mov)
 		{
 			if (array[j - 1] > array[j])
 			{
-				Swap(array[j], array[j - 1]);
+				int arr = array[j];
+				array[j] = array[j - 1];
+				array[j - 1] = arr;
+
 				(*mov) += 3;
 				flag = 1;
 			}
@@ -117,27 +118,28 @@ void QuickSort(int *array, int left, int right, int count, int *comp, int *mov)
 void SelectSort(int * array, int n, int *comp, int *mov)
 {
 	*comp = *mov = 0;
-	int i, j;
-	int tmp;    //记录待排序元素的下标
-	for (i = 0; i < n - 1; i++)
+	int i, j, k;
+	for (i = 0; i < n; i++)
 	{
-		tmp = i;
+		k = i;
 		for (j = i + 1; j < n; j++)
 		{
-			if (array[tmp] > array[j])
+			if (array[j] < array[k])
 			{
-				tmp = j;
+				k = j;
+				(*comp)++;
 			}
-			++(*comp);
 		}
-		if (tmp != i)
+		if (i != k)
 		{
-			Swap(array[tmp], array[i]);
+			int arr = array[i];
+			array[i] = array[k];
+			array[k] = arr;
 			(*mov) += 3;
 		}
-
 	}
 }
+
 
 //随机生成测试数据
 void input(int *a, int n)
