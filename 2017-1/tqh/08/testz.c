@@ -1,9 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
-#define MAX 20
+
 int num[] = {8,10,14,3,1,6,4,7,5,19,22,30};
 int searchnum[] = {13,8,5,20,6};
 int flag;
+
 enum
 {
 	FALSE,
@@ -25,11 +26,20 @@ int SearchBST( BiTree T, int key, BiTree f, BiTree *p ) ;
 int InsertBST( BiTree *T, int key );
 Status Delete(BiTree *p);
 int DeleteBST(BiTree *T,  int kval);
+Status MyPrint(BiTree *T);
 
 Status PreOrderTraverse(BiTree T)
 {
 	if(T){
-		printf("%d ",T->data);
+		if(flag == 0)
+		{
+			flag = 1;
+			printf("%d",T->data);
+		}
+		else
+		{
+			printf(",%d",T->data);
+		}
 		PreOrderTraverse(T->lchild);
 		PreOrderTraverse(T->rchild);
 	}
@@ -38,7 +48,7 @@ Status PreOrderTraverse(BiTree T)
 
 int SearchBST( BiTree T, int key, BiTree f, BiTree *p )  
 {  
-	BiTree s;  
+	BiTree s = NULL;  
 	if( !T )  
 	{   
 		*p = f;
@@ -132,11 +142,11 @@ int DeleteBST(BiTree *T,  int kval) {
 		return FALSE;
 	} 
 	else {  
-		if(EQ(kval, (*T)->data)) { // 找到关键字等于key的数据元素
+		if(kval == (*T)->data) { // 找到关键字等于data的数据元素
 			Delete (T);
 			return TRUE;
 		} 
-		else if(LT(kval, (*T)->data)) { // 继续在左子树中进行查找
+		else if(kval < (*T)->data) { // 继续在左子树中进行查找
 			return DeleteBST(&(*T)->lchild, kval);
 		}
 		else { // 继续在右子树中进行查找
@@ -145,22 +155,31 @@ int DeleteBST(BiTree *T,  int kval) {
 	}
 }
 
-int main()
+Status MyPrint(BiTree *T)
 {
 	int j;
+	for(j = 0;j <5;j++)
+	{
+		if(!InsertBST(T, searchnum[j])){
+			DeleteBST(T,searchnum[j]);
+		}
+		flag = 0;
+		PreOrderTraverse(*T);
+		printf("\n");
+	}
+	return OK;
+}
+
+int main()
+{
 	BiTree T=NULL;
+	int j;
 	for(j = 0;j < 12;j++)
 	{
 		InsertBST(&T, num[j]);
 	}
 	PreOrderTraverse(T);
-	for(j = 0;j <5;j++)
-	{
-		if(!InsertBST(&T, searchnum[j])){
-			DeleteBST(&T,searchnum[j]);
-		}
-		printf("\n");
-		PreOrderTraverse(T);
-	}
+	printf("\n");
+	MyPrint(&T);
 	return 0;
 }
