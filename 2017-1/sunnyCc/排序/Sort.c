@@ -94,7 +94,7 @@ int SelectMinKey(SqList L, int i)
 	int j;
 	k = i;
 	for (j = i; j < L.length + 1; j++)
-		if (L.r[k].key > L.r[j].key)
+		if (L.r[k].key > L.r[j].key)//找到最小一项的序号数
 		{
 			k = j;
 		}
@@ -105,9 +105,11 @@ void SelectSort(SqList*L) {
 	int i, j;
 	int sum1 = 0;
 	int sum2 = 0;
-	for (i = 1; i < L->length; ++i) {
-		j = SelectMinKey(*L, i);
-		if ((++sum1) && i != j) {
+	for (i = 1; i < L->length; ++i)
+	{
+		j = SelectMinKey(*L, i);//在表中选出最小一项的序号数，赋值给j
+		if ((++sum1) && i != j)//将挑选出来的最小项依次与表中1，2，3...项交换
+		{
 			t = L->r[i];
 			L->r[i] = L->r[j];
 			L->r[j] = t;
@@ -124,15 +126,16 @@ void SelectSort(SqList*L) {
 }
 
 void BubbleSort(SqList*L) {
-	bool exchange;
+	bool exchange;//定义一个布尔变量来检验数组是否已经有序
 	RedType t;
 	int sum1 = 0;
 	int sum2 = 0;
 	int i;
 	for (i = L->length - 1; i > 0; i--) {
-		exchange = false;
-		for (int j = 0; (++sum1) && j <= i; j++) {
-			if (L->r[j].key > L->r[j + 1].key)
+		exchange = false;//先定义数组为无序
+		for (int j = 0; (++sum1) && j <= i; j++)
+		{
+			if (L->r[j].key > L->r[j + 1].key)//比较r[j]与r[j+1]的大小
 			{
 				t = L->r[j];
 				L->r[j] = L->r[j + 1];
@@ -141,7 +144,7 @@ void BubbleSort(SqList*L) {
 			}
 			exchange = true;
 		}
-		if (!exchange) return;
+		if (!exchange) return;//如果某一趟算法下来没有交换元素，就说明此时数组已经有序
 	}
 	printf("\n已经排好序，序列为：\n");
 	for (i = 1; i <= LENGTH; i++)
@@ -173,7 +176,8 @@ void ShellSort(SqList *L) {
 	int i;
 	int sum1 = 0;
 	int sum2 = 0;
-	for (i = L->length / 2; i > 0; i = i / 2) {
+	for (i = L->length / 2; i > 0; i = i / 2)//先定义增量为L->length/2,后序循环为其一半
+	{
 		ShellInsert(L, i, &sum1, &sum2);
 	}
 	printf("\n已经排好序，序列为：\n");
